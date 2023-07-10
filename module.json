@@ -1,0 +1,47 @@
+{
+  "id": "root",
+  "name": "root",
+  "title": "Root (PbtA)",
+  "description": "Unofficial Root RPG custom sheet and compendium module, to be used with the Powered by the Apocalypse (PbtA) system.",
+  "authors": [
+    {
+        "name": "gonzaPaEst"
+    }
+  ],
+  "version": "1",
+  "minimumCoreVersion": "11",
+  "compatibleCoreVersion": "11",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11.305"
+  },
+  "relationships": {
+    "systems": [
+        {
+            "id": "pbta",
+            "type": "system",
+            "manifest": "https://asacolips-artifacts.s3.amazonaws.com/pbta/0.7.0/system.json",
+            "compatibility": {
+                "verified": "0.7.2"
+            }
+        }
+    ]
+  },
+  "esmodules": [
+    "./module/root.mjs"
+  ],
+  "styles": [
+    "./styles/root.css"
+  ],
+  "languages": [
+    {
+        "lang": "en",
+        "name": "English",
+        "path": "languages/en.json"
+    }
+  ],
+  "packs": [],
+  "url": "https://github.com/gonzaPaEst/root",
+  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1/module.json",
+  "download": "https://github.com/gonzaPaEst/root/releases/download/v1/module.zip"
+}

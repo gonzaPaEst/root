@@ -1,1 +1,28 @@
-# Root RPG
+# Root: The Roleplaying Game
+
+Unofficial Root RPG custom sheet and compendium module for Foundry VTT, to be used with the [Powered by the Apocalypse](https://gitlab.com/asacolips-projects/foundry-mods/pbta) game system (by Asacolips).
+
+---
+
+## Dependencies
+
+The following Foundry VTT game system must be installed: [Powered by the Apocalypse](https://foundryvtt.com/packages/pbta).
+
+### Installation
+
+1. To use this module, first find it and download it in the **Install Module** dialog on the Setup menu of the Foundry VTT application.
+2. Create a new world using the Powered by the Apocalypse game system.
+3. Open the Manage Modules window (under Game Settings) and activate the Root (PbtA) module.
+
+---
+
+## Licenses
+
+GNU General Public License
+
+### Root
+
+Text from Root: The Roleplaying Game play materials (playbooks, basic move sheets, etc.), which have been publicly released by Magpie Games, are being used with permission.
+
+- Root: A Game of Woodland Might and Right © 2017 Leder Games. All rights reserved.
+- Root: The Roleplaying Game text and design © 2021 Magpie Games. All rights reserved.

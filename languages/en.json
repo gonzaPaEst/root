@@ -1,0 +1,12 @@
+{
+    "Root": {
+        "Settings": {
+            "Title": "Override Setting Selections",
+            "Hint": "The Root RPG module automatically hides all PbtA sheet options (formula, roll mode, etc.). If you want to make your own selections, please check this option off."
+        }
+    },
+    "PBTA": {
+        "Description": "Background",
+        "Biography": "Background and Details"
+    }
+}

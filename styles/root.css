@@ -1,0 +1,389 @@
+/* Root CSS */
+
+/* General Sheet Styles */
+
+.pbta.sheet.actor:not(.npc) {
+  min-width: 762px;
+}
+
+.pbta.sheet.npc {
+  min-width: 650px;
+}
+
+.pbta.sheet.actor section.window-content {
+background-color: #F0EBD5;
+  color: #323427;
+}
+
+.pbta.sheet.actor section.window-content::-webkit-scrollbar-thumb {
+  background: #444635;
+  border-color: #71745e;
+}
+
+.pbta.sheet.npc .sheet-tabs .item {
+  margin: 0 5px -2px;
+}
+
+.pbta.sheet :is(.cell.cell--attributes-top, .cell.cell--attributes-left) label.cell__title {
+justify-content: center;
+}
+
+.pbta.sheet .cell.cell--attributes-top p.cell__description.cell__description--attr {
+text-align: center;
+}
+
+.pbta.sheet:not(.npc) .sheet-wrapper :is(.sheet-attributes-top, .sheet-attributes-top .cell--attributes-top .cell) {
+padding: 0;
+}
+
+.pbta.sheet .cell__title {
+color: #323427;
+  border-bottom-color: #323427;
+}
+
+.pbta.sheet section.sheet-main nav.sheet-tabs.tabs {
+  border-bottom-color: #323427;
+}
+
+.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item {
+background: #323427;
+  border-color: #323427;
+}
+
+.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item.active {
+background: #919382;
+}
+
+.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item:hover {
+background: #fff;
+}
+
+/* Stat Styles and Animation */
+
+.pbta.sheet .sheet-attributes .cell--stats .stat {
+background: #444635;
+}
+
+.pbta.sheet .sheet-attributes .cell--stats .stat:hover {
+background: #71745e;
+}
+
+@keyframes rollDice {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  4% {
+    transform: translate(0, -6px);
+  }
+  8% {
+    transform: translate(3px, -6px);
+  }
+  12% {
+    transform: translate(-3px, -6px);
+  }
+  16% {
+    transform: translate(3px, -6px);
+  }
+  20% {
+    transform: translate(-3px, -6px);
+  }
+  24% {
+    transform: translate(3px, -6px);
+  }
+  28% {
+    transform: translate(-3px, -6px);
+  }
+  32% {
+    transform: translate(3px, -6px);
+  }
+  33% {
+    transform: translate(-18px, 8px);
+  }
+  35% {
+    transform: translate(-12px, 10px);
+  }
+  37% {
+    transform: translate(-18px, 6px);
+  }
+  39% {
+    transform: translate(-16px, 10px);
+  }
+  60% {
+    transform: translate(-16px, 10px);
+  }
+  80% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+.pbta.sheet span.stat-icon.stat-rollable.rollable:hover .fa-dice-d6 {
+  animation: rollDice 3s linear infinite;
+}
+
+/* Reputation */
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol {
+  display: grid;
+  grid-template-columns: repeat(38, 1fr);
+  gap: 0;
+  justify-items: center;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol label {
+  color: #323427;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol input {
+  font-size: 13px;
+  margin: 0;
+  height: 22px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol input[type="checkbox"] {
+  margin: 2px 1px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(9), label:nth-of-type(17), label:nth-of-type(25), label:nth-of-type(33)) {
+  grid-column: 1 / 8;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(2), label:nth-of-type(10), label:nth-of-type(18), label:nth-of-type(26), label:nth-of-type(34)) {
+  grid-column: 8 / 12;
+  flex-direction: row-reverse;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(3), label:nth-of-type(11), label:nth-of-type(19), label:nth-of-type(27), label:nth-of-type(35)) {
+  grid-column: 12 / 16;
+  flex-direction: row-reverse;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(4), label:nth-of-type(12), label:nth-of-type(20), label:nth-of-type(28), label:nth-of-type(36)) {
+  grid-column: 16 / 20;
+  flex-direction: row-reverse;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(5), label:nth-of-type(13), label:nth-of-type(21), label:nth-of-type(29), label:nth-of-type(37)) {
+  grid-column: 20 / 21;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(6), label:nth-of-type(14), label:nth-of-type(22), label:nth-of-type(30), label:nth-of-type(38)) {
+  grid-column: 21 / 27;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(7), label:nth-of-type(15), label:nth-of-type(23), label:nth-of-type(31), label:nth-of-type(39)) {
+  grid-column: 27 / 33;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(label:nth-of-type(8), label:nth-of-type(16), label:nth-of-type(24), label:nth-of-type(32), label:nth-of-type(40)) {
+  grid-column: 33 / 39;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol label:nth-of-type(41) {
+  grid-column: 8 / 20;
+  margin-top: 5px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol label:nth-of-type(42) {
+  grid-column: 21 / 39;
+  margin-top: 5px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.3.value"], input[name="system.attrTop.reputation.options.2.values.3.value"], input[name="system.attrTop.reputation.options.3.values.3.value"], input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.9.values.3.value"], input[name="system.attrTop.reputation.options.10.values.3.value"], input[name="system.attrTop.reputation.options.11.values.3.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.17.values.3.value"], input[name="system.attrTop.reputation.options.18.values.3.value"], input[name="system.attrTop.reputation.options.19.values.3.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.25.values.3.value"], input[name="system.attrTop.reputation.options.26.values.3.value"], input[name="system.attrTop.reputation.options.27.values.3.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.33.values.3.value"], input[name="system.attrTop.reputation.options.34.values.3.value"], input[name="system.attrTop.reputation.options.35.values.3.value"], input[name="system.attrTop.reputation.options.36.values.0.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]) {
+appearance: none;
+  background: none;
+  border: none;
+  position: absolute;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.3.value"], input[name="system.attrTop.reputation.options.2.values.3.value"], input[name="system.attrTop.reputation.options.3.values.3.value"], input[name="system.attrTop.reputation.options.9.values.3.value"], input[name="system.attrTop.reputation.options.10.values.3.value"], input[name="system.attrTop.reputation.options.11.values.3.value"], input[name="system.attrTop.reputation.options.17.values.3.value"], input[name="system.attrTop.reputation.options.18.values.3.value"], input[name="system.attrTop.reputation.options.19.values.3.value"], input[name="system.attrTop.reputation.options.25.values.3.value"], input[name="system.attrTop.reputation.options.26.values.3.value"], input[name="system.attrTop.reputation.options.27.values.3.value"], input[name="system.attrTop.reputation.options.33.values.3.value"], input[name="system.attrTop.reputation.options.34.values.3.value"], input[name="system.attrTop.reputation.options.35.values.3.value"], ) {
+  transform: translateX(-65px);
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.2.value"], input[name="system.attrTop.reputation.options.2.values.2.value"], input[name="system.attrTop.reputation.options.3.values.2.value"], input[name="system.attrTop.reputation.options.9.values.2.value"], input[name="system.attrTop.reputation.options.10.values.2.value"], input[name="system.attrTop.reputation.options.11.values.2.value"], input[name="system.attrTop.reputation.options.17.values.2.value"], input[name="system.attrTop.reputation.options.18.values.2.value"], input[name="system.attrTop.reputation.options.19.values.2.value"], input[name="system.attrTop.reputation.options.25.values.2.value"], input[name="system.attrTop.reputation.options.26.values.2.value"], input[name="system.attrTop.reputation.options.27.values.2.value"], input[name="system.attrTop.reputation.options.33.values.2.value"], input[name="system.attrTop.reputation.options.34.values.2.value"], input[name="system.attrTop.reputation.options.35.values.2.value"], ) {
+  margin-left: 5px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]) {
+  transform: translateX(110px);
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.5.values.4.value"], input[name="system.attrTop.reputation.options.6.values.4.value"], input[name="system.attrTop.reputation.options.7.values.4.value"], input[name="system.attrTop.reputation.options.13.values.4.value"], input[name="system.attrTop.reputation.options.14.values.4.value"], input[name="system.attrTop.reputation.options.15.values.4.value"], input[name="system.attrTop.reputation.options.21.values.4.value"], input[name="system.attrTop.reputation.options.22.values.4.value"], input[name="system.attrTop.reputation.options.23.values.4.value"], input[name="system.attrTop.reputation.options.29.values.4.value"], input[name="system.attrTop.reputation.options.30.values.4.value"], input[name="system.attrTop.reputation.options.31.values.4.value"], input[name="system.attrTop.reputation.options.37.values.4.value"], input[name="system.attrTop.reputation.options.38.values.4.value"], input[name="system.attrTop.reputation.options.39.values.4.value"]) {
+  margin-right: 4px;
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.36.values.0.value"]) {
+  transform: translateX(-2px);
+}
+
+.pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.3.value"], input[name="system.attrTop.reputation.options.2.values.3.value"], input[name="system.attrTop.reputation.options.3.values.3.value"], input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.9.values.3.value"], input[name="system.attrTop.reputation.options.10.values.3.value"], input[name="system.attrTop.reputation.options.11.values.3.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.17.values.3.value"], input[name="system.attrTop.reputation.options.18.values.3.value"], input[name="system.attrTop.reputation.options.19.values.3.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.25.values.3.value"], input[name="system.attrTop.reputation.options.26.values.3.value"], input[name="system.attrTop.reputation.options.27.values.3.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.33.values.3.value"], input[name="system.attrTop.reputation.options.34.values.3.value"], input[name="system.attrTop.reputation.options.35.values.3.value"], input[name="system.attrTop.reputation.options.36.values.0.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]):checked {
+  border: 2px solid #323427;
+  border-radius: 50%;
+}
+
+/* Injury, Exhaustion, Depletion */
+
+.pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany label.cell__title {
+display: none;
+}
+
+.pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol input.attr-list {
+margin: 3px 2px;
+}
+
+.pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(2), label:nth-of-type(5), label:nth-of-type(8)) input.attr-list {
+margin: 3px 1px;
+}
+
+.pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany {
+background: #E6DDB8;
+  border: double 3px #B69D3F;
+  border-radius: 2px;
+  padding-left: 5px;
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::before {
+background: rgb(255,255,255,0.4);
+  border: 1px solid black;
+  border-radius: 2px;
+  content: "+";
+  line-height: 8px;
+  padding: 1px;
+  position: absolute;
+  transform: translateX(49px);
+  width: 8px;
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(4)::before {
+  transform: translateX(81px);
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(7)::before {
+  transform: translateX(72px);
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::after {
+background: rgb(255,255,255,0.4);
+  border: 1px solid black;
+  border-radius: 2px;
+  content: "-";
+  font-size: 1.5em;
+  line-height: 8px;
+  padding: 1px;
+  position: absolute;
+  transform: translateX(67px);
+  width: 8px;
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(4)::after {
+  transform: translateX(99px);
+}
+
+.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(7)::after {
+  transform: translateX(90px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"], input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
+appearance: none;
+  background: none;
+  border: none;
+  position: absolute;
+  transform: translate(48px, -37px);
+  z-index: 4;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]) {
+transform: translate(83px, -37px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
+transform: translate(73px, -37px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]) {
+z-index: 3;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]) {
+z-index: 2;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
+z-index: 1;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"], input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.8.values.0.value"]):checked {
+  transform: translate(70px, -37px);
+  z-index: 1;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]):checked {
+  transform: translate(105px, -37px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]):checked {
+  transform: translate(95px, -37px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]):checked {
+  z-index: 2;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]):checked {
+  z-index: 3;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]):checked {
+  z-index: 4;
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.1.value"], input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.1.value"], input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.1.value"], input[name="system.attrLeft.resource.options.8.values.3.value"], input[name="system.attrLeft.resource.options.8.values.5.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
+display: none;
+  position: absolute;
+  transform: translate(87.5px, -13px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.8.values.3.value"]) {
+  transform: translate(110px, -13px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.8.values.5.value"]) {
+  transform: translate(133px, -13px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
+transform: translate(156px, -13px);
+}
+
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"]:checked + input[name="system.attrLeft.resource.options.2.values.1.value"], input[name="system.attrLeft.resource.options.2.values.2.value"]:checked + input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.2.values.4.value"]:checked + input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"]:checked + input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.0.value"]:checked + input[name="system.attrLeft.resource.options.5.values.1.value"], input[name="system.attrLeft.resource.options.5.values.2.value"]:checked + input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.5.values.4.value"]:checked + input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]:checked + input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.0.value"]:checked + input[name="system.attrLeft.resource.options.8.values.1.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]:checked + input[name="system.attrLeft.resource.options.8.values.3.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]:checked + input[name="system.attrLeft.resource.options.8.values.5.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]:checked + input[name="system.attrLeft.resource.options.8.values.7.value"]) {
+display: inline;
+}
+
+/* Equipment & Load */
+
+.pbta.sheet .cell.cell--attributes-left .cell.cell--value.cell--attr-value.cell--Number p.cell__description.cell__description--attr {
+  color: #323427;
+  display: inline;
+  font: 14px "Roboto Condensed", sans-serif;
+  margin: 0 0 0 4px;
+  padding-right: 0;
+}
+
+.pbta.sheet .cell.cell--attributes-left :is(.cell.cell--carrying.cell--attr-carrying.cell--Number, .cell.cell--burdened.cell--attr-burdened.cell--Number, .cell.cell--max.cell--attr-max.cell--Number) label {
+border: none;
+  color: #323427;
+  display: inline;
+  font-size: 14px;
+  font-weight: normal;
+  margin: 0 0 0 4px;
+  padding-right: 0;
+}
+
+.pbta.sheet:not(.npc) .cell.cell--attributes-left input[type="text"] {
+  height: 22px;
+  margin: 1px;
+  padding: 0;
+  width: 30px;
+}
