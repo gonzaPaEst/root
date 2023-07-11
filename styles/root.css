@@ -373,7 +373,7 @@ display: inline;
 }
 
 .pbta.sheet .cell.cell--attributes-left :is(.cell.cell--carrying.cell--attr-carrying.cell--Number, .cell.cell--burdened.cell--attr-burdened.cell--Number, .cell.cell--max.cell--attr-max.cell--Number) label {
-border: none;
+  border: none;
   color: #323427;
   display: inline;
   font-size: 14px;
@@ -386,7 +386,7 @@ border: none;
   height: 22px;
   margin: 1px;
   padding: 0;
-  width: 30px;
+  width: 32px;
 }
 
 /* NEW */

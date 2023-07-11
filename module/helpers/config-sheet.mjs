@@ -1,6 +1,6 @@
 export const configSheet = async () => {
 
-  // pass Root sheet object to sheeConfig
+  // Pass Root sheet object to sheeConfig
 
   game.pbta.sheetConfig = {
     rollFormula: "2d6",
@@ -1108,16 +1108,12 @@ export const configSheet = async () => {
     }
   }
   
-  // check if users wants to override settings; if not, hide all PbtA sheet options
-  let overrideSettings = await game.settings.get('root', 'settings-override');
-  
-  if (!overrideSettings) {
-    await game.settings.set('pbta', 'advForward', true);
-    await game.settings.set('pbta', 'hideRollFormula', true);
-    await game.settings.set('pbta', 'hideForward', false);
-    await game.settings.set('pbta', 'hideOngoing', false);
-    await game.settings.set('pbta', 'hideRollMode', true);
-    await game.settings.set('pbta', 'hideUses', true);
-  }
+  // Settings for Root RAW
+  await game.settings.set('pbta', 'advForward', true);
+  await game.settings.set('pbta', 'hideRollFormula', true);
+  await game.settings.set('pbta', 'hideForward', false);
+  await game.settings.set('pbta', 'hideOngoing', false);
+  await game.settings.set('pbta', 'hideRollMode', true);
+  await game.settings.set('pbta', 'hideUses', true);
   
 }

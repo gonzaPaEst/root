@@ -18,7 +18,7 @@ The following Foundry VTT game system must be installed: [Powered by the Apocaly
 
 ## Licenses
 
-GNU General Public License
+This module's code is published under a GNU General Public License.
 
 ### Root
 
