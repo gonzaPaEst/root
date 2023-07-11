@@ -942,6 +942,14 @@ export const configSheet = async () => {
               }
             }
           },
+          hold: {
+            label: "Hold",
+            description: null,
+            customLabel: false,
+            userLabel: false,
+            type: "Number",
+            value: 0
+          },
           value: {
             label: "Equipment & Load",
             description: "Starting Value",

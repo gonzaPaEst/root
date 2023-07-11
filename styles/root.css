@@ -3,7 +3,7 @@
 /* General Sheet Styles */
 
 .pbta.sheet.actor:not(.npc) {
-  min-width: 762px;
+  min-width: 770px;
 }
 
 .pbta.sheet.npc {
@@ -207,7 +207,7 @@ appearance: none;
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]) {
-  transform: translateX(110px);
+  transform: translateX(109px);
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.5.values.4.value"], input[name="system.attrTop.reputation.options.6.values.4.value"], input[name="system.attrTop.reputation.options.7.values.4.value"], input[name="system.attrTop.reputation.options.13.values.4.value"], input[name="system.attrTop.reputation.options.14.values.4.value"], input[name="system.attrTop.reputation.options.15.values.4.value"], input[name="system.attrTop.reputation.options.21.values.4.value"], input[name="system.attrTop.reputation.options.22.values.4.value"], input[name="system.attrTop.reputation.options.23.values.4.value"], input[name="system.attrTop.reputation.options.29.values.4.value"], input[name="system.attrTop.reputation.options.30.values.4.value"], input[name="system.attrTop.reputation.options.31.values.4.value"], input[name="system.attrTop.reputation.options.37.values.4.value"], input[name="system.attrTop.reputation.options.38.values.4.value"], input[name="system.attrTop.reputation.options.39.values.4.value"]) {
@@ -215,12 +215,13 @@ appearance: none;
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.36.values.0.value"]) {
-  transform: translateX(-2px);
+  transform: translateX(-3px);
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.3.value"], input[name="system.attrTop.reputation.options.2.values.3.value"], input[name="system.attrTop.reputation.options.3.values.3.value"], input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.9.values.3.value"], input[name="system.attrTop.reputation.options.10.values.3.value"], input[name="system.attrTop.reputation.options.11.values.3.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.17.values.3.value"], input[name="system.attrTop.reputation.options.18.values.3.value"], input[name="system.attrTop.reputation.options.19.values.3.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.25.values.3.value"], input[name="system.attrTop.reputation.options.26.values.3.value"], input[name="system.attrTop.reputation.options.27.values.3.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.33.values.3.value"], input[name="system.attrTop.reputation.options.34.values.3.value"], input[name="system.attrTop.reputation.options.35.values.3.value"], input[name="system.attrTop.reputation.options.36.values.0.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]):checked {
-  border: 2px solid #323427;
+  border: 2.5px solid #D60000;
   border-radius: 50%;
+  padding: 9px;
 }
 
 /* Injury, Exhaustion, Depletion */
@@ -381,9 +382,24 @@ border: none;
   padding-right: 0;
 }
 
-.pbta.sheet:not(.npc) .cell.cell--attributes-left input[type="text"] {
+.pbta.sheet:not(.npc) .cell.cell--attributes-left :is(input[name="system.attrLeft.value.value"], input[name="system.attrLeft.carrying.value"], input[name="system.attrLeft.burdened.value"], input[name="system.attrLeft.max.value"]) {
   height: 22px;
   margin: 1px;
   padding: 0;
   width: 30px;
+}
+
+/* NEW */
+
+.pbta.sheet.actor:not(.npc) .sheet-resources .cell.cell--forward {
+  padding: 0 15px 0 40px;
+}
+
+.pbta.sheet.actor:not(.npc) .sheet-resources .cell.cell--ongoing {
+  padding: 0 40px 0 15px;
+}
+
+.pbta.sheet.actor:not(.npc) .sheet-resources {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 20px 10px;
 }
