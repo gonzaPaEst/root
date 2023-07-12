@@ -1,8 +1,8 @@
 {
     "Root": {
         "Masteries": {
-            "Title": "Masteries Rule",
-            "Hint": "Check this option if you plan to use the Masteries rule found in Travelers & Outsiders (pg. 69-76)."
+            "Title": "MASTERIES RULE",
+            "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
         }
     },
     "PBTA": {

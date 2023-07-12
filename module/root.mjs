@@ -41,7 +41,7 @@ Hooks.on("preCreateActor", async function (actor) {
   }
 });
 
-//Override Class method to handle Masteries outcomes
+// Change Class method to override Triumph outcome in Mastery moves.
 Hooks.on('ready', ()=>{
 
   PbtaRolls.rollMoveExecute = async function(roll, dataset, templateData, form = null) {
@@ -256,7 +256,7 @@ Hooks.on('ready', ()=>{
             templateData.resultDetails = templateData.moveResults[resultType].value;
           }
 
-          // Override for Masteries outcomes
+          // Triumph override for Mastery moves.
           let masteries = await game.settings.get('root', 'masteries');
           if (masteries) {
             try {

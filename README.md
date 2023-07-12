@@ -22,7 +22,7 @@ This module's code is published under a GNU General Public License.
 
 ### Root
 
-Text from Root: The Roleplaying Game play materials (playbooks, basic move sheets, etc.), which have been publicly released by Magpie Games, are being used with permission.
+Text from Root: The Roleplaying Game play materials (playbooks, basic move sheets, etc.), which have been publicly released by Magpie Games, is used with permission.
 
 - Root: A Game of Woodland Might and Right © 2017 Leder Games. All rights reserved.
 - Root: The Roleplaying Game text and design © 2021 Magpie Games. All rights reserved.
