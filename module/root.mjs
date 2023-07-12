@@ -7,12 +7,12 @@ Hooks.once('init', () => {
 
   // register Root settings
   game.settings.register('root', 'masteries', {
-    name: game.i18n.localize("Root.Masteries.Title"),
+    name: game.i18n.localize("Root.Settings.Masteries.Title"),
     default: false,
     type: Boolean,
     scope: 'world',
     config: true,
-    hint: game.i18n.localize("Root.Masteries.Hint"),
+    hint: game.i18n.localize("Root.Settings.Masteries.Hint"),
     onChange: () => setTimeout(() => {
         location.reload();
       }, 500)
@@ -262,7 +262,7 @@ Hooks.on('ready', ()=>{
             try {
               if (templateData.moveResults.critical.value != '' && roll.total >= '12') {
                 templateData.result = 'critical';
-                templateData.resultLabel = "Triumph!";
+                templateData.resultLabel = game.i18n.localize("Root.Sheet.Results.Critical");
                 templateData.resultDetails = templateData.moveResults['critical'].value;
               }
             } catch (error) {

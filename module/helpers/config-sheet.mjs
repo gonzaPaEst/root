@@ -8,51 +8,51 @@ export const configSheet = async () => {
       critical: {
         start: null,
         end: null,
-        label: "Triumph!"
+        label: game.i18n.localize("Root.Sheet.Results.Critical")
       },
       success: {
         start: 10,
         end: null,
-        label: "Strong Hit!"
+        label: game.i18n.localize("Root.Sheet.Results.Success")
       },
       partial: {
         start: 7,
         end: 9,
-        label: "Weak Hit"
+        label: game.i18n.localize("Root.Sheet.Results.Partial")
       },
       failure: {
         start: null,
         end: 6,
-        label: "Miss"
+        label: game.i18n.localize("Root.Sheet.Results.Failure")
       }
     },
     actorTypes: {
       character: {
         stats: {
           charm: {
-            label: "Charm",
+            label: game.i18n.localize("Root.Sheet.Stats.Charm"),
             value: 0
           },
           cunning: {
-            label: "Cunning",
+            label: game.i18n.localize("Root.Sheet.Stats.Cunning"),
             value: 0
           },
           finesse: {
-            label: "Finesse",
+            label: game.i18n.localize("Root.Sheet.Stats.Finesse"),
             value: 0
           },
           luck: {
-            label: "Luck",
+            label: game.i18n.localize("Root.Sheet.Stats.Luck"),
             value: 0
           },
           might: {
-            label: "Might",
+            label: game.i18n.localize("Root.Sheet.Stats.Might"),
             value: 0
           }
         },
         attrTop: {
           reputation: {
-            label: "YOUR REPUTATION",
+            label: game.i18n.localize("Root.Sheet.AttrTop.Reputation.Label"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -760,12 +760,12 @@ export const configSheet = async () => {
                 }
               },
               40: {
-                label: "---------------NOTORIETY--------------",
+                label: game.i18n.localize("Root.Sheet.AttrTop.Reputation.Notoriety"),
                 value: false,
                 values: {}
               },
               41: {
-                label: "-------------------------PRESTIGE---------------------------",
+                label: game.i18n.localize("Root.Sheet.AttrTop.Reputation.Prestige"),
                 value: false,
                 values: {}
               }
@@ -782,7 +782,7 @@ export const configSheet = async () => {
             condition: false,
             options: {
               0: {
-                label: "INJURY",
+                label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Injury"),
                 value: false,
                 values: {}
               },
@@ -835,7 +835,7 @@ export const configSheet = async () => {
                 }
               },
               3: {
-                label: "EXHAUSTION",
+                label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Exhaustion"),
                 value: false,
                 values: {}
               },
@@ -888,7 +888,7 @@ export const configSheet = async () => {
                 }
               },
               6: {
-                label: "DEPLETION",
+                label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Depletion"),
                 value: false,
                 values: {}
               },
@@ -943,7 +943,7 @@ export const configSheet = async () => {
             }
           },
           hold: {
-            label: "Hold",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Hold"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -951,15 +951,15 @@ export const configSheet = async () => {
             value: 0
           },
           value: {
-            label: "Equipment & Load",
-            description: "Starting Value",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Label"),
+            description: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Description"),
             customLabel: false,
             userLabel: false,
             type: "Number",
             value: 0
           },
           carrying: {
-            label: "Carrying",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Carrying"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -967,7 +967,7 @@ export const configSheet = async () => {
             value: 0
           },
           burdened: {
-            label: "Burdened (4+Might)",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Burdened"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -975,7 +975,7 @@ export const configSheet = async () => {
             value: 0
           },
           max: {
-            label: "Max (Twice Burdened)",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Max"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -983,7 +983,7 @@ export const configSheet = async () => {
             value: 0
           },
           nature: {
-            label: "Nature",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Nature"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -991,7 +991,7 @@ export const configSheet = async () => {
             value: ""
           },
           drives: {
-            label: "Drives",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Drives"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -999,7 +999,7 @@ export const configSheet = async () => {
             value: ""
           },
           connections: {
-            label: "Connections",
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Connections"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1009,29 +1009,29 @@ export const configSheet = async () => {
         },
         moveTypes: {
           basic: {
-            label: "Basic Moves",
+            label: game.i18n.localize("Root.Sheet.Moves.Basic"),
             moves: []
           },
           playbook: {
-            label: "Playbook Moves",
+            label: game.i18n.localize("Root.Sheet.Moves.Playbook"),
             moves: []
           },
           weapon: {
-            label: "Weapon Moves",
+            label: game.i18n.localize("Root.Sheet.Moves.Weapon"),
             moves: []
           },
           travel: {
-            label: "Travel Moves",
+            label: game.i18n.localize("Root.Sheet.Moves.Travel"),
             moves: []
           },
           reputation: {
-            label: "Reputation Moves",
+            label: game.i18n.localize("Root.Sheet.Moves.Reputation"),
             moves: []
           }
         },
         equipmentTypes: {
           equipment: {
-            label: "Equipment",
+            label: game.i18n.localize("Root.Sheet.Items.Equipment"),
             moves: []
           }
         }
@@ -1039,7 +1039,7 @@ export const configSheet = async () => {
       npc: {
         attrTop: {
           injury: {
-            label: "Injury",
+            label: game.i18n.localize("Root.Sheet.NPC.Injury"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1048,7 +1048,7 @@ export const configSheet = async () => {
             max: 0
           },
           exhaustion: {
-            label: "Exhaustion",
+            label: game.i18n.localize("Root.Sheet.NPC.Exhaustion"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1057,7 +1057,7 @@ export const configSheet = async () => {
             max: 0
           },
           wear: {
-            label: "Wear",
+            label: game.i18n.localize("Root.Sheet.NPC.Wear"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1068,7 +1068,7 @@ export const configSheet = async () => {
         },
         attrLeft: {
           morale: {
-            label: "Morale",
+            label: game.i18n.localize("Root.Sheet.NPC.Morale"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1076,7 +1076,7 @@ export const configSheet = async () => {
             value: 0
           },
           harm: {
-            label: "Harm Dealt",
+            label: game.i18n.localize("Root.Sheet.NPC.Harm"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1084,7 +1084,7 @@ export const configSheet = async () => {
             value: ""
           },
           drive: {
-            label: "Drive",
+            label: game.i18n.localize("Root.Sheet.NPC.Drive"),
             description: null,
             customLabel: false,
             userLabel: false,
@@ -1094,13 +1094,13 @@ export const configSheet = async () => {
         },
         moveTypes: {
           moves: {
-            label: "Moves",
+            label: game.i18n.localize("Root.Sheet.NPC.Moves"),
             moves: []
           }
         },
         equipmentTypes: {
           equipment: {
-            label: "Equipment",
+            label: game.i18n.localize("Root.Sheet.Items.Equipment"),
             moves: []
           }
         }

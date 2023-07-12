@@ -1,8 +1,69 @@
 {
     "Root": {
-        "Masteries": {
-            "Title": "MASTERIES RULE",
-            "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
+        "Settings": {
+            "Masteries": {
+                "Title": "MASTERIES RULE",
+                "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
+            }
+        },
+        "Sheet": {
+            "Results": {
+                "Critical": "Triumph!",
+                "Success": "Strong Hit!",
+                "Partial": "Weak Hit",
+                "Failure": "Miss..."
+            },
+            "Stats": {
+                "Charm": "Charm",
+                "Cunning": "Cunning",
+                "Finesse": "Finesse",
+                "Luck": "Luck",
+                "Might": "Might"
+            },
+            "AttrTop": {
+                "Reputation": {
+                    "Label": "YOUR REPUTATION",
+                    "Notoriety": "---------------NOTORIETY--------------",
+                    "Prestige": "-------------------------PRESTIGE---------------------------"
+                }
+            },
+            "AttrLeft": {
+                "Resource": {
+                    "Injury": "INJURY",
+                    "Exhaustion": "EXHAUSTION",
+                    "Depletion": "DEPLETION"
+                },
+                "Hold": "Hold",
+                "Equipment": {
+                    "Label": "Equipment & Load",
+                    "Description": "Starting Value"
+                },
+                "Carrying": "Carrying",
+                "Burdened": "Burdened (4+Might)",
+                "Max": "Max (Twice Burdened)",
+                "Nature": "Nature",
+                "Drives": "Drives",
+                "Connections": "Connections"
+            },
+            "Moves": {
+                "Basic": "Basic Moves",
+                "Playbook": "Playbook Moves",
+                "Weapon": "Weapon Moves",
+                "Travel": "Travel Moves",
+                "Reputation": "Reputation Moves"
+            },
+            "Items": {
+                "Equipment": "Equipment"
+            },
+            "NPC": {
+                "Injury": "Injury",
+                "Exhaustion": "Exhaustion",
+                "Wear": "Wear",
+                "Morale": "Morale",
+                "Harm": "Harm Dealt",
+                "Drive": "Drive",
+                "Moves": "Moves"
+            }
         }
     },
     "PBTA": {
