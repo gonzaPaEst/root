@@ -40,7 +40,384 @@
         "path": "languages/en.json"
     }
   ],
-  "packs": [],
+  "packs": [
+    {
+      "name": "basic",
+      "label": "Basic Moves",
+      "system": "pbta",
+      "path": "packs/basic",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "weapon",
+      "label": "Weapon Moves",
+      "system": "pbta",
+      "path": "packs/weapon",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "reputation",
+      "label": "Reputation Moves",
+      "system": "pbta",
+      "path": "packs/reputation",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "travel",
+      "label": "Travel Moves",
+      "system": "pbta",
+      "path": "packs/travel",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "other",
+      "label": "Other Moves",
+      "system": "pbta",
+      "path": "packs/other",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "adventurer",
+      "label": "The Adventurer",
+      "system": "pbta",
+      "path": "packs/adventurer",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "arbiter",
+      "label": "The Arbiter",
+      "system": "pbta",
+      "path": "packs/arbiter",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "champion",
+      "label": "The Champion",
+      "system": "pbta",
+      "path": "packs/champion",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "chronicler",
+      "label": "The Chronicler",
+      "system": "pbta",
+      "path": "packs/chronicler",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "envoy",
+      "label": "The Envoy",
+      "system": "pbta",
+      "path": "packs/envoy",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "exile",
+      "label": "The Exile",
+      "system": "pbta",
+      "path": "packs/exile",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "harrier",
+      "label": "The Harrier",
+      "system": "pbta",
+      "path": "packs/harrier",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "heretic",
+      "label": "The Heretic",
+      "system": "pbta",
+      "path": "packs/heretic",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "pirate",
+      "label": "The Pirate",
+      "system": "pbta",
+      "path": "packs/pirate",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "prince",
+      "label": "The Prince",
+      "system": "pbta",
+      "path": "packs/prince",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "raconteur",
+      "label": "The Raconteur",
+      "system": "pbta",
+      "path": "packs/raconteur",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "raider",
+      "label": "The Raider",
+      "system": "pbta",
+      "path": "packs/raider",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "ranger",
+      "label": "The Ranger",
+      "system": "pbta",
+      "path": "packs/ranger",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "ronin",
+      "label": "The Ronin",
+      "system": "pbta",
+      "path": "packs/ronin",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "scoundrel",
+      "label": "The Scoundrel",
+      "system": "pbta",
+      "path": "packs/scoundrel",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "seeker",
+      "label": "The Seeker",
+      "system": "pbta",
+      "path": "packs/seeker",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "thief",
+      "label": "The Thief",
+      "system": "pbta",
+      "path": "packs/thief",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "tinker",
+      "label": "The Tinker",
+      "system": "pbta",
+      "path": "packs/tinker",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "vagrant",
+      "label": "The Vagrant",
+      "system": "pbta",
+      "path": "packs/vagrant",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "npcs",
+      "label": "Pre-Planned NPCs",
+      "system": "pbta",
+      "path": "packs/npcs",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "equipment",
+      "label": "Pre-Made Equipment",
+      "system": "pbta",
+      "path": "packs/equipment",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "tags",
+      "label": "Equipment Tags",
+      "system": "pbta",
+      "path": "packs/tags",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Play Materials",
+      "sorting": "m",
+      "folders": [
+        {
+          "name": "General Moves",
+          "sorting": "m",
+          "packs": [
+            "basic",
+            "weapon",
+            "reputation",
+            "travel",
+            "other"
+          ]
+        },
+        {
+          "name": "Playbooks",
+          "sorting": "a",
+          "packs": [
+            "adventurer",
+            "arbiter",
+            "champion",
+            "chronicler",
+            "envoy",
+            "exile",
+            "harrier",
+            "heretic",
+            "pirate",
+            "prince",
+            "raconteur",
+            "raider",
+            "ranger",
+            "ronin",
+            "scoundrel",
+            "seeker",
+            "thief",
+            "tinker",
+            "vagrant"
+          ]
+        },
+        {
+          "name": "Equipment & NPCs",
+          "sorting": "m",
+          "packs": [
+            "npcs",
+            "equipment",
+            "tags"
+          ]
+        }
+      ]
+    }
+  ],
   "url": "https://github.com/gonzaPaEst/root",
   "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1/module.json",
   "download": "https://github.com/gonzaPaEst/root/releases/download/v1/module.zip"
