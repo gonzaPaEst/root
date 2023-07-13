@@ -64,7 +64,8 @@
                 "Drive": "Drive",
                 "Moves": "Moves"
             }
-        }
+        },
+        "DefaultBackground": "<h3>Species</h3><ul><li>&nbsp;</li></ul><h3>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><h3>Demeanor</h3><ul><li>&nbsp;</li></ul><h3>Background</h3><p><strong>Where do you call home?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Why are you a vagabond?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Whom have you left behind?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Which faction have you served the most?</strong>&nbsp;<em>Mark two prestige for approgriate group</em>.</p><ul><li>&nbsp;</li></ul><p><strong>With which faction have you earned a special enmity?</strong>&nbsp;<em>Mark one notoriety for appropriate group</em>.</p><ul><li>&nbsp;</li></ul>"
     },
     "PBTA": {
         "Description": "Background",
