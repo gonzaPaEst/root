@@ -114,8 +114,11 @@ Hooks.on('createActor', async (actor, options, id) => {
       return 0;
     });
 
-    // Add default background and details.
-    updates['system.details.biography'] = game.i18n.localize('Root.DefaultBackground');
+    // Add templates for background, nature, drives, and connections.
+    updates['system.details.biography'] = game.i18n.localize('Root.BackgroundTemplate');
+    updates['system.attrLeft.nature.value'] = game.i18n.localize('Root.NatureTemplate');
+    updates['system.attrLeft.drives.value'] = game.i18n.localize('Root.DrivesTemplate');
+    updates['system.attrLeft.connections.value'] = game.i18n.localize('Root.ConnectionsTemplate');
 
     // Add to the actor.
     const movesToAdd = moves.map(m => duplicate(m));
