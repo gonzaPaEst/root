@@ -56,8 +56,8 @@ Hooks.on('createActor', async (actor, options, id) => {
   if (actor.type == 'character') {
 
     // Get the item moves as the priority.
-    let moves = game.items.filter(i => i.type == 'move' && (i.system.moveType == 'basic' || i.system.moveType == 'special'));
-    const compendium = await RootUtility.loadCompendia('basic');
+    let moves = game.items.filter(i => i.type === 'move' && ['basic', 'weapon-basic', 'reputation', 'travel', 'other'].includes(i.system.moveType));
+    const compendium = await RootUtility.loadCompendia(['basic', 'weapon-basic', 'reputation', 'travel', 'other']);
     let actorMoves = [];
 
     actorMoves = actor.items.filter(i => i.type == 'move');
@@ -91,7 +91,7 @@ Hooks.on('createActor', async (actor, options, id) => {
       return 0;
     });
 
-    // Add default look.
+    // Add default background and details.
     updates['system.details.biography'] = game.i18n.localize('Root.DefaultBackground');
 
     // Add to the actor.

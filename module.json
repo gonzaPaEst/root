@@ -54,10 +54,22 @@
       }
     },
     {
-      "name": "weapon",
-      "label": "Weapon Moves",
+      "name": "weapon-basic",
+      "label": "Weapon Basic Moves",
       "system": "pbta",
-      "path": "packs/weapon",
+      "path": "packs/weapon-basic",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "weapon-special",
+      "label": "Weapon Special Moves",
+      "system": "pbta",
+      "path": "packs/weapon-special",
       "type": "Item",
       "flags": {},
       "ownership": {
@@ -375,7 +387,8 @@
           "sorting": "m",
           "packs": [
             "basic",
-            "weapon",
+            "weapon-basic",
+            "weapon-special",
             "reputation",
             "travel",
             "other"
