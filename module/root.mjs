@@ -21,6 +21,7 @@ Hooks.once('init', () => {
 
 })
 
+// Override sheetConfig with Root sheet (TOML)
 Hooks.once('pbtaSheetConfig', () => {
   
   // Disable the sheet config form.
@@ -28,6 +29,28 @@ Hooks.once('pbtaSheetConfig', () => {
   
   // Replace the game.pbta.sheetConfig with WoDu version.
   configSheet();
+
+});
+
+// Hide or add instructions to Triumph, depending on Masteries Rule settings
+Hooks.on("renderItemSheet", async function (app, html, data) {
+
+  if (app.object.type == 'move') {
+    let masteries = await game.settings.get('root', 'masteries');
+    let resources = html.find('div[data-tab="description"] div.resource');
+    let triumph = resources[1];
+    let triumphLabel = triumph.querySelector('label');
+    let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
+    let strongHit = resources[2];
+    let strongHitLabel = strongHit.querySelector('label');
+    let strongHitInstructions = game.i18n.localize("Root.Sheet.Instructions.StrongHit");
+    if (!masteries) {
+      triumph.style.display = 'none';
+    } else {
+      triumphLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${triumphInstructions}</span>`;
+      strongHitLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${strongHitInstructions}</span>`;
+    }
+  };  
 
 });
 
