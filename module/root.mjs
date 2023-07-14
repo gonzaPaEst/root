@@ -144,21 +144,21 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 Hooks.on("renderActorSheet", async function (app, html, data) {
 
   let masteries = await game.settings.get('root', 'masteries');
-
-  if (masteries) {
-    let metaTags = html.find('.item-meta.tags');
-    let items = metaTags.parent('li.item');
-
-    for (let item of items) {
+  let metaTags = html.find('.item-meta.tags');
+  let items = metaTags.parent('li.item');
+  for (let item of items) {
       let critical = item.querySelector('div.result--critical');
       if (critical) {
-        let metaTag = item.querySelector('.item-meta.tags');
-        let mastery = `<span class="tag tag--formula mastery">Mastery</span>`;
-        let stat = metaTag.innerHTML;
+        if (masteries) {
+          let metaTag = item.querySelector('.item-meta.tags');
+          let mastery = `<span class="tag tag--formula mastery">Mastery</span>`;
+          let stat = metaTag.innerHTML;
         metaTag.innerHTML = `${mastery}${stat}`;
-      }
-    }
-  };
+        } else {
+          critical.style.display = 'none';
+        };
+      };
+    };
 
 });
 
