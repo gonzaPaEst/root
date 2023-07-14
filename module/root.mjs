@@ -32,28 +32,6 @@ Hooks.once('pbtaSheetConfig', () => {
 
 });
 
-// Hide or add instructions for Triumph, depending on Masteries Rule settings
-Hooks.on("renderItemSheet", async function (app, html, data) {
-
-  if (app.object.type == 'move') {
-    let masteries = await game.settings.get('root', 'masteries');
-    let resources = html.find('div[data-tab="description"] div.resource');
-    let triumph = resources[1];
-    let triumphLabel = triumph.querySelector('label');
-    let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
-    let strongHit = resources[2];
-    let strongHitLabel = strongHit.querySelector('label');
-    let strongHitInstructions = game.i18n.localize("Root.Sheet.Instructions.StrongHit");
-    if (!masteries) {
-      triumph.style.display = 'none';
-    } else {
-      triumphLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${triumphInstructions}</span>`;
-      strongHitLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${strongHitInstructions}</span>`;
-    }
-  };  
-
-});
-
 /* -------------------------------------------- */
 /*  Actor Updates                               */
 /* -------------------------------------------- */
@@ -137,6 +115,50 @@ Hooks.on('createActor', async (actor, options, id) => {
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
   }
+
+});
+
+// Add option for Triumph description if Masteries Rule enabled
+Hooks.on("renderItemSheet", async function (app, html, data) {
+
+  if (app.object.type == 'move') {
+    let masteries = await game.settings.get('root', 'masteries');
+    let resources = html.find('div[data-tab="description"] div.resource');
+    let triumph = resources[1];
+    let triumphLabel = triumph.querySelector('label');
+    let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
+    let strongHit = resources[2];
+    let strongHitLabel = strongHit.querySelector('label');
+    let strongHitInstructions = game.i18n.localize("Root.Sheet.Instructions.StrongHit");
+    if (!masteries) {
+      triumph.style.display = 'none';
+    } else {
+      triumphLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${triumphInstructions}</span>`;
+      strongHitLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${strongHitInstructions}</span>`;
+    }
+  };  
+
+});
+
+// Add Mastery tag to actor sheet if move has Triumph description
+Hooks.on("renderActorSheet", async function (app, html, data) {
+
+  let masteries = await game.settings.get('root', 'masteries');
+
+  if (masteries) {
+    let metaTags = html.find('.item-meta.tags');
+    let items = metaTags.parent('li.item');
+
+    for (let item of items) {
+      let critical = item.querySelector('div.result--critical');
+      if (critical) {
+        let metaTag = item.querySelector('.item-meta.tags');
+        let mastery = `<span class="tag tag--formula mastery">Mastery</span>`;
+        let stat = metaTag.innerHTML;
+        metaTag.innerHTML = `${mastery}${stat}`;
+      }
+    }
+  };
 
 });
 

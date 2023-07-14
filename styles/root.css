@@ -389,7 +389,7 @@ display: inline;
   width: 32px;
 }
 
-/* NEW */
+/* NEW STYLES @TODO refactoring */
 
 .pbta.sheet.actor:not(.npc) .sheet-resources .cell.cell--forward {
   padding: 0 15px 0 40px;
@@ -406,4 +406,10 @@ display: inline;
 
 summary:hover {
   cursor: pointer;
+}
+
+span.mastery {
+  background: #662D2C;
+  border: 0.5px solid rgba(255, 255, 255, .05);
+  color: #fff;
 }
