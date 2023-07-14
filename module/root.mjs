@@ -32,7 +32,7 @@ Hooks.once('pbtaSheetConfig', () => {
 
 });
 
-// Hide or add instructions to Triumph, depending on Masteries Rule settings
+// Hide or add instructions for Triumph, depending on Masteries Rule settings
 Hooks.on("renderItemSheet", async function (app, html, data) {
 
   if (app.object.type == 'move') {
