@@ -114,8 +114,20 @@
       }
     },
     {
+      "name": "playbooks",
+      "label": "Playbooks",
+      "system": "pbta",
+      "path": "packs/playbooks",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "adventurer",
-      "label": "The Adventurer",
+      "label": "The Adventurer Moves",
       "system": "pbta",
       "path": "packs/adventurer",
       "type": "Item",
@@ -127,7 +139,7 @@
     },
     {
       "name": "arbiter",
-      "label": "The Arbiter",
+      "label": "The Arbiter Moves",
       "system": "pbta",
       "path": "packs/arbiter",
       "type": "Item",
@@ -139,7 +151,7 @@
     },
     {
       "name": "champion",
-      "label": "The Champion",
+      "label": "The Champion Moves",
       "system": "pbta",
       "path": "packs/champion",
       "type": "Item",
@@ -151,7 +163,7 @@
     },
     {
       "name": "chronicler",
-      "label": "The Chronicler",
+      "label": "The Chronicler Moves",
       "system": "pbta",
       "path": "packs/chronicler",
       "type": "Item",
@@ -163,7 +175,7 @@
     },
     {
       "name": "envoy",
-      "label": "The Envoy",
+      "label": "The Envoy Moves",
       "system": "pbta",
       "path": "packs/envoy",
       "type": "Item",
@@ -175,7 +187,7 @@
     },
     {
       "name": "exile",
-      "label": "The Exile",
+      "label": "The Exile Moves",
       "system": "pbta",
       "path": "packs/exile",
       "type": "Item",
@@ -187,7 +199,7 @@
     },
     {
       "name": "harrier",
-      "label": "The Harrier",
+      "label": "The Harrier Moves",
       "system": "pbta",
       "path": "packs/harrier",
       "type": "Item",
@@ -199,7 +211,7 @@
     },
     {
       "name": "heretic",
-      "label": "The Heretic",
+      "label": "The Heretic Moves",
       "system": "pbta",
       "path": "packs/heretic",
       "type": "Item",
@@ -211,7 +223,7 @@
     },
     {
       "name": "pirate",
-      "label": "The Pirate",
+      "label": "The Pirate Moves",
       "system": "pbta",
       "path": "packs/pirate",
       "type": "Item",
@@ -223,7 +235,7 @@
     },
     {
       "name": "prince",
-      "label": "The Prince",
+      "label": "The Prince Moves",
       "system": "pbta",
       "path": "packs/prince",
       "type": "Item",
@@ -235,7 +247,7 @@
     },
     {
       "name": "raconteur",
-      "label": "The Raconteur",
+      "label": "The Raconteur Moves",
       "system": "pbta",
       "path": "packs/raconteur",
       "type": "Item",
@@ -247,7 +259,7 @@
     },
     {
       "name": "raider",
-      "label": "The Raider",
+      "label": "The Raider Moves",
       "system": "pbta",
       "path": "packs/raider",
       "type": "Item",
@@ -259,7 +271,7 @@
     },
     {
       "name": "ranger",
-      "label": "The Ranger",
+      "label": "The Ranger Moves",
       "system": "pbta",
       "path": "packs/ranger",
       "type": "Item",
@@ -271,7 +283,7 @@
     },
     {
       "name": "ronin",
-      "label": "The Ronin",
+      "label": "The Ronin Moves",
       "system": "pbta",
       "path": "packs/ronin",
       "type": "Item",
@@ -283,7 +295,7 @@
     },
     {
       "name": "scoundrel",
-      "label": "The Scoundrel",
+      "label": "The Scoundrel Moves",
       "system": "pbta",
       "path": "packs/scoundrel",
       "type": "Item",
@@ -295,7 +307,7 @@
     },
     {
       "name": "seeker",
-      "label": "The Seeker",
+      "label": "The Seeker Moves",
       "system": "pbta",
       "path": "packs/seeker",
       "type": "Item",
@@ -307,7 +319,7 @@
     },
     {
       "name": "thief",
-      "label": "The Thief",
+      "label": "The Thief Moves",
       "system": "pbta",
       "path": "packs/thief",
       "type": "Item",
@@ -319,7 +331,7 @@
     },
     {
       "name": "tinker",
-      "label": "The Tinker",
+      "label": "The Tinker Moves",
       "system": "pbta",
       "path": "packs/tinker",
       "type": "Item",
@@ -331,7 +343,7 @@
     },
     {
       "name": "vagrant",
-      "label": "The Vagrant",
+      "label": "The Vagrant Moves",
       "system": "pbta",
       "path": "packs/vagrant",
       "type": "Item",
@@ -395,9 +407,10 @@
           ]
         },
         {
-          "name": "Playbooks",
-          "sorting": "a",
+          "name": "Playbook Moves",
+          "sorting": "m",
           "packs": [
+            "playbooks",
             "adventurer",
             "arbiter",
             "champion",
