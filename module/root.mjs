@@ -101,19 +101,6 @@ Hooks.on('createActor', async (actor, options, id) => {
       }
     }
 
-    // Sort the moves and build our groups.
-    moves.sort((a, b) => {
-      const aSort = a.name.toLowerCase();
-      const bSort = b.name.toLowerCase();
-      if (aSort < bSort) {
-        return -1;
-      }
-      if (aSort > bSort) {
-        return 1;
-      }
-      return 0;
-    });
-
     // Add templates for background, nature, drives, and connections.
     updates['system.details.biography'] = game.i18n.localize('Root.BackgroundTemplate');
     updates['system.attrLeft.nature.value'] = game.i18n.localize('Root.NatureTemplate');
@@ -136,13 +123,22 @@ Hooks.on('createActor', async (actor, options, id) => {
     // If there are moves and we haven't already add them, add them.
     if (movesToAdd.length > 0 && allowMoveAdd) {
       await actor.createEmbeddedDocuments('Item', movesToAdd, {});
-      console.log(movesToAdd);
     }
   }
 
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
   }
+
+  // Sort items/moves alphabetically
+  let sortedMoves = [];
+    for(let itemType of Object.values(actor.itemTypes)){
+      sortedMoves = sortedMoves.concat(itemType.sort((a,b) => {
+            return a.name.localeCompare(b.name)
+        }).map((item, i)=> ({_id:item.id, sort: 100000 + i * 100000})));
+    }
+    await actor.updateEmbeddedDocuments("Item", sortedMoves);
+
 });
 
 // Change Class method to override Triumph outcome in Mastery moves.
