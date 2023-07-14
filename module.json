@@ -78,10 +78,10 @@
       }
     },
     {
-      "name": "reputation",
-      "label": "Reputation Moves",
+      "name": "travel",
+      "label": "Travel Moves",
       "system": "pbta",
-      "path": "packs/reputation",
+      "path": "packs/travel",
       "type": "Item",
       "flags": {},
       "ownership": {
@@ -90,10 +90,10 @@
       }
     },
     {
-      "name": "travel",
-      "label": "Travel Moves",
+      "name": "reputation",
+      "label": "Reputation Moves",
       "system": "pbta",
-      "path": "packs/travel",
+      "path": "packs/reputation",
       "type": "Item",
       "flags": {},
       "ownership": {
@@ -389,8 +389,8 @@
             "basic",
             "weapon-basic",
             "weapon-special",
-            "reputation",
             "travel",
+            "reputation",
             "other"
           ]
         },

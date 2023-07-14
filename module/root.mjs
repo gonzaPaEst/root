@@ -123,21 +123,20 @@ Hooks.on('createActor', async (actor, options, id) => {
     // If there are moves and we haven't already add them, add them.
     if (movesToAdd.length > 0 && allowMoveAdd) {
       await actor.createEmbeddedDocuments('Item', movesToAdd, {});
+      // Sort moves alphabetically
+      let sortedMoves = [];
+      for(let itemType of Object.values(actor.itemTypes)){
+        sortedMoves = sortedMoves.concat(itemType.sort((a,b) => {
+          return a.name.localeCompare(b.name)
+        }).map((item, i)=> ({_id:item.id, sort: 100000 + i * 100000})));
+      }
+      await actor.updateEmbeddedDocuments("Item", sortedMoves);
     }
   }
 
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
   }
-
-  // Sort items/moves alphabetically
-  let sortedMoves = [];
-    for(let itemType of Object.values(actor.itemTypes)){
-      sortedMoves = sortedMoves.concat(itemType.sort((a,b) => {
-            return a.name.localeCompare(b.name)
-        }).map((item, i)=> ({_id:item.id, sort: 100000 + i * 100000})));
-    }
-    await actor.updateEmbeddedDocuments("Item", sortedMoves);
 
 });
 
