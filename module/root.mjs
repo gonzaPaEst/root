@@ -3,10 +3,10 @@ import { PbtaRolls } from "../../../systems/pbta/module/rolls.js";
 import { PbtaUtility } from "../../../systems/pbta/module/utility.js";
 import { RootUtility } from "./helpers/utility.mjs";
 
-// once the game has initialized, set up the module
+// Once the game has initialized, set up the Root module.
 Hooks.once('init', () => {
 
-  // register Root settings
+  // Register Root settings.
   game.settings.register('root', 'masteries', {
     name: game.i18n.localize("Root.Settings.Masteries.Title"),
     default: false,
@@ -21,7 +21,7 @@ Hooks.once('init', () => {
 
 })
 
-// Override sheetConfig with Root sheet (TOML)
+// Override sheetConfig with Root sheet (TOML).
 Hooks.once('pbtaSheetConfig', () => {
   
   // Disable the sheet config form.
@@ -36,7 +36,7 @@ Hooks.once('pbtaSheetConfig', () => {
 /*  Actor Updates                               */
 /* -------------------------------------------- */
 
-// Change starting image
+// Change starting actor image.
 Hooks.on("preCreateActor", async function (actor) {
   if (actor.data.img == "icons/svg/mystery-man.svg") {
     function random_icon(icons) {  
@@ -48,7 +48,7 @@ Hooks.on("preCreateActor", async function (actor) {
   }
 });
 
-// Load moves and details
+// Load moves and details.
 Hooks.on('createActor', async (actor, options, id) => {
 
   // Prepare updates object.
@@ -112,13 +112,14 @@ Hooks.on('createActor', async (actor, options, id) => {
     }
   }
 
+  // Perform updates, if any.
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
   }
 
 });
 
-// Add option for Triumph description if Masteries Rule enabled
+// Show Triumph description in move sheet if Masteries Rule enabled.
 Hooks.on("renderItemSheet", async function (app, html, data) {
 
   if (app.object.type == 'move') {
@@ -140,9 +141,43 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
 });
 
-// Add Mastery tag to actor sheet if move has Triumph description
+// Add event listeners when actor sheet is rendered.
 Hooks.on("renderActorSheet", async function (app, html, data) {
 
+  // Alt+Click to render playbook
+  let charPlaybook = document.querySelector('.charplaybook');
+  let name = charPlaybook.defaultValue;
+  charPlaybook.title = "Press Alt or Option + Click to open playbook.";
+  if (name != '') {
+    charPlaybook.addEventListener("click", openPlaybook);
+    async function openPlaybook(e) {
+      if (e.altKey){
+        // Retrieve playbooks in game and then in compendium
+        let playbooks = game.items.filter(i => i.type == 'playbook');
+        let pack = game.packs.get("root.playbooks")
+        let items = pack ? await pack.getDocuments() : [];
+        playbooks = playbooks.concat(items.filter(i => i.type == 'playbook'));
+        // Remove playbook repeats by matching names in new array.
+        let playbookNames = [];
+        for (let p of playbooks) {
+          let playbookName = p.name;
+          if (playbookNames.includes(playbookName) !== false) {
+            playbooks = playbooks.filter(item => item.id != p.id);
+          } else {
+            playbookNames.push(playbookName)
+          }
+        }
+        // Render current playbook
+        for (let playbook of playbooks) {
+          if (playbook.name == name) {
+            playbook.sheet.render(true);
+          };
+        };
+      };
+    };
+  };
+
+  // Add Mastery tag to actor sheet if move has Triumph description.
   let masteries = await game.settings.get('root', 'masteries');
   let metaTags = html.find('.item-meta.tags');
   let items = metaTags.parent('li.item');
