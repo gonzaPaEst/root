@@ -77,5 +77,6 @@
     "PBTA": {
         "Description": "Background",
         "Biography": "Background and Details"
-    }
+    },
+    "TYPES.Item.root.traits": "traits"
 }

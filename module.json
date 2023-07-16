@@ -40,6 +40,18 @@
         "path": "languages/en.json"
     }
   ],
+  "documentTypes": {
+    "Item": {
+      "traits": {
+        "htmlFields": [
+          "description"
+        ],
+        "filePathFields": {
+          "img": ["IMAGE"]
+        }
+      }
+    }
+  },
   "packs": [
     {
       "name": "basic",

@@ -2,6 +2,7 @@ import { configSheet } from "./helpers/config-sheet.mjs";
 import { PbtaRolls } from "../../../systems/pbta/module/rolls.js";
 import { PbtaUtility } from "../../../systems/pbta/module/utility.js";
 import { RootUtility } from "./helpers/utility.mjs";
+import { RootTraitsSheet, RootTraitsModel } from "./helpers/traits-sheet.mjs";
 
 // Once the game has initialized, set up the Root module.
 Hooks.once('init', () => {
@@ -19,7 +20,19 @@ Hooks.once('init', () => {
       }, 500)
   });
 
-})
+});
+
+Hooks.on("init", () => {
+
+  Object.assign(CONFIG.Item.dataModels, {
+    "root.traits": RootTraitsModel
+  });
+
+  Items.registerSheet("root", RootTraitsSheet, {
+    types: ["root.traits"],
+    makeDefault: true
+  });
+});
 
 // Override sheetConfig with Root sheet (TOML).
 Hooks.once('pbtaSheetConfig', () => {
@@ -138,6 +151,17 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       strongHitLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${strongHitInstructions}</span>`;
     }
   };  
+
+  if (app.object.type == 'root.traits') {
+
+    let item = app.object;
+    let traitDescription = item.flags.root.traitDescription;
+    let description = item.system.description;
+    if (description != traitDescription) {
+      await item.system.updateSource({ 'description': traitDescription })
+      item.render(true)
+    }
+  }
 
 });
 
