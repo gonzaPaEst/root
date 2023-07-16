@@ -155,12 +155,47 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   if (app.object.type == 'root.traits') {
 
     let item = app.object;
-    let traitDescription = item.flags.root.traitDescription;
+    let traitDescription = await item.getFlag('root', 'traitDescription') || "";
     let description = item.system.description;
     if (description != traitDescription) {
       await item.system.updateSource({ 'description': traitDescription })
       item.render(true)
     }
+    
+    let traitType = await item.getFlag('root', 'traitType') || "nature";
+    var traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
+      switch(traitType) {
+        case "nature": traitTypeHTML += `<option value="nature" selected="selected">Nature</option>
+        <option value="drive">Drive</option>
+        <option value="connection">Connection</option>
+        <option value="feat">Roguish Feat</option>
+        </select>
+        </div>`
+				break;
+				case "drive": traitTypeHTML += `<option value="nature">Nature</option>
+        <option value="drive" selected="selected">Drive</option>
+        <option value="connection">Connection</option>
+        <option value="feat">Roguish Feat</option>
+        </select>
+        </div>`
+				break;
+				case "connection": traitTypeHTML += `<option value="nature">Nature</option>
+        <option value="drive">Drive</option>
+        <option value="connection" selected="selected">Connection</option>
+        <option value="feat">Roguish Feat</option>
+        </select>
+        </div>`
+				break;	
+        case "feat": traitTypeHTML += `<option value="nature">Nature</option>
+        <option value="drive">Drive</option>
+        <option value="connection">Connection</option>
+        <option value="feat" selected="selected">Roguish Feat</option>
+        </select>
+        </div>`
+				break;	
+      }
+    const traitsFind = html.find('.traits')
+    traitsFind.after(traitTypeHTML);
   }
 
 });
@@ -171,6 +206,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   // Alt+Click to render playbook
   let charPlaybook = document.querySelector('.charplaybook');
   let name = charPlaybook.defaultValue;
+  // TODO en.json
   charPlaybook.title = "Press Alt or Option + Click to open playbook.";
   if (name != '') {
     charPlaybook.addEventListener("click", openPlaybook);
