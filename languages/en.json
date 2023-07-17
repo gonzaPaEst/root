@@ -4,6 +4,10 @@
             "Masteries": {
                 "Title": "MASTERIES RULE",
                 "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
+            },
+            "Automate": {
+                "Title": "AUTOMATE STAT INCREMENT",
+                "Hint": "When a move that increments a stat or resource is dropped on actor sheet, the stat or resource automatically updates to reflect the increment."
             }
         },
         "Sheet": {
@@ -70,7 +74,7 @@
                 "StrongHit": "If PC has mastery, remember to change the result to 'On a 10-11' instead of 'On a 10+'."
             }
         },
-        "BackgroundTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Where do you call home?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Why are you a vagabond?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Whom have you left behind?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Which faction have you served the most?</strong>&nbsp;<em>Mark two prestige for approgriate group</em>.</p><ul><li>&nbsp;</li></ul><p><strong>With which faction have you earned a special enmity?</strong>&nbsp;<em>Mark one notoriety for appropriate group</em>.</p><ul><li>&nbsp;</li></ul>"
+        "BackgroundTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Where do you call home?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Why are you a vagabond?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Whom have you left behind?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Which faction have you served the most?</strong></p><ul><li>FactionName&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>.</li></ul><p><strong>With which faction have you earned a special enmity?</strong></p><ul><li>FactionName&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>.</li></ul>"
     },
     "PBTA": {
         "Description": "Background",

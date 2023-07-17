@@ -20,6 +20,18 @@ Hooks.once('init', () => {
       }, 500)
   });
 
+  game.settings.register('root', 'automate', {
+    name: game.i18n.localize("Root.Settings.Automate.Title"),
+    default: true,
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    hint: game.i18n.localize("Root.Settings.Automate.Hint"),
+    onChange: () => setTimeout(() => {
+        location.reload();
+      }, 500)
+  });
+
 });
 
 // Add Traits sheet and data model
@@ -133,35 +145,183 @@ Hooks.on('createActor', async (actor, options, id) => {
 // Make changes to item sheets
 Hooks.on("renderItemSheet", async function (app, html, data) {
 
-  // Show Triumph description in move sheet if Masteries Rule enabled.
-  if (app.object.type == 'move') {
+  let item = app.object;
+
+  // Find if item is move
+  if (item.type == 'move') {
+
+    // Show Triumph description in move sheet if Masteries Rule enabled.
     let masteries = await game.settings.get('root', 'masteries');
-    let resources = html.find('div[data-tab="description"] div.resource');
-    let triumph = resources[1];
-    let triumphLabel = triumph.querySelector('label');
-    let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
-    let strongHit = resources[2];
-    let strongHitLabel = strongHit.querySelector('label');
-    let strongHitInstructions = game.i18n.localize("Root.Sheet.Instructions.StrongHit");
+      let resources = html.find('div[data-tab="description"] div.resource');
+      let triumph = resources[1];
+      let triumphLabel = triumph.querySelector('label');
+      let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
+      let strongHit = resources[2];
+      let strongHitLabel = strongHit.querySelector('label');
+      let strongHitInstructions = game.i18n.localize("Root.Sheet.Instructions.StrongHit");
+
     if (!masteries) {
       triumph.style.display = 'none';
     } else {
       triumphLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${triumphInstructions}</span>`;
       strongHitLabel.innerHTML += `<br> <span style="font-weight: normal; font-style: italic; font-size: 13px;">${strongHitInstructions}</span>`;
     }
+
+    // Show automate options
+    let automate = await game.settings.get('root', 'automate');
+      let moveGroup = html.find('input[name="system.moveGroup"]');
+      let resource = moveGroup.closest('div.resource')
+      let automationValue = await item.getFlag('root', 'automationValue') || "0";
+      let automationStat = await item.getFlag('root', 'automationStat') || "none";
+      let valueHTML = `<div class="resource">
+      <label>Automation</label>
+      <p>Add <select name="flags.root.automationValue" id="flags.root.automationValue" data-dType="String">`
+      switch(automationValue) {
+        case "0": valueHTML += `<option value="0" selected="selected">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        </select> to`
+				break;
+        case "1": valueHTML += `<option value="0">0</option>
+        <option value="1" selected="selected">1</option>
+        <option value="2">2</option>
+        </select> to`
+				break;
+				case "2": valueHTML += `<option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2" selected="selected">2</option>
+        </select> to`
+				break;
+      }
+
+      let statHTML = ` <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">`
+      switch(automationStat) {
+        case "none": statHTML += `<option value="none" selected="selected">none</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "charm": statHTML += `<option value="none">none</option>
+        <option value="charm" selected="selected">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+				case "cunning": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning" selected="selected">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+				case "finesse": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse" selected="selected">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "luck": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck" selected="selected">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "might": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might" selected="selected">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "injury": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury" selected="selected">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "exhaustion": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion" selected="selected">Exhaustion</option>
+        <option value="depletion">Depletion</option>
+        </select>
+        </div>`
+				break;
+        case "depletion": statHTML += `<option value="none">none</option>
+        <option value="charm">Charm</option>
+        <option value="cunning">Cunning</option>
+        <option value="finesse">Finesse</option>
+        <option value="luck">Luck</option>
+        <option value="might">Might</option>
+        <option value="injury">Injury</option>
+        <option value="exhaustion">Exhaustion</option>
+        <option value="depletion" selected="selected">Depletion</option>
+        </select>
+        </div>`
+				break;
+      }
+
+    let automateHTML = `${valueHTML}${statHTML}`
+
+    if (automate) {
+      resource.after(automateHTML);
+    }
   };  
 
   // Update flags in trait sheet
-  if (app.object.type == 'root.traits') {
+  if (item.type == 'root.traits') {
 
-    let item = app.object;
     let traitDescription = await item.getFlag('root', 'traitDescription') || "";
     let description = item.system.description;
     if (description != traitDescription) {
       await item.system.updateSource({ 'description': traitDescription })
       item.render(true)
     }
-    
+    // TODO en.json
     let traitType = await item.getFlag('root', 'traitType') || "nature";
     let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
       switch(traitType) {
@@ -202,33 +362,82 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
 // Add dropped trait item to correct description in actor sheet
 Hooks.on('dropActorSheetData', async (actor, html, item) => {
-
   let droppedEntity = await fromUuid(item.uuid);
   let itemName = droppedEntity.name;
   let uuid = item.uuid;
-  let newTrait = `<p>@UUID[${uuid}]{${itemName}}</p>`
+  let newTrait = `<p>@UUID[${uuid}]{${itemName}}</p>`;
   let traits = actor.system.attrLeft;
+
   if (droppedEntity.type == "root.traits") {
     let traitType = droppedEntity.flags.root.traitType;
+
     if (traitType == "nature") {
       let currentNature = traits.nature.value;
-      let traitHTML = `${currentNature}${newTrait}`
+      let traitHTML = `${currentNature}${newTrait}`;
       await actor.update({"system.attrLeft.nature.value": traitHTML});
     } else if (traitType == "drive") {
       let currentDrives = traits.drives.value;
-      let traitHTML = `${currentDrives}${newTrait}`
+      let traitHTML = `${currentDrives}${newTrait}`;
       await actor.update({"system.attrLeft.drives.value": traitHTML});
     } else if (traitType == "connection") {
       let currentConnections = traits.connections.value;
-      let traitHTML = `${currentConnections}${newTrait}`
+      let traitHTML = `${currentConnections}${newTrait}`;
       await actor.update({"system.attrLeft.connections.value": traitHTML});
     } else if (traitType == "feat") {
       let currentFeats = traits.feats.value;
-      let traitHTML = `${currentFeats}${newTrait}`
+      let traitHTML = `${currentFeats}${newTrait}`;
       await actor.update({"system.attrLeft.feats.value": traitHTML});
     }
   }
+
+  let automate = await game.settings.get('root', 'automate');
+
+  if (automate && droppedEntity.type == 'move') {
+    let value = await droppedEntity.getFlag('root', 'automationValue') || "0";
+    let stat = await droppedEntity.getFlag('root', 'automationStat') || "none";
+    if (stat == "charm") {
+      await actor.update({"system.stats.charm.value": actor.system.stats.charm.value + parseInt(value)});
+    } else if (stat == "cunning") {
+      await actor.update({"system.stats.cunning.value": actor.system.stats.cunning.value + parseInt(value)});
+    } else if (stat == "finesse") {
+      await actor.update({"system.stats.finesse.value": actor.system.stats.finesse.value + parseInt(value)});
+    } else if (stat == "luck") {
+      await actor.update({"system.stats.luck.value": actor.system.stats.luck.value + parseInt(value)});
+    } else if (stat == "might") {
+      await actor.update({"system.stats.might.value": actor.system.stats.might.value + parseInt(value)});
+    }
+
+    setTimeout(() => {
+      actor.sheet.render(true);
+    }, 100);
+  }
 });
+
+Hooks.on('deleteItem', async (item, options, userId, ...args) => {
+  let automate = await game.settings.get('root', 'automate');
+  let actor = await item.parent;
+
+  if (automate && item.type == 'move') {
+    let value = await item.getFlag('root', 'automationValue') || "0";
+    let stat = await item.getFlag('root', 'automationStat') || "none";
+    if (stat == "charm") {
+      await actor.update({"system.stats.charm.value": actor.system.stats.charm.value - parseInt(value)});
+    } else if (stat == "cunning") {
+      await actor.update({"system.stats.cunning.value": actor.system.stats.cunning.value - parseInt(value)});
+    } else if (stat == "finesse") {
+      await actor.update({"system.stats.finesse.value": actor.system.stats.finesse.value - parseInt(value)});
+    } else if (stat == "luck") {
+      await actor.update({"system.stats.luck.value": actor.system.stats.luck.value - parseInt(value)});
+    } else if (stat == "might") {
+      await actor.update({"system.stats.might.value": actor.system.stats.might.value - parseInt(value)});
+    }
+
+    setTimeout(() => {
+      actor.sheet.render(true);
+    }, 200);
+  }
+});
+
 
 // Add event listeners when actor sheet is rendered.
 Hooks.on("renderActorSheet", async function (app, html, data) {
