@@ -1,5 +1,6 @@
 import { PbtaItemSheet } from "../../../../systems/pbta/module/item/item-sheet.js";
 
+// Define data model for trait sheet
 export class RootTraitsModel extends foundry.abstract.TypeDataModel {
     static defineSchema() {
       const fields = foundry.data.fields;
@@ -15,6 +16,7 @@ export class RootTraitsModel extends foundry.abstract.TypeDataModel {
     }
 }
 
+// Extend PbtA item sheets and change template path
 export class RootTraitsSheet extends PbtaItemSheet {
     
     get template() {

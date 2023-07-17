@@ -1005,6 +1005,14 @@ export const configSheet = async () => {
             userLabel: false,
             type: "LongText",
             value: ""
+          },
+          feats: {
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Feats"),
+            description: null,
+            customLabel: false,
+            userLabel: false,
+            type: "LongText",
+            value: ""
           }
         },
         moveTypes: {

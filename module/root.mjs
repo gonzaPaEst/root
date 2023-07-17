@@ -22,6 +22,7 @@ Hooks.once('init', () => {
 
 });
 
+// Add Traits sheet and data model
 Hooks.on("init", () => {
 
   Object.assign(CONFIG.Item.dataModels, {
@@ -92,11 +93,8 @@ Hooks.on('createActor', async (actor, options, id) => {
       }
     }
 
-    // Add templates for background, nature, drives, and connections.
+    // Add template for background.
     updates['system.details.biography'] = game.i18n.localize('Root.BackgroundTemplate');
-    updates['system.attrLeft.nature.value'] = game.i18n.localize('Root.NatureTemplate');
-    updates['system.attrLeft.drives.value'] = game.i18n.localize('Root.DrivesTemplate');
-    updates['system.attrLeft.connections.value'] = game.i18n.localize('Root.ConnectionsTemplate');
 
     // Add to the actor.
     const movesToAdd = moves.map(m => duplicate(m));
@@ -132,9 +130,10 @@ Hooks.on('createActor', async (actor, options, id) => {
 
 });
 
-// Show Triumph description in move sheet if Masteries Rule enabled.
+// Make changes to item sheets
 Hooks.on("renderItemSheet", async function (app, html, data) {
 
+  // Show Triumph description in move sheet if Masteries Rule enabled.
   if (app.object.type == 'move') {
     let masteries = await game.settings.get('root', 'masteries');
     let resources = html.find('div[data-tab="description"] div.resource');
@@ -152,6 +151,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
   };  
 
+  // Update flags in trait sheet
   if (app.object.type == 'root.traits') {
 
     let item = app.object;
@@ -163,7 +163,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
     
     let traitType = await item.getFlag('root', 'traitType') || "nature";
-    var traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
+    let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
       switch(traitType) {
         case "nature": traitTypeHTML += `<option value="nature" selected="selected">Nature</option>
         <option value="drive">Drive</option>
@@ -194,10 +194,40 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
         </div>`
 				break;	
       }
-    const traitsFind = html.find('.traits')
+    let traitsFind = html.find('.traits')
     traitsFind.after(traitTypeHTML);
   }
 
+});
+
+// Add dropped trait item to correct description in actor sheet
+Hooks.on('dropActorSheetData', async (actor, html, item) => {
+
+  let droppedEntity = await fromUuid(item.uuid);
+  let itemName = droppedEntity.name;
+  let uuid = item.uuid;
+  let newTrait = `<p>@UUID[${uuid}]{${itemName}}</p>`
+  let traits = actor.system.attrLeft;
+  if (droppedEntity.type == "root.traits") {
+    let traitType = droppedEntity.flags.root.traitType;
+    if (traitType == "nature") {
+      let currentNature = traits.nature.value;
+      let traitHTML = `${currentNature}${newTrait}`
+      await actor.update({"system.attrLeft.nature.value": traitHTML});
+    } else if (traitType == "drive") {
+      let currentDrives = traits.drives.value;
+      let traitHTML = `${currentDrives}${newTrait}`
+      await actor.update({"system.attrLeft.drives.value": traitHTML});
+    } else if (traitType == "connection") {
+      let currentConnections = traits.connections.value;
+      let traitHTML = `${currentConnections}${newTrait}`
+      await actor.update({"system.attrLeft.connections.value": traitHTML});
+    } else if (traitType == "feat") {
+      let currentFeats = traits.feats.value;
+      let traitHTML = `${currentFeats}${newTrait}`
+      await actor.update({"system.attrLeft.feats.value": traitHTML});
+    }
+  }
 });
 
 // Add event listeners when actor sheet is rendered.
@@ -255,7 +285,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       };
     };
 
-});
+  });
 
 // Change Class method to override Triumph outcome in Mastery moves.
 Hooks.on('ready', ()=>{

@@ -1,3 +1,5 @@
+// Utility to load compendia (takes array)
+
 export class RootUtility {
 
   static async loadCompendia(slugs) {
