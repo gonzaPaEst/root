@@ -364,7 +364,7 @@ display: inline;
 
 /* Equipment & Load */
 
-.pbta.sheet .cell.cell--attributes-left .cell.cell--value.cell--attr-value.cell--Number p.cell__description.cell__description--attr {
+.pbta.sheet .cell.cell--attributes-left .cell.cell--startingvalue.cell--attr-startingvalue.cell--Number p.cell__description.cell__description--attr {
   color: #323427;
   display: inline;
   font: 14px "Roboto Condensed", sans-serif;
@@ -382,7 +382,7 @@ display: inline;
   padding-right: 0;
 }
 
-.pbta.sheet:not(.npc) .cell.cell--attributes-left :is(input[name="system.attrLeft.value.value"], input[name="system.attrLeft.carrying.value"], input[name="system.attrLeft.burdened.value"], input[name="system.attrLeft.max.value"]) {
+.pbta.sheet:not(.npc) .cell.cell--attributes-left :is(input[name="system.attrLeft.startingvalue.value"], input[name="system.attrLeft.carrying.value"], input[name="system.attrLeft.burdened.value"], input[name="system.attrLeft.max.value"]) {
   height: 22px;
   margin: 1px;
   padding: 0;

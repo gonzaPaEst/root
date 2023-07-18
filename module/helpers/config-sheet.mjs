@@ -950,7 +950,7 @@ export const configSheet = async () => {
             type: "LongText",
             value: ""
           },
-          drives: {
+          drive: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Drives"),
             description: null,
             customLabel: false,
@@ -958,7 +958,7 @@ export const configSheet = async () => {
             type: "LongText",
             value: ""
           },
-          connections: {
+          connection: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Connections"),
             description: null,
             customLabel: false,
@@ -966,7 +966,7 @@ export const configSheet = async () => {
             type: "LongText",
             value: ""
           },
-          feats: {
+          feat: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Feats"),
             description: null,
             customLabel: false,
@@ -974,7 +974,7 @@ export const configSheet = async () => {
             type: "LongText",
             value: ""
           },
-          value: {
+          startingvalue: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Label"),
             description: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Description"),
             customLabel: false,

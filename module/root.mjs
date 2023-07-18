@@ -377,25 +377,14 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   let newTrait = `<p>@UUID[${uuid}]{${itemName}}</p>`;
   let traits = actor.system.attrLeft;
 
-  if (droppedEntity.type == "root.traits") {
-    let traitType = droppedEntity.flags.root.traitType;
-
-    if (traitType == "nature") {
-      let currentNature = traits.nature.value;
-      let traitHTML = `${currentNature}${newTrait}`;
-      await actor.update({"system.attrLeft.nature.value": traitHTML});
-    } else if (traitType == "drive") {
-      let currentDrives = traits.drives.value;
-      let traitHTML = `${currentDrives}${newTrait}`;
-      await actor.update({"system.attrLeft.drives.value": traitHTML});
-    } else if (traitType == "connection") {
-      let currentConnections = traits.connections.value;
-      let traitHTML = `${currentConnections}${newTrait}`;
-      await actor.update({"system.attrLeft.connections.value": traitHTML});
-    } else if (traitType == "feat") {
-      let currentFeats = traits.feats.value;
-      let traitHTML = `${currentFeats}${newTrait}`;
-      await actor.update({"system.attrLeft.feats.value": traitHTML});
+  if (droppedEntity.type === "root.traits") {
+    const traitType = droppedEntity.flags.root.traitType;
+  
+    if (traitType in traits) {
+      const currentValue = traits[traitType].value;
+      const traitHTML = `${currentValue}${newTrait}`;
+      const updateKey = `system.attrLeft.${traitType}.value`;
+      await actor.update({ [updateKey]: traitHTML });
     }
   }
 
