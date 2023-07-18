@@ -6,7 +6,7 @@
                 "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
             },
             "Automate": {
-                "Title": "AUTOMATE STAT INCREMENT",
+                "Title": "AUTOMATIC STAT INCREMENT",
                 "Hint": "When a move that increments a stat or resource is dropped on actor sheet, the stat or resource automatically updates to reflect the increment."
             }
         },
@@ -65,6 +65,7 @@
                 "Exhaustion": "Exhaustion",
                 "Wear": "Wear",
                 "Morale": "Morale",
+                "Depletion": "Depletion",
                 "Harm": "Harm Dealt",
                 "Drive": "Drive",
                 "Moves": "Moves"

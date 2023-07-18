@@ -22,7 +22,7 @@ Hooks.once('init', () => {
 
   game.settings.register('root', 'automate', {
     name: game.i18n.localize("Root.Settings.Automate.Title"),
-    default: true,
+    default: false,
     type: Boolean,
     scope: 'world',
     config: true,
@@ -173,6 +173,14 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       let resource = moveGroup.closest('div.resource')
       let automationValue = await item.getFlag('root', 'automationValue') || "0";
       let automationStat = await item.getFlag('root', 'automationStat') || "none";
+      let charmLabel = game.i18n.localize("Root.Sheet.Stats.Charm");
+      let cunningLabel = game.i18n.localize("Root.Sheet.Stats.Cunning");
+      let finesseLabel = game.i18n.localize("Root.Sheet.Stats.Finesse");
+      let luckLabel = game.i18n.localize("Root.Sheet.Stats.Luck");
+      let mightLabel = game.i18n.localize("Root.Sheet.Stats.Might");
+      let injuryLabel = game.i18n.localize("Root.Sheet.NPC.Injury");
+      let exhaustionLabel = game.i18n.localize("Root.Sheet.NPC.Exhaustion");
+      let depletionLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
       let valueHTML = `<div class="resource">
       <label>Automation</label>
       <p>Add <select name="flags.root.automationValue" id="flags.root.automationValue" data-dType="String">`
@@ -196,110 +204,111 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
       let statHTML = ` <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">`
       switch(automationStat) {
-        case "none": statHTML += `<option value="none" selected="selected">none</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "none": statHTML += `<option value="none" selected="selected">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-        case "charm": statHTML += `<option value="none">none</option>
-        <option value="charm" selected="selected">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "charm": statHTML += `<option value="none">---</option>
+        <option value="charm" selected="selected">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-				case "cunning": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning" selected="selected">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+				case "cunning": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning" selected="selected">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-				case "finesse": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse" selected="selected">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+				case "finesse": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse" selected="selected">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-        case "luck": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck" selected="selected">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "luck": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck" selected="selected">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-        case "might": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might" selected="selected">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "might": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might" selected="selected">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-        case "injury": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury" selected="selected">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "injury": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury" selected="selected">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
-        case "exhaustion": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion" selected="selected">Exhaustion</option>
-        <option value="depletion">Depletion</option>
+        case "exhaustion": statHTML += `<option value="none">---</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion" selected="selected">${exhaustionLabel}</option>
+        <option value="depletion">${depletionLabel}</option>
         </select>
         </div>`
 				break;
         case "depletion": statHTML += `<option value="none">none</option>
-        <option value="charm">Charm</option>
-        <option value="cunning">Cunning</option>
-        <option value="finesse">Finesse</option>
-        <option value="luck">Luck</option>
-        <option value="might">Might</option>
-        <option value="injury">Injury</option>
-        <option value="exhaustion">Exhaustion</option>
-        <option value="depletion" selected="selected">Depletion</option>
+        <option value="charm">${charmLabel}</option>
+        <option value="cunning">${cunningLabel}</option>
+        <option value="finesse">${finesseLabel}</option>
+        <option value="luck">${luckLabel}</option>
+        <option value="might">${mightLabel}</option>
+        <option value="injury">${injuryLabel}</option>
+        <option value="exhaustion">${exhaustionLabel}</option>
+        <option value="depletion" selected="selected">${depletionLabel}</option>
         </select>
         </div>`
 				break;
@@ -393,19 +402,74 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   let automate = await game.settings.get('root', 'automate');
 
   if (automate && droppedEntity.type == 'move') {
-    let value = await droppedEntity.getFlag('root', 'automationValue') || "0";
+    let autoValue = await droppedEntity.getFlag('root', 'automationValue') || "0";
     let stat = await droppedEntity.getFlag('root', 'automationStat') || "none";
     if (stat == "charm") {
-      await actor.update({"system.stats.charm.value": actor.system.stats.charm.value + parseInt(value)});
+      let currentVal = actor.system.stats.charm.value;
+      let newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({"system.stats.charm.value": newVal});
     } else if (stat == "cunning") {
-      await actor.update({"system.stats.cunning.value": actor.system.stats.cunning.value + parseInt(value)});
+      let currentVal = actor.system.stats.cunning.value;
+      let newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({"system.stats.cunning.value": newVal});
     } else if (stat == "finesse") {
-      await actor.update({"system.stats.finesse.value": actor.system.stats.finesse.value + parseInt(value)});
+      let currentVal = actor.system.stats.finesse.value;
+      let newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({"system.stats.finesse.value": newVal});
     } else if (stat == "luck") {
-      await actor.update({"system.stats.luck.value": actor.system.stats.luck.value + parseInt(value)});
+      let currentVal = actor.system.stats.luck.value;
+      let newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({"system.stats.luck.value": newVal});
     } else if (stat == "might") {
-      await actor.update({"system.stats.might.value": actor.system.stats.might.value + parseInt(value)});
-    }
+      let currentVal = actor.system.stats.might.value;
+      let newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({"system.stats.might.value": newVal});
+    } else if (stat == "injury") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [0, 2, 4, 6];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['2'].values[index];
+        if (checkbox.value === false) {
+          let updateKey = `system.attrLeft.resource.options.2.values.${index}.value`;
+          await actor.update({ [updateKey]: true });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    } else if (stat == "exhaustion") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [0, 2, 4, 6];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['5'].values[index];
+        if (checkbox.value === false) {
+          let updateKey = `system.attrLeft.resource.options.5.values.${index}.value`;
+          await actor.update({ [updateKey]: true });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    } else if (stat == "depletion") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [0, 2, 4, 6];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['8'].values[index];
+        if (checkbox.value === false) {
+          let updateKey = `system.attrLeft.resource.options.8.values.${index}.value`;
+          await actor.update({ [updateKey]: true });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    };
 
     setTimeout(() => {
       actor.sheet.render(true);
@@ -418,19 +482,74 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
   let actor = await item.parent;
 
   if (automate && item.type == 'move') {
-    let value = await item.getFlag('root', 'automationValue') || "0";
+    let autoValue = await item.getFlag('root', 'automationValue') || "0";
     let stat = await item.getFlag('root', 'automationStat') || "none";
     if (stat == "charm") {
-      await actor.update({"system.stats.charm.value": actor.system.stats.charm.value - parseInt(value)});
+      let currentVal = actor.system.stats.charm.value;
+      let newVal = parseInt(currentVal) - parseInt(autoValue);
+      await actor.update({"system.stats.charm.value": newVal});
     } else if (stat == "cunning") {
-      await actor.update({"system.stats.cunning.value": actor.system.stats.cunning.value - parseInt(value)});
+      let currentVal = actor.system.stats.cunning.value;
+      let newVal = parseInt(currentVal) - parseInt(autoValue);
+      await actor.update({"system.stats.cunning.value": newVal});
     } else if (stat == "finesse") {
-      await actor.update({"system.stats.finesse.value": actor.system.stats.finesse.value - parseInt(value)});
+      let currentVal = actor.system.stats.finesse.value;
+      let newVal = parseInt(currentVal) - parseInt(autoValue);
+      await actor.update({"system.stats.finesse.value": newVal});
     } else if (stat == "luck") {
-      await actor.update({"system.stats.luck.value": actor.system.stats.luck.value - parseInt(value)});
+      let currentVal = actor.system.stats.luck.value;
+      let newVal = parseInt(currentVal) - parseInt(autoValue);
+      await actor.update({"system.stats.luck.value": newVal});
     } else if (stat == "might") {
-      await actor.update({"system.stats.might.value": actor.system.stats.might.value - parseInt(value)});
-    }
+      let currentVal = actor.system.stats.might.value;
+      let newVal = parseInt(currentVal) - parseInt(autoValue);
+      await actor.update({"system.stats.might.value": newVal});
+    } else if (stat == "injury") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [6, 4, 2, 0];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['2'].values[index];
+        if (checkbox.value === true) {
+          let updateKey = `system.attrLeft.resource.options.2.values.${index}.value`;
+          await actor.update({ [updateKey]: false });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    } else if (stat == "exhaustion") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [6, 4, 2, 0];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['5'].values[index];
+        if (checkbox.value === true) {
+          let updateKey = `system.attrLeft.resource.options.5.values.${index}.value`;
+          await actor.update({ [updateKey]: false });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    } else if (stat == "depletion") {
+      let count = 0;
+      let parsedVal = parseInt(autoValue)
+      const indicesToReview = [6, 4, 2, 0];
+      for (let index of indicesToReview) {
+        const checkbox = actor.system.attrLeft.resource.options['8'].values[index];
+        if (checkbox.value === true) {
+          let updateKey = `system.attrLeft.resource.options.8.values.${index}.value`;
+          await actor.update({ [updateKey]: false });
+          count++;
+        }
+        if (count === parsedVal) {
+          break;
+        }
+      }
+    };
 
     setTimeout(() => {
       actor.sheet.render(true);
@@ -475,6 +594,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       };
     };
   };
+
+  // TODO move Hold
 
   // Add Mastery tag to actor sheet if move has Triumph description.
   let masteries = await game.settings.get('root', 'masteries');

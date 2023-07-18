@@ -950,38 +950,6 @@ export const configSheet = async () => {
             type: "Number",
             value: 0
           },
-          value: {
-            label: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Label"),
-            description: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Description"),
-            customLabel: false,
-            userLabel: false,
-            type: "Number",
-            value: 0
-          },
-          carrying: {
-            label: game.i18n.localize("Root.Sheet.AttrLeft.Carrying"),
-            description: null,
-            customLabel: false,
-            userLabel: false,
-            type: "Number",
-            value: 0
-          },
-          burdened: {
-            label: game.i18n.localize("Root.Sheet.AttrLeft.Burdened"),
-            description: null,
-            customLabel: false,
-            userLabel: false,
-            type: "Number",
-            value: 0
-          },
-          max: {
-            label: game.i18n.localize("Root.Sheet.AttrLeft.Max"),
-            description: null,
-            customLabel: false,
-            userLabel: false,
-            type: "Number",
-            value: 0
-          },
           nature: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Nature"),
             description: null,
@@ -1013,6 +981,38 @@ export const configSheet = async () => {
             userLabel: false,
             type: "LongText",
             value: ""
+          },
+          value: {
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Label"),
+            description: game.i18n.localize("Root.Sheet.AttrLeft.Equipment.Description"),
+            customLabel: false,
+            userLabel: false,
+            type: "Number",
+            value: 0
+          },
+          carrying: {
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Carrying"),
+            description: null,
+            customLabel: false,
+            userLabel: false,
+            type: "Number",
+            value: 0
+          },
+          burdened: {
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Burdened"),
+            description: null,
+            customLabel: false,
+            userLabel: false,
+            type: "Number",
+            value: 0
+          },
+          max: {
+            label: game.i18n.localize("Root.Sheet.AttrLeft.Max"),
+            description: null,
+            customLabel: false,
+            userLabel: false,
+            type: "Number",
+            value: 0
           }
         },
         moveTypes: {
