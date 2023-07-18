@@ -401,75 +401,35 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
 
   let automate = await game.settings.get('root', 'automate');
 
-  if (automate && droppedEntity.type == 'move') {
-    let autoValue = await droppedEntity.getFlag('root', 'automationValue') || "0";
-    let stat = await droppedEntity.getFlag('root', 'automationStat') || "none";
-    if (stat == "charm") {
-      let currentVal = actor.system.stats.charm.value;
-      let newVal = parseInt(currentVal) + parseInt(autoValue);
-      await actor.update({"system.stats.charm.value": newVal});
-    } else if (stat == "cunning") {
-      let currentVal = actor.system.stats.cunning.value;
-      let newVal = parseInt(currentVal) + parseInt(autoValue);
-      await actor.update({"system.stats.cunning.value": newVal});
-    } else if (stat == "finesse") {
-      let currentVal = actor.system.stats.finesse.value;
-      let newVal = parseInt(currentVal) + parseInt(autoValue);
-      await actor.update({"system.stats.finesse.value": newVal});
-    } else if (stat == "luck") {
-      let currentVal = actor.system.stats.luck.value;
-      let newVal = parseInt(currentVal) + parseInt(autoValue);
-      await actor.update({"system.stats.luck.value": newVal});
-    } else if (stat == "might") {
-      let currentVal = actor.system.stats.might.value;
-      let newVal = parseInt(currentVal) + parseInt(autoValue);
-      await actor.update({"system.stats.might.value": newVal});
-    } else if (stat == "injury") {
-      let count = 0;
-      let parsedVal = parseInt(autoValue)
+  if (automate && droppedEntity.type === 'move') {
+    const autoValue = await droppedEntity.getFlag('root', 'automationValue') || "0";
+    const stat = await droppedEntity.getFlag('root', 'automationStat') || "none";
+
+    if (stat in actor.system.stats) {
+      const currentVal = actor.system.stats[stat].value;
+      const newVal = parseInt(currentVal) + parseInt(autoValue);
+      await actor.update({ [`system.stats.${stat}.value`]: newVal });
+    } else if (stat === "injury" || stat === "exhaustion" || stat === "depletion") {
+      const parsedVal = parseInt(autoValue);
+      const resourceOptions = actor.system.attrLeft.resource.options;
       const indicesToReview = [0, 2, 4, 6];
+      const optionIndex = stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8';
+
+      let count = 0;
       for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['2'].values[index];
+        const checkbox = resourceOptions[optionIndex].values[index];
+
         if (checkbox.value === false) {
-          let updateKey = `system.attrLeft.resource.options.2.values.${index}.value`;
+          const updateKey = `system.attrLeft.resource.options.${optionIndex}.values.${index}.value`;
           await actor.update({ [updateKey]: true });
           count++;
         }
+
         if (count === parsedVal) {
           break;
         }
       }
-    } else if (stat == "exhaustion") {
-      let count = 0;
-      let parsedVal = parseInt(autoValue)
-      const indicesToReview = [0, 2, 4, 6];
-      for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['5'].values[index];
-        if (checkbox.value === false) {
-          let updateKey = `system.attrLeft.resource.options.5.values.${index}.value`;
-          await actor.update({ [updateKey]: true });
-          count++;
-        }
-        if (count === parsedVal) {
-          break;
-        }
-      }
-    } else if (stat == "depletion") {
-      let count = 0;
-      let parsedVal = parseInt(autoValue)
-      const indicesToReview = [0, 2, 4, 6];
-      for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['8'].values[index];
-        if (checkbox.value === false) {
-          let updateKey = `system.attrLeft.resource.options.8.values.${index}.value`;
-          await actor.update({ [updateKey]: true });
-          count++;
-        }
-        if (count === parsedVal) {
-          break;
-        }
-      }
-    };
+    }
 
     setTimeout(() => {
       actor.sheet.render(true);
@@ -478,85 +438,45 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
 });
 
 Hooks.on('deleteItem', async (item, options, userId, ...args) => {
-  let automate = await game.settings.get('root', 'automate');
-  let actor = await item.parent;
+  const automate = await game.settings.get('root', 'automate');
+  const actor = await item.parent;
 
-  if (automate && item.type == 'move') {
-    let autoValue = await item.getFlag('root', 'automationValue') || "0";
-    let stat = await item.getFlag('root', 'automationStat') || "none";
-    if (stat == "charm") {
-      let currentVal = actor.system.stats.charm.value;
-      let newVal = parseInt(currentVal) - parseInt(autoValue);
-      await actor.update({"system.stats.charm.value": newVal});
-    } else if (stat == "cunning") {
-      let currentVal = actor.system.stats.cunning.value;
-      let newVal = parseInt(currentVal) - parseInt(autoValue);
-      await actor.update({"system.stats.cunning.value": newVal});
-    } else if (stat == "finesse") {
-      let currentVal = actor.system.stats.finesse.value;
-      let newVal = parseInt(currentVal) - parseInt(autoValue);
-      await actor.update({"system.stats.finesse.value": newVal});
-    } else if (stat == "luck") {
-      let currentVal = actor.system.stats.luck.value;
-      let newVal = parseInt(currentVal) - parseInt(autoValue);
-      await actor.update({"system.stats.luck.value": newVal});
-    } else if (stat == "might") {
-      let currentVal = actor.system.stats.might.value;
-      let newVal = parseInt(currentVal) - parseInt(autoValue);
-      await actor.update({"system.stats.might.value": newVal});
-    } else if (stat == "injury") {
+  if (automate && item.type === 'move') {
+    const autoValue = await item.getFlag('root', 'automationValue') || "0";
+    const stat = await item.getFlag('root', 'automationStat') || "none";
+    const systemStats = actor.system.stats;
+
+    if (stat in systemStats) {
+      const currentVal = systemStats[stat].value;
+      const newVal = parseInt(currentVal) - parseInt(autoValue);
+      const updateKey = `system.stats.${stat}.value`;
+      await actor.update({ [updateKey]: newVal });
+    } else if (stat === "injury" || stat === "exhaustion" || stat === "depletion") {
       let count = 0;
-      let parsedVal = parseInt(autoValue)
+      const parsedVal = parseInt(autoValue);
+      const resourceOptions = actor.system.attrLeft.resource.options;
       const indicesToReview = [6, 4, 2, 0];
+
       for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['2'].values[index];
+        const checkbox = resourceOptions[stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8'].values[index];
+
         if (checkbox.value === true) {
-          let updateKey = `system.attrLeft.resource.options.2.values.${index}.value`;
+          const updateKey = `system.attrLeft.resource.options.${stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8'}.values.${index}.value`;
           await actor.update({ [updateKey]: false });
           count++;
         }
+
         if (count === parsedVal) {
           break;
         }
       }
-    } else if (stat == "exhaustion") {
-      let count = 0;
-      let parsedVal = parseInt(autoValue)
-      const indicesToReview = [6, 4, 2, 0];
-      for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['5'].values[index];
-        if (checkbox.value === true) {
-          let updateKey = `system.attrLeft.resource.options.5.values.${index}.value`;
-          await actor.update({ [updateKey]: false });
-          count++;
-        }
-        if (count === parsedVal) {
-          break;
-        }
-      }
-    } else if (stat == "depletion") {
-      let count = 0;
-      let parsedVal = parseInt(autoValue)
-      const indicesToReview = [6, 4, 2, 0];
-      for (let index of indicesToReview) {
-        const checkbox = actor.system.attrLeft.resource.options['8'].values[index];
-        if (checkbox.value === true) {
-          let updateKey = `system.attrLeft.resource.options.8.values.${index}.value`;
-          await actor.update({ [updateKey]: false });
-          count++;
-        }
-        if (count === parsedVal) {
-          break;
-        }
-      }
-    };
+    }
 
     setTimeout(() => {
       actor.sheet.render(true);
     }, 200);
   }
 });
-
 
 // Add event listeners when actor sheet is rendered.
 Hooks.on("renderActorSheet", async function (app, html, data) {
