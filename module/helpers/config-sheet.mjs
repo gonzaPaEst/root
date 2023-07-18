@@ -942,14 +942,6 @@ export const configSheet = async () => {
               }
             }
           },
-          hold: {
-            label: game.i18n.localize("Root.Sheet.AttrLeft.Hold"),
-            description: null,
-            customLabel: false,
-            userLabel: false,
-            type: "Number",
-            value: 0
-          },
           nature: {
             label: game.i18n.localize("Root.Sheet.AttrLeft.Nature"),
             description: null,

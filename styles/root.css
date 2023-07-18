@@ -392,16 +392,7 @@ display: inline;
 /* NEW STYLES @TODO refactoring */
 
 .pbta.sheet.actor:not(.npc) .sheet-resources .cell.cell--forward {
-  padding: 0 15px 0 40px;
-}
-
-.pbta.sheet.actor:not(.npc) .sheet-resources .cell.cell--ongoing {
-  padding: 0 40px 0 15px;
-}
-
-.pbta.sheet.actor:not(.npc) .sheet-resources {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0 20px 10px;
+  grid-column-start: 2;
 }
 
 :is(summary, .pointer):hover {

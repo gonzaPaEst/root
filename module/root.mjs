@@ -595,7 +595,16 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     };
   };
 
-  // TODO move Hold
+  // Prepend hold flag before forward and ongoing
+  let actor = app.actor;
+  let holdValue = actor.getFlag('root', 'hold') || "0";
+  let holdHTML = `<div class="cell cell--hold">
+  <label for="flags.root.hold" class="cell__title">Hold</label>
+  <input type="text" name="flags.root.hold" value="${holdValue}" data-dtype="Number">
+  </div>
+  `
+  let resourcesSection = html.find('div.moves section.sheet-resources');
+  resourcesSection.prepend(holdHTML)
 
   // Add Mastery tag to actor sheet if move has Triumph description.
   let masteries = await game.settings.get('root', 'masteries');
