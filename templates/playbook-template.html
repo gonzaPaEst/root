@@ -1,59 +1,71 @@
-<div class="summary">
-    <p style="text-align: center; font-size: 1.5em;"><em>Description.</em></p>
+<div>
+    <p style="margin: 20px 100px; text-align: center; font-size: 1.5em;"><em>You are a peaceful, diplomatic vagabond, making allies from those you aid, perhaps toppling greater powers by forging strong bonds with others.</em></p>
     </div>
     <hr>
-    <p><strong>Instructions:</strong> You can drag-and-drop into your character sheet any <span style="background: #DDD; border: 1px solid var(--color-border-dark-tertiary); border-radius: 2px; display: inline-block; padding: 1px 4px;"><img style="border: none; height: 14px; margin: 2px 0 -2px; width: 14px;" src="modules/root/styles/img/icons/suitcase.svg" alt=""> Item</span> you choose and it will automatically be assigned to its correct place. Everything else needs to be copy-pasted or input manually (this includes the background &amp; details, your stats, and the equipment starting value).</p>
+    <p style="font-size: 0.9em;"><em><strong>Instructions:</strong> You can drag-and-drop into your character sheet any <span style="background: #DDD; border: 1px solid var(--color-border-dark-tertiary); border-radius: 2px; display: inline-block; padding: 1px 4px;"><img style="border: none; height: 14px; margin: 2px 0 -2px; width: 14px;" src="modules/root/styles/img/icons/suitcase.svg" alt=""> Item</span> you choose and it will automatically be assigned to its correct place. Everything else needs to be copy-pasted or input manually (this includes the background &amp; details, your stats, and the equipment starting value).</em></p>
     <hr>
     <section class="grid grid-3col">
     <div class="background" style="border-right: dashed 1px black; padding-right: 10px;">
     <h2 style="margin: 15px 0 10px;">BACKGROUND &amp; DETAILS</h2>
+    <p>Choose one on each and copy-paste or write the answer manually onto your playbook sheet.</p>
     <h3 style="border: none;">Species</h3>
     <ul>
-    <li>&nbsp;</li>
+    <li>badger, beaver, bluejay, cat, fox, hawk, lizard, mouse, opossum, otter, owl, raccoon, rabbit, squirrel, wolf</li>
     </ul>
     <hr>
     <h3 style="border: none;">Details</h3>
     <ul>
-    <li>&nbsp;</li>
-    <li>&nbsp;</li>
-    <li>&nbsp;</li>
+    <li>he, she, they, shifting</li>
+    <li>formal, colorful, multicultural, simple</li>
+    <li>medal of service, beaded jewelry, carved flute, pouches with pretty stones</li>
     </ul>
     <hr>
     <h3 style="border: none;">Demeanor</h3>
     <ul>
-    <li>&nbsp;</li>
+    <li>charming, diplomatic, agreeable, stern</li>
     </ul>
     <hr>
     <h3 style="border: none;">Background</h3>
     <p><strong>Where do you call home?</strong></p>
     <ul>
-    <li>&nbsp;</li>
+    <li>____________ clearing</li>
+    <li>the forest</li>
+    <li>a place far from here</li>
     </ul>
     <p><strong>Why are you a vagabond?</strong></p>
     <ul>
-    <li>&nbsp;</li>
+    <li>I want to help the Woodland</li>
+    <li>I want to explore the Woodland</li>
+    <li>I believe the current factions should be overturned</li>
+    <li>I must keep a promise to a loved one</li>
+    <li>I want freedom from society&rsquo;s constraints</li>
     </ul>
     <p><strong>Whom have you left behind?</strong></p>
     <ul>
-    <li>&nbsp;</li>
+    <li>my mentor</li>
+    <li>my family</li>
+    <li>my loved one</li>
+    <li>my student</li>
+    <li>my greatest ally</li>
     </ul>
     <p><strong>Which faction have you served the most?</strong></p>
     <ul>
-    <li>FactionName&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>.</li>
+    <li><input style="margin: 0; width: 175px;" type="text" value="" placeholder="FactionName"> &nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>.</li>
     </ul>
     <p><strong>With which faction have you earned a special enmity?</strong></p>
     <ul>
-    <li>FactionName&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>.</li>
+    <li><input style="margin: 0; width: 175px;" type="text" value="" placeholder="FactionName"> &nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>.</li>
     </ul>
     </div>
     <div class="attributes" style="border-right: dashed 1px black; padding-right: 10px;">
     <h2 style="margin: 15px 0 10px;">ATTRIBUTES &amp; TRAITS</h2>
     <h3 style="border: none;">Stats</h3>
-    <p>Charm:</p>
-    <p>Cunning</p>
-    <p>Finesse</p>
-    <p>Luck</p>
-    <p>Might</p>
+    <p><strong>Charm:</strong> <input style="margin: 0; text-align: center; width: 30px;" type="text" value="2" data-dtype="Number"></p>
+    <p><strong>Cunning:</strong> <input style="margin: 0; text-align: center; width: 30px;" type="text" value="1" data-dtype="Number"></p>
+    <p><strong>Finesse:</strong> <input style="margin: 0; text-align: center; width: 30px;" type="text" value="0" data-dtype="Number"></p>
+    <p><strong>Luck:</strong> <input style="margin: 0; text-align: center; width: 30px;" type="text" value="0" data-dtype="Number"></p>
+    <p><strong>Might:</strong> <input style="margin: 0; text-align: center; width: 30px;" type="text" value="-1" data-dtype="Number"></p>
+    <p>Add +1 to a stat of your choice, to a max of +2.</p>
     <hr>
     <h3 style="border: none;">Nature</h3>
     <p>Choose your nature:</p>
@@ -72,7 +84,7 @@
     <p>&nbsp;</p>
     <hr>
     <h3 style="border: none;">Equipment</h3>
-    <p>Starting Value:</p>
+    <p>Starting Value: <input style="margin: 0; text-align: center; width: 30px;" type="text" value="9" data-dtype="Number"></p>
     </div>
     <div class="moves">
     <h2 style="margin: 15px 0 10px;">STARTING MOVES</h2>
@@ -85,3 +97,5 @@
     <p>&nbsp;</p>
     </div>
     </section>
+    <hr>
+    <p style="text-align: center;"><em><strong>*</strong> Changes you make on this document (like FactionName or stats) won't be saved, but you can type and copy-paste them onto your sheet.</em></p>

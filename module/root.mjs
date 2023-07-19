@@ -86,6 +86,20 @@ Hooks.on("preCreateActor", async function (actor) {
   }
 });
 
+Hooks.on("preCreateItem", async function (item) {
+  if (item.data.img == "icons/svg/item-bag.svg" && item.data.type != "tag") {
+    if (item.data.type == "equipment") {
+      item.data.update({ "img": `icons/svg/combat.svg` })
+    } else if (item.data.type == "playbook") {
+      item.data.update({ "img": `icons/svg/book.svg` })
+    } else if (item.data.type == "root.traits") {
+      item.data.update({ "img": `icons/svg/pawprint.svg` })
+    } else {
+      item.data.update({ "img": `icons/svg/aura.svg` })
+    } 
+  }
+});
+
 // Load moves and details.
 Hooks.on('createActor', async (actor, options, id) => {
 
@@ -195,24 +209,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       let depletionLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
       let valueHTML = `<div class="resource">
       <label>Automation</label>
-      <p>Add <select name="flags.root.automationValue" id="flags.root.automationValue" data-dType="String">`
-      switch(automationValue) {
-        case "0": valueHTML += `<option value="0" selected="selected">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        </select> to`
-				break;
-        case "1": valueHTML += `<option value="0">0</option>
-        <option value="1" selected="selected">1</option>
-        <option value="2">2</option>
-        </select> to`
-				break;
-				case "2": valueHTML += `<option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2" selected="selected">2</option>
-        </select> to`
-				break;
-      }
+      <p>Add <input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center;; width: 30px;"> to`
 
       let statHTML = ` <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">`
       switch(automationStat) {
@@ -342,35 +339,40 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       await item.system.updateSource({ 'description': traitDescription })
       item.render(true)
     }
-    // TODO en.json
+
+    let natureOption = game.i18n.localize("Root.Sheet.Traits.Nature");
+    let driveOption = game.i18n.localize("Root.Sheet.Traits.Drive");
+    let connectionOption = game.i18n.localize("Root.Sheet.Traits.Connection");
+    let featOption = game.i18n.localize("Root.Sheet.Traits.Feat");
+
     let traitType = await item.getFlag('root', 'traitType') || "nature";
     let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
       switch(traitType) {
-        case "nature": traitTypeHTML += `<option value="nature" selected="selected">Nature</option>
-        <option value="drive">Drive</option>
-        <option value="connection">Connection</option>
-        <option value="feat">Roguish Feat</option>
+        case "nature": traitTypeHTML += `<option value="nature" selected="selected">${natureOption}</option>
+        <option value="drive">${driveOption}</option>
+        <option value="connection">${connectionOption}</option>
+        <option value="feat">${featOption}</option>
         </select>
         </div>`
 				break;
-				case "drive": traitTypeHTML += `<option value="nature">Nature</option>
-        <option value="drive" selected="selected">Drive</option>
-        <option value="connection">Connection</option>
-        <option value="feat">Roguish Feat</option>
+				case "drive": traitTypeHTML += `<option value="nature">${natureOption}</option>
+        <option value="drive" selected="selected">${driveOption}</option>
+        <option value="connection">${connectionOption}</option>
+        <option value="feat">${featOption}</option>
         </select>
         </div>`
 				break;
-				case "connection": traitTypeHTML += `<option value="nature">Nature</option>
-        <option value="drive">Drive</option>
-        <option value="connection" selected="selected">Connection</option>
-        <option value="feat">Roguish Feat</option>
+				case "connection": traitTypeHTML += `<option value="nature">${natureOption}</option>
+        <option value="drive">${driveOption}</option>
+        <option value="connection" selected="selected">${connectionOption}</option>
+        <option value="feat">${featOption}</option>
         </select>
         </div>`
 				break;	
-        case "feat": traitTypeHTML += `<option value="nature">Nature</option>
-        <option value="drive">Drive</option>
-        <option value="connection">Connection</option>
-        <option value="feat" selected="selected">Roguish Feat</option>
+        case "feat": traitTypeHTML += `<option value="nature">${natureOption}</option>
+        <option value="drive">${driveOption}</option>
+        <option value="connection">${connectionOption}</option>
+        <option value="feat" selected="selected">${featOption}</option>
         </select>
         </div>`
 				break;	
@@ -615,7 +617,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     
     handleReputationBonus(factionsReputations);
     
-    // Make reputation increments behave like clocks
+    // Make reputation increments behave like clocks (plus resources: injury, exhaustion, depletion)
     const firstFactionNotoriety = [
       $('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
       $('input[name="system.attrTop.reputation.options.1.values.1.value"]'),
@@ -765,6 +767,39 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       $('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
       $('input[name="system.attrTop.reputation.options.37.values.0.value"]')
     ];
+
+    const injuryResource = [
+      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.0.value"]')
+    ];
+
+    const exhaustionResource = [
+      $('input[name="system.attrLeft.resource.options.5.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.5.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.5.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.5.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.4.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.4.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.4.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.4.values.0.value"]')
+    ];
+
+    const depletionResource = [
+      $('input[name="system.attrLeft.resource.options.8.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.8.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.8.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.8.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.7.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.7.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.7.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.7.values.0.value"]')
+    ];
     
     function handleReputationIncrements(reputationArrays) {
       reputationArrays.forEach((checkbox, index) => {
@@ -796,6 +831,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     handleReputationIncrements(fourthFactionPrestige);
     handleReputationIncrements(fifthFactionNotoriety);
     handleReputationIncrements(fifthFactionPrestige);
+    handleReputationIncrements(injuryResource);
+    handleReputationIncrements(exhaustionResource);
+    handleReputationIncrements(depletionResource);
     
     // Add Mastery tag to actor sheet if move has Triumph description.
     let masteries = await game.settings.get('root', 'masteries');
@@ -1123,14 +1161,21 @@ Hooks.on('ready', ()=>{
   };
 })
 
+Hooks.on('renderDialog', (app, html, options, item)=>{
+
+  console.log('dialog')
+  console.log(app)
+  console.log(html)
+  console.log(item)
+  
+})
+
 Hooks.on('renderApplication', (app, html, options)=>{
 
-  let settings = app.options.id == "client-settings";
-  if (settings) {
-    let systemSettings = html.find('section[data-tab="system"]')
-    let warning = `<div style="margin-top: 100px;" class="notification error">System settings have been disabled due to the Root module. Please use the module's settings on the right: Root (PbtA).</div>
-    `
-    systemSettings[0].innerHTML = warning;
-  }
+  console.log('application')
+  console.log(app)
+  console.log(html)
+  console.log(options)
+
 })
 
