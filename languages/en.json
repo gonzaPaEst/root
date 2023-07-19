@@ -1,13 +1,17 @@
 {
     "Root": {
         "Settings": {
-            "Masteries": {
-                "Title": "MASTERIES RULE",
-                "Hint": "Check if using the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate rolls in mastery moves, add a Triumph description; otherwise, leave the description blank. The system uses the presence or absence of the Triumph description to determine if the PC has mastery or not."
-            },
             "Automate": {
-                "Title": "AUTOMATIC STAT INCREMENT",
-                "Hint": "When a move that increments a stat or resource is dropped on actor sheet, the stat or resource automatically updates to reflect the increment."
+                "Title": "Automatic Stat Increment",
+                "Hint": "Open an Automation option on move sheets (under Details). It can be used to increment a stat or resource when the move is dropped on an actor sheet."
+            },
+            "Masteries": {
+                "Title": "Masteries Rules (Triumph!)",
+                "Hint": "Use Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate for mastery, add a Triumph description in move; otherwise, leave the description blank."
+            },
+            "Advantage": {
+                "Title": "Advantage & Disadvantage",
+                "Hint": "Use advantage and disadvantage rolls instead of +1 Forward and +1 Ongoing."
             }
         },
         "Sheet": {

@@ -1108,12 +1108,23 @@ export const configSheet = async () => {
     }
   }
   
-  // Settings for Root RAW
-  await game.settings.set('pbta', 'advForward', true);
+  let useAdvDis = await game.settings.get('root', 'advantage');
+
+  // Settings for Root
   await game.settings.set('pbta', 'hideRollFormula', true);
-  await game.settings.set('pbta', 'hideForward', false);
-  await game.settings.set('pbta', 'hideOngoing', false);
-  await game.settings.set('pbta', 'hideRollMode', true);
   await game.settings.set('pbta', 'hideUses', true);
+  await game.settings.set('pbta', 'advForward', true);
+  if (!useAdvDis) {
+    await game.settings.set('pbta', 'hideForward', false);
+    await game.settings.set('pbta', 'hideOngoing', false);
+    await game.settings.set('pbta', 'hideRollMode', true);
+  } else {
+    await game.settings.set('pbta', 'hideForward', true);
+    await game.settings.set('pbta', 'hideOngoing', true);
+    await game.settings.set('pbta', 'hideRollMode', false);
+  }
+
+  
+  
   
 }

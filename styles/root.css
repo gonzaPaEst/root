@@ -404,3 +404,15 @@ span.mastery {
   border: 0.5px solid rgba(255, 255, 255, .05);
   color: #fff;
 }
+
+.pbta.sheet .sheet-resources .cell--roll-mode {
+  border: none;
+  display: grid;
+  grid-column: span 2;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pbta.sheet .sheet-resources .cell--roll-mode label.cell__title {
+  grid-column: span 3;
+  margin: -4px 0 14px;
+}

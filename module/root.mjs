@@ -8,6 +8,18 @@ import { RootTraitsSheet, RootTraitsModel } from "./helpers/traits-sheet.mjs";
 Hooks.once('init', () => {
 
   // Register Root settings.
+  game.settings.register('root', 'automate', {
+    name: game.i18n.localize("Root.Settings.Automate.Title"),
+    default: true,
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    hint: game.i18n.localize("Root.Settings.Automate.Hint"),
+    onChange: () => setTimeout(() => {
+        location.reload();
+      }, 300)
+  });
+
   game.settings.register('root', 'masteries', {
     name: game.i18n.localize("Root.Settings.Masteries.Title"),
     default: false,
@@ -17,19 +29,19 @@ Hooks.once('init', () => {
     hint: game.i18n.localize("Root.Settings.Masteries.Hint"),
     onChange: () => setTimeout(() => {
         location.reload();
-      }, 500)
+      }, 300)
   });
 
-  game.settings.register('root', 'automate', {
-    name: game.i18n.localize("Root.Settings.Automate.Title"),
+  game.settings.register('root', 'advantage', {
+    name: game.i18n.localize("Root.Settings.Advantage.Title"),
     default: false,
     type: Boolean,
     scope: 'world',
     config: true,
-    hint: game.i18n.localize("Root.Settings.Automate.Hint"),
+    hint: game.i18n.localize("Root.Settings.Advantage.Hint"),
     onChange: () => setTimeout(() => {
         location.reload();
-      }, 500)
+      }, 300)
   });
 
 });
@@ -470,56 +482,326 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
 // Add event listeners when actor sheet is rendered.
 Hooks.on("renderActorSheet", async function (app, html, data) {
 
-  // Alt+Click to render playbook
-  let charPlaybook = document.querySelector('.charplaybook');
-  let name = charPlaybook.defaultValue;
-  // TODO en.json
-  charPlaybook.title = "Press Alt or Option + Click to open playbook.";
-  if (name != '') {
-    charPlaybook.addEventListener("click", openPlaybook);
-    async function openPlaybook(e) {
-      if (e.altKey){
-        // Retrieve playbooks in game and then in compendium
-        let playbooks = game.items.filter(i => i.type == 'playbook');
-        let pack = game.packs.get("root.playbooks")
-        let items = pack ? await pack.getDocuments() : [];
-        playbooks = playbooks.concat(items.filter(i => i.type == 'playbook'));
-        // Remove playbook repeats by matching names in new array.
-        let playbookNames = [];
-        for (let p of playbooks) {
-          let playbookName = p.name;
-          if (playbookNames.includes(playbookName) !== false) {
-            playbooks = playbooks.filter(item => item.id != p.id);
-          } else {
-            playbookNames.push(playbookName)
+  let actor = app.actor;
+
+  if (actor.type == 'character') {
+
+    // Alt+Click to render playbook
+    let charPlaybook = document.querySelector('.charplaybook');
+    let name = charPlaybook.defaultValue;
+    // TODO en.json
+    charPlaybook.title = "Press Alt or Option + Click to open playbook.";
+    if (name != '') {
+      charPlaybook.addEventListener("click", openPlaybook);
+      async function openPlaybook(e) {
+        if (e.altKey){
+          // Retrieve playbooks in game and then in compendium
+          let playbooks = game.items.filter(i => i.type == 'playbook');
+          let pack = game.packs.get("root.playbooks")
+          let items = pack ? await pack.getDocuments() : [];
+          playbooks = playbooks.concat(items.filter(i => i.type == 'playbook'));
+          // Remove playbook repeats by matching names in new array.
+          let playbookNames = [];
+          for (let p of playbooks) {
+            let playbookName = p.name;
+            if (playbookNames.includes(playbookName) !== false) {
+              playbooks = playbooks.filter(item => item.id != p.id);
+            } else {
+              playbookNames.push(playbookName)
+            }
           }
-        }
-        // Render current playbook
-        for (let playbook of playbooks) {
-          if (playbook.name == name) {
-            playbook.sheet.render(true);
+          // Render current playbook
+          for (let playbook of playbooks) {
+            if (playbook.name == name) {
+              playbook.sheet.render(true);
+            };
           };
         };
       };
     };
-  };
 
-  // Prepend hold flag before forward and ongoing
-  let actor = app.actor;
-  let holdValue = actor.getFlag('root', 'hold') || "0";
-  let holdHTML = `<div class="cell cell--hold">
-  <label for="flags.root.hold" class="cell__title">Hold</label>
-  <input type="text" name="flags.root.hold" value="${holdValue}" data-dtype="Number">
-  </div>
-  `
-  let resourcesSection = html.find('div.moves section.sheet-resources');
-  resourcesSection.prepend(holdHTML)
+    // Prepend hold flag before forward and ongoing
+    let holdValue = actor.getFlag('root', 'hold') || "0";
+    let holdHTML = `<div class="cell cell--hold">
+    <label for="flags.root.hold" class="cell__title">Hold</label>
+    <input type="text" name="flags.root.hold" value="${holdValue}" data-dtype="Number">
+    </div>
+    `
+    let resourcesSection = html.find('div.moves section.sheet-resources');
+    resourcesSection.prepend(holdHTML);
 
-  // Add Mastery tag to actor sheet if move has Triumph description.
-  let masteries = await game.settings.get('root', 'masteries');
-  let metaTags = html.find('.item-meta.tags');
-  let items = metaTags.parent('li.item');
-  for (let item of items) {
+    /* ----------------------- */
+    /*      REPUTATION         */
+    /* ----------------------- */
+    // Handle reputations' bonuses (only one can be selected per faction)
+
+    let labels = document.querySelectorAll('.cell.cell--reputation.cell--attr-reputation.cell--ListMany ul label, .cell.cell--resource.cell--attr-resource.cell--ListMany ul label');
+
+    for (let label of labels) {
+      label.addEventListener('click', function(event) {
+        // Allow the default behavior for inputs
+        if (event.target.tagName === 'INPUT') {
+          return;
+        }
+        // Prevent the default behavior for the label
+        event.preventDefault();
+        event.stopPropagation();
+      });
+    }
+    
+    function handleReputationBonus(factionsArrays) {
+      factionsArrays.forEach(factionArray => {
+        factionArray.forEach((checkbox, index) => {
+          checkbox.change(function() {
+            if ($(this).is(':checked')) {
+              factionArray.forEach((otherCheckbox, otherIndex) => {
+                if (otherIndex !== index) {
+                  otherCheckbox.prop('checked', false);
+                }
+              });
+            }
+          });
+        });
+      });
+    }
+    
+    const factionsReputations = [
+      [
+        $('input[name="system.attrTop.reputation.options.1.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.2.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.3.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.4.values.0.value"]'),
+        $('input[name="system.attrTop.reputation.options.5.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.6.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.7.values.5.value"]')
+      ],
+      [
+        $('input[name="system.attrTop.reputation.options.9.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.10.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.11.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.12.values.0.value"]'),
+        $('input[name="system.attrTop.reputation.options.13.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.14.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.15.values.5.value"]')
+      ],
+      [
+        $('input[name="system.attrTop.reputation.options.17.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.18.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.19.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.20.values.0.value"]'),
+        $('input[name="system.attrTop.reputation.options.21.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.22.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.23.values.5.value"]')
+      ],
+      [
+        $('input[name="system.attrTop.reputation.options.25.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.26.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.27.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.28.values.0.value"]'),
+        $('input[name="system.attrTop.reputation.options.29.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.30.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.31.values.5.value"]')
+      ],
+      [
+        $('input[name="system.attrTop.reputation.options.33.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.34.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.35.values.3.value"]'),
+        $('input[name="system.attrTop.reputation.options.36.values.0.value"]'),
+        $('input[name="system.attrTop.reputation.options.37.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.38.values.5.value"]'),
+        $('input[name="system.attrTop.reputation.options.39.values.5.value"]')
+      ]
+    ];
+    
+    handleReputationBonus(factionsReputations);
+    
+    // Make reputation increments behave like clocks
+    const firstFactionNotoriety = [
+      $('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.1.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.1.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.2.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.2.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.2.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.3.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.3.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.3.values.0.value"]')
+    ];
+
+    const firstFactionPrestige = [
+      $('input[name="system.attrTop.reputation.options.7.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.7.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.7.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.7.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.7.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.6.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.6.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.6.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.6.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.6.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.5.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.5.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.5.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.5.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.5.values.0.value"]')
+    ];
+    
+    const secondFactionNotoriety = [
+      $('input[name="system.attrTop.reputation.options.9.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.9.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.9.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.10.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.10.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.10.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.11.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.11.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.11.values.0.value"]')
+    ];
+    
+    const secondFactionPrestige = [
+      $('input[name="system.attrTop.reputation.options.15.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.15.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.15.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.15.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.15.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.14.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.14.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.14.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.14.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.14.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.13.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.13.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.13.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.13.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.13.values.0.value"]')
+    ];
+
+    const thirdFactionNotoriety = [
+      $('input[name="system.attrTop.reputation.options.17.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.17.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.17.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.18.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.18.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.18.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.19.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.19.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.19.values.0.value"]')
+    ];
+    
+    const thirdFactionPrestige = [
+      $('input[name="system.attrTop.reputation.options.23.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.23.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.23.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.23.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.23.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.22.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.22.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.22.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.22.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.22.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.21.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.21.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.21.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.21.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.21.values.0.value"]')
+    ];
+
+    const fourthFactionNotoriety = [
+      $('input[name="system.attrTop.reputation.options.25.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.25.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.25.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.26.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.26.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.26.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.27.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.27.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.27.values.0.value"]')
+    ];
+
+    const fourthFactionPrestige = [
+      $('input[name="system.attrTop.reputation.options.31.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.31.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.31.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.31.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.31.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.30.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.30.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.30.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.30.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.30.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.29.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.29.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.29.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.29.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.29.values.0.value"]')
+    ];
+    
+    const fifthFactionNotoriety = [
+      $('input[name="system.attrTop.reputation.options.33.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.33.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.33.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.34.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.34.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.34.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.35.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.35.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.35.values.0.value"]')
+    ];
+
+    const fifthFactionPrestige = [
+      $('input[name="system.attrTop.reputation.options.39.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.39.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.39.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.39.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.39.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.38.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.38.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.38.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.38.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.38.values.0.value"]'),
+      $('input[name="system.attrTop.reputation.options.37.values.4.value"]'),
+      $('input[name="system.attrTop.reputation.options.37.values.3.value"]'),
+      $('input[name="system.attrTop.reputation.options.37.values.2.value"]'),
+      $('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
+      $('input[name="system.attrTop.reputation.options.37.values.0.value"]')
+    ];
+    
+    function handleReputationIncrements(reputationArrays) {
+      reputationArrays.forEach((checkbox, index) => {
+        checkbox.change(function() {
+          const isChecked = $(this).is(':checked');
+          
+          if (isChecked) {
+            // Check all the following checkboxes
+            reputationArrays.slice(index + 1).forEach((followingCheckbox) => {
+              followingCheckbox.prop('checked', true);
+            });
+          } else {
+            // Uncheck all the preceding checkboxes
+            reputationArrays.slice(0, index).forEach((precedingCheckbox) => {
+              precedingCheckbox.prop('checked', false);
+            });
+          }
+        });
+      });
+    }
+    
+    handleReputationIncrements(firstFactionNotoriety);
+    handleReputationIncrements(firstFactionPrestige);
+    handleReputationIncrements(secondFactionNotoriety);
+    handleReputationIncrements(secondFactionPrestige);
+    handleReputationIncrements(thirdFactionNotoriety);
+    handleReputationIncrements(thirdFactionPrestige);
+    handleReputationIncrements(fourthFactionNotoriety);
+    handleReputationIncrements(fourthFactionPrestige);
+    handleReputationIncrements(fifthFactionNotoriety);
+    handleReputationIncrements(fifthFactionPrestige);
+    
+    // Add Mastery tag to actor sheet if move has Triumph description.
+    let masteries = await game.settings.get('root', 'masteries');
+    let metaTags = html.find('.item-meta.tags');
+    let items = metaTags.parent('li.item');
+    for (let item of items) {
       let critical = item.querySelector('div.result--critical');
       if (critical) {
         if (masteries) {
@@ -532,6 +814,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         };
       };
     };
+
+  };
 
   });
 
@@ -838,3 +1122,15 @@ Hooks.on('ready', ()=>{
     }
   };
 })
+
+Hooks.on('renderApplication', (app, html, options)=>{
+
+  let settings = app.options.id == "client-settings";
+  if (settings) {
+    let systemSettings = html.find('section[data-tab="system"]')
+    let warning = `<div style="margin-top: 100px;" class="notification error">System settings have been disabled due to the Root module. Please use the module's settings on the right: Root (PbtA).</div>
+    `
+    systemSettings[0].innerHTML = warning;
+  }
+})
+
