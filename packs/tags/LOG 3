@@ -1,0 +1,7 @@
+2023/07/19-16:47:27.503213 30ac93000 Recovering log #454
+2023/07/19-16:47:27.504432 30ac93000 Delete type=3 #452
+2023/07/19-16:47:27.504840 30ac93000 Delete type=0 #454
+2023/07/19-17:06:22.876985 304a7e000 Level-0 table #459: started
+2023/07/19-17:06:22.877059 304a7e000 Level-0 table #459: 0 bytes OK
+2023/07/19-17:06:22.877674 304a7e000 Delete type=0 #457
+2023/07/19-17:06:22.877989 304a7e000 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

@@ -126,6 +126,18 @@
       }
     },
     {
+      "name": "feats",
+      "label": "Roguish Feats",
+      "system": "pbta",
+      "path": "packs/feats",
+      "type": "Item",
+      "flags": {},
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "playbooks",
       "label": "Playbooks",
       "system": "pbta",
@@ -415,7 +427,8 @@
             "weapon-special",
             "travel",
             "reputation",
-            "other"
+            "other",
+            "feats"
           ]
         },
         {
@@ -457,6 +470,6 @@
     }
   ],
   "url": "https://github.com/gonzaPaEst/root",
-  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1/module.json",
-  "download": "https://github.com/gonzaPaEst/root/releases/download/v1/module.zip"
+  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/beta/module.json",
+  "download": "https://github.com/gonzaPaEst/root/releases/download/beta/module.zip"
 }

@@ -1159,23 +1159,4 @@ Hooks.on('ready', ()=>{
       await this.actor.update(updates);
     }
   };
-})
-
-Hooks.on('renderDialog', (app, html, options, item)=>{
-
-  console.log('dialog')
-  console.log(app)
-  console.log(html)
-  console.log(item)
-  
-})
-
-Hooks.on('renderApplication', (app, html, options)=>{
-
-  console.log('application')
-  console.log(app)
-  console.log(html)
-  console.log(options)
-
-})
-
+});
