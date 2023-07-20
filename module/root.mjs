@@ -331,55 +331,55 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   };  
 
   // Update flags in trait sheet
-  if (item.type == 'root.traits') {
+  // if (item.type == 'root.traits') {
 
-    let traitDescription = await item.getFlag('root', 'traitDescription') || "";
-    let description = item.system.description;
-    if (description != traitDescription) {
-      await item.system.updateSource({ 'description': traitDescription })
-      item.render(true)
-    }
+    // let traitDescription = await item.getFlag('root', 'traitDescription');
+    // let description = item.system.description;
+    // if (description != traitDescription) {
+    //   await item.system.updateSource({ 'description': traitDescription })
+    //   item.render(true)
+    // }
 
-    let natureOption = game.i18n.localize("Root.Sheet.Traits.Nature");
-    let driveOption = game.i18n.localize("Root.Sheet.Traits.Drive");
-    let connectionOption = game.i18n.localize("Root.Sheet.Traits.Connection");
-    let featOption = game.i18n.localize("Root.Sheet.Traits.Feat");
+    // let natureOption = game.i18n.localize("Root.Sheet.Traits.Nature");
+    // let driveOption = game.i18n.localize("Root.Sheet.Traits.Drive");
+    // let connectionOption = game.i18n.localize("Root.Sheet.Traits.Connection");
+    // let featOption = game.i18n.localize("Root.Sheet.Traits.Feat");
 
-    let traitType = await item.getFlag('root', 'traitType') || "nature";
-    let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
-      switch(traitType) {
-        case "nature": traitTypeHTML += `<option value="nature" selected="selected">${natureOption}</option>
-        <option value="drive">${driveOption}</option>
-        <option value="connection">${connectionOption}</option>
-        <option value="feat">${featOption}</option>
-        </select>
-        </div>`
-				break;
-				case "drive": traitTypeHTML += `<option value="nature">${natureOption}</option>
-        <option value="drive" selected="selected">${driveOption}</option>
-        <option value="connection">${connectionOption}</option>
-        <option value="feat">${featOption}</option>
-        </select>
-        </div>`
-				break;
-				case "connection": traitTypeHTML += `<option value="nature">${natureOption}</option>
-        <option value="drive">${driveOption}</option>
-        <option value="connection" selected="selected">${connectionOption}</option>
-        <option value="feat">${featOption}</option>
-        </select>
-        </div>`
-				break;	
-        case "feat": traitTypeHTML += `<option value="nature">${natureOption}</option>
-        <option value="drive">${driveOption}</option>
-        <option value="connection">${connectionOption}</option>
-        <option value="feat" selected="selected">${featOption}</option>
-        </select>
-        </div>`
-				break;	
-      }
-    let traitsFind = html.find('.traits')
-    traitsFind.after(traitTypeHTML);
-  }
+    // let traitType = await item.getFlag('root', 'traitType');
+    // let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
+    //   switch(traitType) {
+    //     case "nature": traitTypeHTML += `<option value="nature" selected="selected">${natureOption}</option>
+    //     <option value="drive">${driveOption}</option>
+    //     <option value="connection">${connectionOption}</option>
+    //     <option value="feat">${featOption}</option>
+    //     </select>
+    //     </div>`
+		// 		break;
+		// 		case "drive": traitTypeHTML += `<option value="nature">${natureOption}</option>
+    //     <option value="drive" selected="selected">${driveOption}</option>
+    //     <option value="connection">${connectionOption}</option>
+    //     <option value="feat">${featOption}</option>
+    //     </select>
+    //     </div>`
+		// 		break;
+		// 		case "connection": traitTypeHTML += `<option value="nature">${natureOption}</option>
+    //     <option value="drive">${driveOption}</option>
+    //     <option value="connection" selected="selected">${connectionOption}</option>
+    //     <option value="feat">${featOption}</option>
+    //     </select>
+    //     </div>`
+		// 		break;	
+    //     case "feat": traitTypeHTML += `<option value="nature">${natureOption}</option>
+    //     <option value="drive">${driveOption}</option>
+    //     <option value="connection">${connectionOption}</option>
+    //     <option value="feat" selected="selected">${featOption}</option>
+    //     </select>
+    //     </div>`
+		// 		break;	
+    //   }
+    // let traitsFind = html.find('.traits')
+    // traitsFind.after(traitTypeHTML);
+  // }
 
 });
 
@@ -511,7 +511,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       });
       faBookIcon.addEventListener("click", openPlaybook);
       async function openPlaybook(e) {
-        // if (e.altKey){
           // Retrieve playbooks in game and then in compendium
           let playbooks = game.items.filter(i => i.type == 'playbook');
           let pack = game.packs.get("root.playbooks")

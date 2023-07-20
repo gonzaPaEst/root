@@ -79,6 +79,7 @@
                 "StrongHit": "If PC has mastery, remember to change the result to 'On a 10-11' instead of 'On a 10+'."
             },
             "Traits": {
+                "Type": "Type",
                 "Nature": "Nature",
                 "Drive": "Drive",
                 "Connection": "Connection",

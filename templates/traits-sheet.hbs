@@ -3,13 +3,23 @@
         <div class="cell--image">
             <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         </div>
-        <div class="header-fields traits">
+        <div class="header-fields">
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize "PBTA.Common.Name"}}"/></h1>
+        </div>
+        <div class="trait-type"> <label class="resource-label">{{localize "Root.Sheet.Traits.Type"}}:</label> 
+        <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">
+            {{#select item.flags.root.traitType}}
+            <option value="nature">{{localize "Root.Sheet.Traits.Nature"}}</option>
+            <option value="drive">{{localize "Root.Sheet.Traits.Drive"}}</option>
+            <option value="connection">{{localize "Root.Sheet.Traits.Connection"}}</option>
+            <option value="feat">{{localize "Root.Sheet.Traits.Feat"}}</option>
+            {{/select}}
+        </select>
         </div>
     </header>
 
     {{!-- Sheet Body --}}
     <section class="sheet-body">
-        {{editor system.description target="flags.root.traitDescription" button=true owner=owner editable=editable}}
+        {{editor item.flags.root.traitDescription target="flags.root.traitDescription" button=true owner=owner editable=editable}}
     </section>
 </form>
