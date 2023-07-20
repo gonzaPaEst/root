@@ -86,7 +86,9 @@
                 "Feat": "Roguish Feat"
             }
         },
-        "BackgroundTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Where do you call home?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Why are you a vagabond?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Whom have you left behind?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Which faction have you served the most?</strong></p><ul><li>FactionName&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>.</li></ul><p><strong>With which faction have you earned a special enmity?</strong></p><ul><li>FactionName&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>.</li></ul>"
+        "Background": {
+            "CustomTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul>"
+        }
     },
     "PBTA": {
         "Description": "Background",

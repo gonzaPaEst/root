@@ -132,7 +132,7 @@ Hooks.on('createActor', async (actor, options, id) => {
     }
 
     // Add template for background.
-    updates['system.details.biography'] = game.i18n.localize('Root.BackgroundTemplate');
+    updates['system.details.biography'] = game.i18n.localize('Root.Background.CustomTemplate');
 
     // Add to the actor.
     const movesToAdd = moves.map(m => duplicate(m));
@@ -160,7 +160,7 @@ Hooks.on('createActor', async (actor, options, id) => {
       await actor.updateEmbeddedDocuments("Item", sortedMoves);
     }
   }
-
+  
   // Perform updates, if any.
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
@@ -208,122 +208,6 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       let exhaustionLabel = game.i18n.localize("Root.Sheet.NPC.Exhaustion");
       let depletionLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
 
-      // let valueHTML = `<div class="resource">
-      // <label>Automation</label>
-      // <p>Add <input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center;; width: 30px;"> to`
-
-      // let statHTML = ` <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">`
-      // switch(automationStat) {
-      //   case "none": statHTML += `<option value="none" selected="selected">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "charm": statHTML += `<option value="none">---</option>
-      //   <option value="charm" selected="selected">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-			// 	case "cunning": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning" selected="selected">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-			// 	case "finesse": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse" selected="selected">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "luck": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck" selected="selected">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "might": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might" selected="selected">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "injury": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury" selected="selected">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "exhaustion": statHTML += `<option value="none">---</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion" selected="selected">${exhaustionLabel}</option>
-      //   <option value="depletion">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      //   case "depletion": statHTML += `<option value="none">none</option>
-      //   <option value="charm">${charmLabel}</option>
-      //   <option value="cunning">${cunningLabel}</option>
-      //   <option value="finesse">${finesseLabel}</option>
-      //   <option value="luck">${luckLabel}</option>
-      //   <option value="might">${mightLabel}</option>
-      //   <option value="injury">${injuryLabel}</option>
-      //   <option value="exhaustion">${exhaustionLabel}</option>
-      //   <option value="depletion" selected="selected">${depletionLabel}</option>
-      //   </select>
-      //   </div>`
-			// 	break;
-      // }
-
     let automateHTML= `
     <div class="resource">
         <label>Automation</label>
@@ -346,58 +230,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     if (automate) {
       resource.after(automateHTML);
     }
-  };  
-
-  // Update flags in trait sheet
-  // if (item.type == 'root.traits') {
-
-    // let traitDescription = await item.getFlag('root', 'traitDescription');
-    // let description = item.system.description;
-    // if (description != traitDescription) {
-    //   await item.system.updateSource({ 'description': traitDescription })
-    //   item.render(true)
-    // }
-
-    // let natureOption = game.i18n.localize("Root.Sheet.Traits.Nature");
-    // let driveOption = game.i18n.localize("Root.Sheet.Traits.Drive");
-    // let connectionOption = game.i18n.localize("Root.Sheet.Traits.Connection");
-    // let featOption = game.i18n.localize("Root.Sheet.Traits.Feat");
-
-    // let traitType = await item.getFlag('root', 'traitType');
-    // let traitTypeHTML = `<div class="trait-type"> <label class="resource-label">Type:</label> <select name="flags.root.traitType" id="flags.root.traitType" data-dType="String">`
-    //   switch(traitType) {
-    //     case "nature": traitTypeHTML += `<option value="nature" selected="selected">${natureOption}</option>
-    //     <option value="drive">${driveOption}</option>
-    //     <option value="connection">${connectionOption}</option>
-    //     <option value="feat">${featOption}</option>
-    //     </select>
-    //     </div>`
-		// 		break;
-		// 		case "drive": traitTypeHTML += `<option value="nature">${natureOption}</option>
-    //     <option value="drive" selected="selected">${driveOption}</option>
-    //     <option value="connection">${connectionOption}</option>
-    //     <option value="feat">${featOption}</option>
-    //     </select>
-    //     </div>`
-		// 		break;
-		// 		case "connection": traitTypeHTML += `<option value="nature">${natureOption}</option>
-    //     <option value="drive">${driveOption}</option>
-    //     <option value="connection" selected="selected">${connectionOption}</option>
-    //     <option value="feat">${featOption}</option>
-    //     </select>
-    //     </div>`
-		// 		break;	
-    //     case "feat": traitTypeHTML += `<option value="nature">${natureOption}</option>
-    //     <option value="drive">${driveOption}</option>
-    //     <option value="connection">${connectionOption}</option>
-    //     <option value="feat" selected="selected">${featOption}</option>
-    //     </select>
-    //     </div>`
-		// 		break;	
-    //   }
-    // let traitsFind = html.find('.traits')
-    // traitsFind.after(traitTypeHTML);
-  // }
+  };
 
 });
 
@@ -569,6 +402,102 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     `
     let resourcesSection = html.find('div.moves section.sheet-resources');
     resourcesSection.prepend(holdHTML);
+
+    /* ----------------------- */
+    /*      BACKGROUND         */
+    /* ----------------------- */
+    // Add background and details
+    let backgroundLabel = document.querySelector('div.tab.description label');
+    let descriptionEditor = html.find('div.tab.description div.editor');
+    let species = await actor.getFlag('root', 'species') || '';
+    let pronouns = await actor.getFlag('root', 'pronouns') || '';
+    let looks = await actor.getFlag('root', 'looks') || '';
+    let oddities = await actor.getFlag('root', 'oddities') || '';
+    let demeanor = await actor.getFlag('root', 'demeanor') || '';
+    let home = await actor.getFlag('root', 'home') || '';
+    let whyVagabond = await actor.getFlag('root', 'whyVagabond') || '';
+    let leftBehind = await actor.getFlag('root', 'leftBehind') || '';
+    let factionServed = await actor.getFlag('root', 'factionServed') || '';
+    let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
+    let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
+    let defaultLabel = 'Default';
+    let roninLabel = "The Ronin";
+    let chroniclerLabel = "The Chronicler";
+    let exileLabel = "The Exile";
+    let hereticLabel = "The Heretic";
+    let captainLabel = "The Captain";
+    let princeLabel = "The Prince";
+    let raconteurLabel = "The Raconteur";
+    let customLabel = "Custom";
+    let speciesPlaceholder = "species";
+    let pronounsPlaceholder = "pronouns";
+    let looksPlaceholder = "looks";
+    let odditiesPlaceholder = "oddities";
+    let demeanorPlaceholder = "demeanor";
+    let copyPastePlaceholder = "write or copy-paste your answer"
+    let factionPlaceholder = "faction name"
+
+    let vagabondSelect = `<select name="flags.root.vagabondBackground" id="flags.root.vagabondBackground" data-dType="String">
+    <option value="default"${vagabondBackground === 'default' ? ' selected' : ''}>${defaultLabel}</option>
+    <option value="captain"${vagabondBackground === 'captain' ? ' selected' : ''}>${captainLabel}</option>
+    <option value="chronicler"${vagabondBackground === 'chronicler' ? ' selected' : ''}>${chroniclerLabel}</option>
+    <option value="exile"${vagabondBackground === 'exile' ? ' selected' : ''}>${exileLabel}</option>
+    <option value="heretic"${vagabondBackground === 'heretic' ? ' selected' : ''}>${hereticLabel}</option>
+    <option value="prince"${vagabondBackground === 'prince' ? ' selected' : ''}>${princeLabel}</option>
+    <option value="raconteur"${vagabondBackground === 'raconteur' ? ' selected' : ''}>${raconteurLabel}</option>
+    <option value="ronin"${vagabondBackground === 'ronin' ? ' selected' : ''}>${roninLabel}</option>
+    <option value="custom"${vagabondBackground === 'custom' ? ' selected' : ''}>${customLabel}</option>
+    </select>
+    `;
+    // TODO en.json
+    let detailsHTML = `<h3 style='border: none;'>Species</h3>
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.species" value="${species}" placeholder="${speciesPlaceholder}">
+    <hr><h3 style='border: none;'>Details</h3>
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.pronouns" value="${pronouns}" placeholder="${pronounsPlaceholder}">
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.looks" value="${looks}" placeholder="${looksPlaceholder}">
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.oddities" value="${oddities}" placeholder="${odditiesPlaceholder}">
+    <hr><h3 style='border: none;'>Demeanor</h3>
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.demeanor" value="${demeanor}" placeholder="${demeanorPlaceholder}">
+    `;
+
+    let whereIsHomeQuestion = `<hr><h3 style='border: none;'>Background</h3>
+    <h4 style="margin: 8px 0 4px;">Where do you call home?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.home" value="${home}" placeholder="${copyPastePlaceholder}">
+    `
+    let whyVagabondQuestion =`<h4 style="margin: 8px 0 4px;">Why are you a vagabond?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whyVagabond" value="${whyVagabond}" placeholder="${copyPastePlaceholder}">
+    `
+    let leftBehindQuestion =`<h4 style="margin: 8px 0 4px;">Whom have you left behind?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.leftBehind" value="${leftBehind}" placeholder="${copyPastePlaceholder}">
+    `
+    let factionsQuestions =`<h4 style="margin: 8px 0 4px;">Which faction have you served the most?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>
+    <h4 style="margin: 8px 0 4px;">With which faction have you earned a special enmity?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionEnmity" value="${factionEnmity}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>
+    `
+
+    backgroundLabel.insertAdjacentHTML('beforeend', vagabondSelect);
+
+    if (vagabondBackground != 'custom') {
+      descriptionEditor[0].innerHTML = `${detailsHTML}${whereIsHomeQuestion}`
+    }
+    if (vagabondBackground == 'default') {
+      descriptionEditor[0].innerHTML += `${whyVagabondQuestion}${leftBehindQuestion}${factionsQuestions}`
+    } else if (vagabondBackground == 'captain') {
+
+    } else if (vagabondBackground == 'chronicler') {
+
+    } else if (vagabondBackground == 'exile') {
+
+    } else if (vagabondBackground == 'heretic') {
+
+    } else if (vagabondBackground == 'prince') {
+
+    } else if (vagabondBackground == 'raconteur') {
+
+    } else if (vagabondBackground == 'ronin') {
+
+    }
 
     /* ----------------------- */
     /*      REPUTATION         */
