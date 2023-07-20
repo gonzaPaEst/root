@@ -383,7 +383,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
 });
 
-// Add dropped trait item to correct description in actor sheet
+// Handle dropped items in actor sheet
 Hooks.on('dropActorSheetData', async (actor, html, item) => {
   let droppedEntity = await fromUuid(item.uuid);
   let itemName = droppedEntity.name;
@@ -391,6 +391,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   let newTrait = `<p>@UUID[${uuid}]{${itemName}}</p>`;
   let traits = actor.system.attrLeft;
 
+  // Add dropped trait item to correct description in actor sheet
   if (droppedEntity.type === "root.traits") {
     const traitType = droppedEntity.flags.root.traitType;
   
@@ -402,6 +403,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
     }
   }
 
+  // Add points/boxes to stats/resources if automatic stat increment = true
   let automate = await game.settings.get('root', 'automate');
 
   if (automate && droppedEntity.type === 'move') {
@@ -440,6 +442,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   }
 });
 
+// Remove points/boxes to stats/resources if automatic stat increment = true
 Hooks.on('deleteItem', async (item, options, userId, ...args) => {
   const automate = await game.settings.get('root', 'automate');
   const actor = await item.parent;
@@ -488,15 +491,27 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
   if (actor.type == 'character') {
 
-    // Alt+Click to render playbook
+    // Add fa-book and click it to open playbook
     let charPlaybook = document.querySelector('.charplaybook');
-    let name = charPlaybook.defaultValue;
-    // TODO en.json
-    charPlaybook.title = "Press Alt or Option + Click to open playbook.";
+    let faBook = '<i class="fa-solid fa-book"></i>';
+    charPlaybook.insertAdjacentHTML('beforebegin', faBook);
+    const faBookIcon = document.querySelector('.sheet-header__fields .fa-book');
+    faBookIcon.style.filter = 'opacity(0.4)';
+    let name = charPlaybook.value;
+
     if (name != '') {
-      charPlaybook.addEventListener("click", openPlaybook);
+      faBookIcon.style.filter = 'opacity(1)';
+      faBookIcon.addEventListener('mouseover', () => {
+        faBookIcon.style.cursor = 'pointer'; // Change 'pointer' to the desired cursor style
+      });
+      
+      // Reset the cursor style when the mouse leaves the element
+      faBookIcon.addEventListener('mouseout', () => {
+        faBookIcon.style.cursor = 'default'; // Change 'default' to the default cursor style you want
+      });
+      faBookIcon.addEventListener("click", openPlaybook);
       async function openPlaybook(e) {
-        if (e.altKey){
+        // if (e.altKey){
           // Retrieve playbooks in game and then in compendium
           let playbooks = game.items.filter(i => i.type == 'playbook');
           let pack = game.packs.get("root.playbooks")
@@ -518,7 +533,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
               playbook.sheet.render(true);
             };
           };
-        };
+        // };
       };
     };
 

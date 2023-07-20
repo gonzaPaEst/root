@@ -416,3 +416,12 @@ span.mastery {
   grid-column: span 3;
   margin: -4px 0 14px;
 }
+
+.pbta.sheet:not(.npc) .sheet-header__fields {
+  display: flex;
+}
+
+.pbta.sheet .sheet-header__fields i.fa-solid.fa-book {
+  align-self: center;
+  margin: 0 -5px 0 5px;
+}
