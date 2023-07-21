@@ -459,10 +459,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.oddities" value="${oddities}" placeholder="${odditiesPlaceholder}">
     <hr><h3 style='border: none;'>Demeanor</h3>
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.demeanor" value="${demeanor}" placeholder="${demeanorPlaceholder}">
+    <hr><h3 style='border: none;'>Background</h3>
     `;
 
-    let whereIsHomeQuestion = `<hr><h3 style='border: none;'>Background</h3>
-    <h4 style="margin: 8px 0 4px;">Where do you call home?</h4>
+    let whereIsHomeQuestion = `<h4 style="margin: 8px 0 4px;">Where do you call home?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.home" value="${home}" placeholder="${copyPastePlaceholder}">
     `
     let whyVagabondQuestion = `<h4 style="margin: 8px 0 4px;">Why are you a vagabond?</h4>
@@ -483,10 +483,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     backgroundLabel.insertAdjacentHTML('beforeend', vagabondSelect);
 
     if (vagabondBackground != 'custom') {
-      descriptionEditor[0].innerHTML = `${detailsHTML}${whereIsHomeQuestion}`
+      descriptionEditor[0].innerHTML = `${detailsHTML}`
     }
     if (vagabondBackground == 'default') {
-      descriptionEditor[0].innerHTML += `${whyVagabondQuestion}${leftBehindQuestion}${factionsQuestions}`
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${leftBehindQuestion}${factionsQuestions}`
     } else if (vagabondBackground == 'captain') {
 
     } else if (vagabondBackground == 'chronicler') {
@@ -500,7 +500,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     } else if (vagabondBackground == 'raconteur') {
 
     } else if (vagabondBackground == 'ronin') {
-      descriptionEditor[0].innerHTML += `${whyVagabondQuestion}${lastMasterQuestion}${factionsQuestions}`
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${lastMasterQuestion}${factionsQuestions}`
     }
 
     /* ----------------------- */
