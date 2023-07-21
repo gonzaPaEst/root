@@ -417,6 +417,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let home = await actor.getFlag('root', 'home') || '';
     let whyVagabond = await actor.getFlag('root', 'whyVagabond') || '';
     let leftBehind = await actor.getFlag('root', 'leftBehind') || '';
+    let lastMaster = await actor.getFlag('root', 'lastMaster') || '';
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
@@ -464,13 +465,16 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <h4 style="margin: 8px 0 4px;">Where do you call home?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.home" value="${home}" placeholder="${copyPastePlaceholder}">
     `
-    let whyVagabondQuestion =`<h4 style="margin: 8px 0 4px;">Why are you a vagabond?</h4>
+    let whyVagabondQuestion = `<h4 style="margin: 8px 0 4px;">Why are you a vagabond?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whyVagabond" value="${whyVagabond}" placeholder="${copyPastePlaceholder}">
     `
-    let leftBehindQuestion =`<h4 style="margin: 8px 0 4px;">Whom have you left behind?</h4>
+    let leftBehindQuestion = `<h4 style="margin: 8px 0 4px;">Whom have you left behind?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.leftBehind" value="${leftBehind}" placeholder="${copyPastePlaceholder}">
     `
-    let factionsQuestions =`<h4 style="margin: 8px 0 4px;">Which faction have you served the most?</h4>
+    let lastMasterQuestion = `<h4 style="margin: 8px 0 4px;">What happened to your last master?</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.lastMaster" value="${lastMaster}" placeholder="${copyPastePlaceholder}">
+    `
+    let factionsQuestions = `<h4 style="margin: 8px 0 4px;">Which faction have you served the most?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>
     <h4 style="margin: 8px 0 4px;">With which faction have you earned a special enmity?</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionEnmity" value="${factionEnmity}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>
@@ -496,7 +500,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     } else if (vagabondBackground == 'raconteur') {
 
     } else if (vagabondBackground == 'ronin') {
-
+      descriptionEditor[0].innerHTML += `${whyVagabondQuestion}${lastMasterQuestion}${factionsQuestions}`
     }
 
     /* ----------------------- */
