@@ -83,11 +83,37 @@
                 "Nature": "Nature",
                 "Drive": "Drive",
                 "Connection": "Connection",
-                "Feat": "Roguish Feat"
+                "Feat": "Roguish Feat",
+                "Automation": "Automation"
             }
         },
         "Background": {
-            "CustomTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul>"
+            "Default": "Default",
+            "Ronin": "The Ronin",
+            "Chronicler": "The Chronicler",
+            "Exile": "The Exile",
+            "Heretic": "The Heretic",
+            "Captain": "The Captain",
+            "Prince": "The Prince",
+            "Raconteur": "The Raconteur",
+            "Custom": "Custom",
+            "Details": "Details",
+            "Species": "Species",
+            "Pronouns": "pronouns",
+            "Looks": "looks",
+            "Oddities": "oddities",
+            "Demeanor": "Demeanor",
+            "Background": "Background",
+            "Faction": "faction name",
+            "CustomTemplate": "<h3 style='border: none;'>Species</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Details</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Demeanor</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Background</h3><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul><p><strong>Question?</strong></p><ul><li>&nbsp;</li></ul>",
+            "WhereIsHome": "Where do you call home?",
+            "WhyVagabond": "Why are you a vagabond?",
+            "LeftBehind": "Whom have you left behind?",
+            "LastMaster": "What happened to your last master?",
+            "FactionServed": "Which faction have you served the most?",
+            "MarkPrestige": "&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group",
+            "FactionEnmity": "With which faction have you earned a special enmity?",
+            "MarkNotoriety": "&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group"
         }
     },
     "PBTA": {

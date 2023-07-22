@@ -6,7 +6,7 @@
   min-width: 770px;
 }
 
-.pbta.sheet.npc {
+.pbta.sheet:is(.npc, .class) {
   min-width: 650px;
 }
 

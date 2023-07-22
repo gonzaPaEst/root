@@ -13,14 +13,14 @@
   "compatibleCoreVersion": "11",
   "compatibility": {
     "minimum": "11",
-    "verified": "11.305"
+    "verified": "11.306"
   },
   "relationships": {
     "systems": [
         {
             "id": "pbta",
             "type": "system",
-            "manifest": "https://asacolips-artifacts.s3.amazonaws.com/pbta/0.7.0/system.json",
+            "manifest": "https://asacolips-artifacts.s3.amazonaws.com/pbta/master/system.json",
             "compatibility": {
                 "verified": "0.7.2"
             }
@@ -470,6 +470,6 @@
     }
   ],
   "url": "https://github.com/gonzaPaEst/root",
-  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/beta/module.json",
-  "download": "https://github.com/gonzaPaEst/root/releases/download/beta/module.zip"
+  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1/module.json",
+  "download": "https://github.com/gonzaPaEst/root/releases/download/v1/module.zip"
 }

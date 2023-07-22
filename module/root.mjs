@@ -207,10 +207,11 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       let injuryLabel = game.i18n.localize("Root.Sheet.NPC.Injury");
       let exhaustionLabel = game.i18n.localize("Root.Sheet.NPC.Exhaustion");
       let depletionLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
+      let automationLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
 
     let automateHTML= `
     <div class="resource">
-        <label>Automation</label>
+        <label>${automationLabel}</label>
         <p><i class="fa-solid fa-plus"></i><input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center; width: 30px;"> 
         <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">
             <option value="none"${automationStat === 'none' ? ' selected' : ''}>---</option>
@@ -421,22 +422,31 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
-    let defaultLabel = 'Default';
-    let roninLabel = "The Ronin";
-    let chroniclerLabel = "The Chronicler";
-    let exileLabel = "The Exile";
-    let hereticLabel = "The Heretic";
-    let captainLabel = "The Captain";
-    let princeLabel = "The Prince";
-    let raconteurLabel = "The Raconteur";
-    let customLabel = "Custom";
-    let speciesPlaceholder = "species";
-    let pronounsPlaceholder = "pronouns";
-    let looksPlaceholder = "looks";
-    let odditiesPlaceholder = "oddities";
-    let demeanorPlaceholder = "demeanor";
-    let copyPastePlaceholder = "write or copy-paste your answer"
-    let factionPlaceholder = "faction name"
+    let defaultLabel = game.i18n.localize('Root.Background.Default');
+    let roninLabel = game.i18n.localize('Root.Background.Ronin');
+    let chroniclerLabel = game.i18n.localize('Root.Background.Chronicler');
+    let exileLabel = game.i18n.localize('Root.Background.Exile');
+    let hereticLabel = game.i18n.localize('Root.Background.Heretic');
+    let captainLabel = game.i18n.localize('Root.Background.Captain');
+    let princeLabel = game.i18n.localize('Root.Background.Prince');
+    let raconteurLabel = game.i18n.localize('Root.Background.Raconteur');
+    let customLabel = game.i18n.localize('Root.Background.Custom');
+    let detailsHeading = game.i18n.localize('Root.Background.Details');
+    let speciesHeading = game.i18n.localize('Root.Background.Species');
+    let pronounsPlaceholder = game.i18n.localize('Root.Background.Pronouns');
+    let looksPlaceholder = game.i18n.localize('Root.Background.Looks');
+    let odditiesPlaceholder = game.i18n.localize('Root.Background.Oddities');
+    let demeanorHeading = game.i18n.localize('Root.Background.Demeanor');
+    let backgroundHeading = game.i18n.localize('Root.Background.Background');
+    let factionPlaceholder = game.i18n.localize('Root.Background.Faction');
+    let whereIsHomeText = game.i18n.localize('Root.Background.WhereIsHome');
+    let whyVagabondText = game.i18n.localize('Root.Background.WhyVagabond');
+    let leftBehindText = game.i18n.localize('Root.Background.LeftBehind');
+    let lastMasterText = game.i18n.localize('Root.Background.LastMaster');
+    let factionServedText = game.i18n.localize('Root.Background.FactionServed');
+    let markPrestigeText = game.i18n.localize('Root.Background.MarkPrestige');
+    let factionEnmityText = game.i18n.localize('Root.Background.FactionEnmity');
+    let markNotorietyText = game.i18n.localize('Root.Background.MarkNotoriety');
 
     let vagabondSelect = `<select name="flags.root.vagabondBackground" id="flags.root.vagabondBackground" data-dType="String">
     <option value="default"${vagabondBackground === 'default' ? ' selected' : ''}>${defaultLabel}</option>
@@ -451,33 +461,33 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     </select>
     `;
     // TODO en.json
-    let detailsHTML = `<h3 style='border: none;'>Species</h3>
-    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.species" value="${species}" placeholder="${speciesPlaceholder}">
-    <hr><h3 style='border: none;'>Details</h3>
+    let detailsHTML = `<h3 style='border: none;'>${speciesHeading}</h3>
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.species" value="${species}">
+    <hr><h3 style='border: none;'>${detailsHeading}</h3>
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.pronouns" value="${pronouns}" placeholder="${pronounsPlaceholder}">
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.looks" value="${looks}" placeholder="${looksPlaceholder}">
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.oddities" value="${oddities}" placeholder="${odditiesPlaceholder}">
-    <hr><h3 style='border: none;'>Demeanor</h3>
-    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.demeanor" value="${demeanor}" placeholder="${demeanorPlaceholder}">
-    <hr><h3 style='border: none;'>Background</h3>
+    <hr><h3 style='border: none;'>${demeanorHeading}</h3>
+    <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.demeanor" value="${demeanor}">
+    <hr><h3 style='border: none;'>${backgroundHeading}</h3>
     `;
 
-    let whereIsHomeQuestion = `<h4 style="margin: 8px 0 4px;">Where do you call home?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.home" value="${home}" placeholder="${copyPastePlaceholder}">
+    let whereIsHomeQuestion = `<h4 style="margin: 8px 0 4px;">${whereIsHomeText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.home" value="${home}">
     `
-    let whyVagabondQuestion = `<h4 style="margin: 8px 0 4px;">Why are you a vagabond?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whyVagabond" value="${whyVagabond}" placeholder="${copyPastePlaceholder}">
+    let whyVagabondQuestion = `<h4 style="margin: 8px 0 4px;">${whyVagabondText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whyVagabond" value="${whyVagabond}">
     `
-    let leftBehindQuestion = `<h4 style="margin: 8px 0 4px;">Whom have you left behind?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.leftBehind" value="${leftBehind}" placeholder="${copyPastePlaceholder}">
+    let leftBehindQuestion = `<h4 style="margin: 8px 0 4px;">${leftBehindText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.leftBehind" value="${leftBehind}">
     `
-    let lastMasterQuestion = `<h4 style="margin: 8px 0 4px;">What happened to your last master?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.lastMaster" value="${lastMaster}" placeholder="${copyPastePlaceholder}">
+    let lastMasterQuestion = `<h4 style="margin: 8px 0 4px;">${lastMasterText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.lastMaster" value="${lastMaster}">
     `
-    let factionsQuestions = `<h4 style="margin: 8px 0 4px;">Which faction have you served the most?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>
-    <h4 style="margin: 8px 0 4px;">With which faction have you earned a special enmity?</h4>
-    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionEnmity" value="${factionEnmity}" placeholder="${factionPlaceholder}">&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>
+    let factionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionServedText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">${markPrestigeText}</em>
+    <h4 style="margin: 8px 0 4px;">${factionEnmityText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionEnmity" value="${factionEnmity}" placeholder="${factionPlaceholder}">${markNotorietyText}</em>
     `
 
     backgroundLabel.insertAdjacentHTML('beforeend', vagabondSelect);
