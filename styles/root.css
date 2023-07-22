@@ -10,12 +10,12 @@
   min-width: 650px;
 }
 
-.pbta.sheet.actor section.window-content {
-background-color: #F0EBD5;
-  color: #323427;
+.pbta.sheet section.window-content {
+  background-color: #F0EBD5;
+  color: #23241b;
 }
 
-.pbta.sheet.actor section.window-content::-webkit-scrollbar-thumb {
+.pbta.sheet section.window-content::-webkit-scrollbar-thumb {
   background: #444635;
   border-color: #71745e;
 }
@@ -25,47 +25,47 @@ background-color: #F0EBD5;
 }
 
 .pbta.sheet :is(.cell.cell--attributes-top, .cell.cell--attributes-left) label.cell__title {
-justify-content: center;
+  justify-content: center;
 }
 
 .pbta.sheet .cell.cell--attributes-top p.cell__description.cell__description--attr {
-text-align: center;
+  text-align: center;
 }
 
 .pbta.sheet:not(.npc) .sheet-wrapper :is(.sheet-attributes-top, .sheet-attributes-top .cell--attributes-top .cell) {
-padding: 0;
+  padding: 0;
 }
 
 .pbta.sheet .cell__title {
-color: #323427;
-  border-bottom-color: #323427;
+  color: #23241b;
+  border-bottom-color: #23241b;
 }
 
-.pbta.sheet section.sheet-main nav.sheet-tabs.tabs {
-  border-bottom-color: #323427;
+.pbta.sheet :is(section.sheet-main, form.item-form) nav.sheet-tabs.tabs {
+  border-bottom-color: #23241b;
 }
 
-.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item {
-background: #323427;
-  border-color: #323427;
+.pbta.sheet :is(section.sheet-main, form.item-form) nav.sheet-tabs.tabs a.item {
+  background: #23241b;
+  border-color: #23241b;
 }
 
-.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item.active {
-background: #919382;
+.pbta.sheet :is(section.sheet-main, form.item-form) nav.sheet-tabs.tabs a.item.active {
+  background: #919382;
 }
 
-.pbta.sheet section.sheet-main nav.sheet-tabs.tabs a.item:hover {
-background: #fff;
+.pbta.sheet :is(section.sheet-main, form.item-form) nav.sheet-tabs.tabs a.item:hover {
+  background: #fff;
 }
 
 /* Stat Styles and Animation */
 
 .pbta.sheet .sheet-attributes .cell--stats .stat {
-background: #444635;
+  background: #444635;
 }
 
 .pbta.sheet .sheet-attributes .cell--stats .stat:hover {
-background: #71745e;
+  background: #71745e;
 }
 
 @keyframes rollDice {
@@ -133,7 +133,7 @@ background: #71745e;
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol label {
-  color: #323427;
+  color: #23241b;
 }
 
 .pbta.sheet .cell.cell--attributes-top ul.cell__checkboxes.flexcol input {
@@ -365,7 +365,7 @@ display: inline;
 /* Equipment & Load */
 
 .pbta.sheet .cell.cell--attributes-left .cell.cell--startingvalue.cell--attr-startingvalue.cell--Number p.cell__description.cell__description--attr {
-  color: #323427;
+  color: #23241b;
   display: inline;
   font: 14px "Roboto Condensed", sans-serif;
   margin: 0 0 0 4px;
@@ -374,7 +374,7 @@ display: inline;
 
 .pbta.sheet .cell.cell--attributes-left :is(.cell.cell--carrying.cell--attr-carrying.cell--Number, .cell.cell--burdened.cell--attr-burdened.cell--Number, .cell.cell--max.cell--attr-max.cell--Number) label {
   border: none;
-  color: #323427;
+  color: #23241b;
   display: inline;
   font-size: 14px;
   font-weight: normal;
