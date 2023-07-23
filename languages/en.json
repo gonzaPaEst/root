@@ -111,6 +111,8 @@
             "LeftBehind": "Whom have you left behind?",
             "LastMaster": "What happened to your last master?",
             "LoveHistory": "Who inspired your love of history?",
+            "FallCause": "What caused your fall?",
+            "WhyExiled": "Why were you exiled (not killed)?",
             "FactionServed": "Which faction have you served the most?",
             "MarkPrestige": "&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group",
             "FactionEnmity": "With which faction have you earned a special enmity?",
