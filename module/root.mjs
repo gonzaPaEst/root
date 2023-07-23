@@ -419,6 +419,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let whyVagabond = await actor.getFlag('root', 'whyVagabond') || '';
     let leftBehind = await actor.getFlag('root', 'leftBehind') || '';
     let lastMaster = await actor.getFlag('root', 'lastMaster') || '';
+    let loveHistory = await actor.getFlag('root', 'loveHistory') || '';
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
@@ -427,7 +428,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let chroniclerLabel = game.i18n.localize('Root.Background.Chronicler');
     let exileLabel = game.i18n.localize('Root.Background.Exile');
     let hereticLabel = game.i18n.localize('Root.Background.Heretic');
-    let captainLabel = game.i18n.localize('Root.Background.Captain');
+    let pirateLabel = game.i18n.localize('Root.Background.Pirate');
     let princeLabel = game.i18n.localize('Root.Background.Prince');
     let raconteurLabel = game.i18n.localize('Root.Background.Raconteur');
     let customLabel = game.i18n.localize('Root.Background.Custom');
@@ -443,6 +444,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let whyVagabondText = game.i18n.localize('Root.Background.WhyVagabond');
     let leftBehindText = game.i18n.localize('Root.Background.LeftBehind');
     let lastMasterText = game.i18n.localize('Root.Background.LastMaster');
+    let loveHistoryText = game.i18n.localize('Root.Background.LoveHistory');
     let factionServedText = game.i18n.localize('Root.Background.FactionServed');
     let markPrestigeText = game.i18n.localize('Root.Background.MarkPrestige');
     let factionEnmityText = game.i18n.localize('Root.Background.FactionEnmity');
@@ -450,10 +452,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let vagabondSelect = `<select name="flags.root.vagabondBackground" id="flags.root.vagabondBackground" data-dType="String">
     <option value="default"${vagabondBackground === 'default' ? ' selected' : ''}>${defaultLabel}</option>
-    <option value="captain"${vagabondBackground === 'captain' ? ' selected' : ''}>${captainLabel}</option>
     <option value="chronicler"${vagabondBackground === 'chronicler' ? ' selected' : ''}>${chroniclerLabel}</option>
     <option value="exile"${vagabondBackground === 'exile' ? ' selected' : ''}>${exileLabel}</option>
     <option value="heretic"${vagabondBackground === 'heretic' ? ' selected' : ''}>${hereticLabel}</option>
+    <option value="pirate"${vagabondBackground === 'pirate' ? ' selected' : ''}>${pirateLabel}</option>
     <option value="prince"${vagabondBackground === 'prince' ? ' selected' : ''}>${princeLabel}</option>
     <option value="raconteur"${vagabondBackground === 'raconteur' ? ' selected' : ''}>${raconteurLabel}</option>
     <option value="ronin"${vagabondBackground === 'ronin' ? ' selected' : ''}>${roninLabel}</option>
@@ -484,6 +486,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let lastMasterQuestion = `<h4 style="margin: 8px 0 4px;">${lastMasterText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.lastMaster" value="${lastMaster}">
     `
+    let loveHistoryQuestion = `<h4 style="margin: 8px 0 4px;">${loveHistoryText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.loveHistory" value="${loveHistory}">
+    `
     let factionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionServedText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">${markPrestigeText}</em>
     <h4 style="margin: 8px 0 4px;">${factionEnmityText}</h4>
@@ -497,13 +502,14 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     }
     if (vagabondBackground == 'default') {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${leftBehindQuestion}${factionsQuestions}`
-    } else if (vagabondBackground == 'captain') {
-
     } else if (vagabondBackground == 'chronicler') {
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${loveHistoryQuestion}${factionsQuestions}`
 
     } else if (vagabondBackground == 'exile') {
 
     } else if (vagabondBackground == 'heretic') {
+
+    } else if (vagabondBackground == 'pirate') {
 
     } else if (vagabondBackground == 'prince') {
 
