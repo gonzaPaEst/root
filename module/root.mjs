@@ -207,7 +207,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       let injuryLabel = game.i18n.localize("Root.Sheet.NPC.Injury");
       let exhaustionLabel = game.i18n.localize("Root.Sheet.NPC.Exhaustion");
       let depletionLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
-      let automationLabel = game.i18n.localize("Root.Sheet.NPC.Depletion");
+      let automationLabel = game.i18n.localize("Root.Sheet.Traits.Automation");
 
     let automateHTML= `
     <div class="resource">
