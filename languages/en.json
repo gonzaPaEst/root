@@ -113,10 +113,18 @@
             "LoveHistory": "Who inspired your love of history?",
             "FallCause": "What caused your fall?",
             "WhyExiled": "Why were you exiled (not killed)?",
+            "FactionExiled": "Which faction exiled you?",
+            "Minus2Reputation": "&nbsp;&mdash;&nbsp;<em>set your reputation with them to -2</em>",
+            "FactionLoyalty": "Which faction now seeks your loyalty or allegiance?",
+            "Plus1Reputation": "&nbsp;&mdash;&nbsp;<em>set your reputation with them to +1</em>",
+            "FuntamentalTenets": "What are the fundamental tenets of your cause? <em>(Pick 2)</em>",
+            "FactionHate": "Which faction is known to hate those who share your cause?",
+            "Minus1Reputation": "&nbsp;&mdash;&nbsp;<em>set your reputation with them to -1</em>",
+            "FactionHarbor": "Which faction is known to harbor those who share your cause?",
             "FactionServed": "Which faction have you served the most?",
-            "MarkPrestige": "&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group",
+            "MarkPrestige": "&nbsp;&mdash;&nbsp;<em>mark two prestige for approgriate group</em>",
             "FactionEnmity": "With which faction have you earned a special enmity?",
-            "MarkNotoriety": "&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group"
+            "MarkNotoriety": "&nbsp;&mdash;&nbsp;<em>mark one notoriety for appropriate group</em>"
         }
     },
     "PBTA": {

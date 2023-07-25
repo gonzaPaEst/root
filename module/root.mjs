@@ -420,6 +420,13 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let leftBehind = await actor.getFlag('root', 'leftBehind') || '';
     let lastMaster = await actor.getFlag('root', 'lastMaster') || '';
     let loveHistory = await actor.getFlag('root', 'loveHistory') || '';
+    let fallCause = await actor.getFlag('root', 'fallCause') || '';
+    let whyExiled = await actor.getFlag('root', 'whyExiled') || '';
+    let factionExiled = await actor.getFlag('root', 'factionExiled') || '';
+    let factionLoyalty = await actor.getFlag('root', 'factionLoyalty') || '';
+    let fundamentalTenets = await actor.getFlag('root', 'fundamentalTenets') || '';
+    let factionHate = await actor.getFlag('root', 'factionHate') || '';
+    let factionHarbor = await actor.getFlag('root', 'factionHarbor') || '';
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
@@ -445,6 +452,16 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let leftBehindText = game.i18n.localize('Root.Background.LeftBehind');
     let lastMasterText = game.i18n.localize('Root.Background.LastMaster');
     let loveHistoryText = game.i18n.localize('Root.Background.LoveHistory');
+    let fallCauseText = game.i18n.localize('Root.Background.FallCause');
+    let whyExiledText = game.i18n.localize('Root.Background.WhyExiled');
+    let factionExiledText = game.i18n.localize('Root.Background.FactionExiled');
+    let minus2RepText = game.i18n.localize('Root.Background.Minus2Reputation');
+    let factionLoyaltyText = game.i18n.localize('Root.Background.FactionLoyalty');
+    let plus1RepText = game.i18n.localize('Root.Background.Plus1Reputation');
+    let fundamentalTenetsText = game.i18n.localize('Root.Background.FuntamentalTenets');
+    let factionHateText = game.i18n.localize('Root.Background.FactionHate');
+    let minus1RepText = game.i18n.localize('Root.Background.Minus1Reputation');
+    let factionHarborText = game.i18n.localize('Root.Background.FactionHarbor');
     let factionServedText = game.i18n.localize('Root.Background.FactionServed');
     let markPrestigeText = game.i18n.localize('Root.Background.MarkPrestige');
     let factionEnmityText = game.i18n.localize('Root.Background.FactionEnmity');
@@ -489,6 +506,25 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let loveHistoryQuestion = `<h4 style="margin: 8px 0 4px;">${loveHistoryText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.loveHistory" value="${loveHistory}">
     `
+    let fallCauseQuestion = `<h4 style="margin: 8px 0 4px;">${fallCauseText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.fallCause" value="${fallCause}">
+    `
+    let whyExiledQuestion = `<h4 style="margin: 8px 0 4px;">${whyExiledText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whyExiled" value="${whyExiled}">
+    `
+    let exileFactionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionExiledText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionExiled" value="${factionExiled}" placeholder="${factionPlaceholder}">${minus2RepText}</em>
+    <h4 style="margin: 8px 0 4px;">${factionLoyaltyText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionLoyalty" value="${factionLoyalty}" placeholder="${factionPlaceholder}">${plus1RepText}</em>
+    `
+    let fundamentalTenetsQuestion = `<h4 style="margin: 8px 0 4px;">${fundamentalTenetsText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.fundamentalTenets" value="${fundamentalTenets}">
+    `
+    let hereticFactionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionHateText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionHate" value="${factionHate}" placeholder="${factionPlaceholder}">${minus1RepText}</em>
+    <h4 style="margin: 8px 0 4px;">${factionHarborText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionHarbor" value="${factionHarbor}" placeholder="${factionPlaceholder}">${plus1RepText}</em>
+    `
     let factionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionServedText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">${markPrestigeText}</em>
     <h4 style="margin: 8px 0 4px;">${factionEnmityText}</h4>
@@ -504,11 +540,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${leftBehindQuestion}${factionsQuestions}`
     } else if (vagabondBackground == 'chronicler') {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${loveHistoryQuestion}${factionsQuestions}`
-
     } else if (vagabondBackground == 'exile') {
-
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${fallCauseQuestion}${whyExiledQuestion}${whyVagabondQuestion}${exileFactionsQuestions}`
     } else if (vagabondBackground == 'heretic') {
-
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${fundamentalTenetsQuestion}${whyVagabondQuestion}${leftBehindQuestion}${hereticFactionsQuestions}`
     } else if (vagabondBackground == 'pirate') {
 
     } else if (vagabondBackground == 'prince') {
