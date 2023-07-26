@@ -287,7 +287,7 @@ background: rgb(255,255,255,0.4);
 }
 
 .pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"], input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
-appearance: none;
+  appearance: none;
   background: none;
   border: none;
   position: absolute;
@@ -341,7 +341,7 @@ z-index: 1;
 }
 
 .pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.1.value"], input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.1.value"], input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.1.value"], input[name="system.attrLeft.resource.options.8.values.3.value"], input[name="system.attrLeft.resource.options.8.values.5.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
-display: none;
+  display: none;
   position: absolute;
   transform: translate(87.5px, -13px);
 }
@@ -424,4 +424,16 @@ span.mastery {
 .pbta.sheet .sheet-header__fields i.fa-solid.fa-book {
   align-self: center;
   margin: 0 -5px 0 5px;
+}
+
+.pbta.sheet.item :is(input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.box8"], input[name="flags.root.itemWear.addBox2"], input[name="flags.root.itemWear.addBox3"], input[name="flags.root.itemWear.addBox4"], input[name="flags.root.itemWear.addBox5"], input[name="flags.root.itemWear.addBox6"], input[name="flags.root.itemWear.addBox7"], input[name="flags.root.itemWear.addBox8"]) {
+  display: none;
+}
+
+.pbta.sheet.item :is(input[name="flags.root.itemWear.addBox2"]:checked + input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.addBox3"]:checked + input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.addBox4"]:checked + input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.addBox5"]:checked + input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.addBox6"]:checked + input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.addBox7"]:checked + input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.addBox8"]:checked + input[name="flags.root.itemWear.box8"]) {
+  display: inline;
+}
+
+.pbta.sheet.item :is(.fa-plus-square, .fa-minus-square):hover {
+  cursor: pointer;
 }

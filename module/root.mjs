@@ -233,6 +233,70 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
   };
 
+  // Find if item is move
+  if (item.type == 'equipment') {
+    let uses = html.find('input[name="system.uses"]');
+    let usesDiv = uses.closest('div.resource');
+    console.log(item)
+    let wearOne = await item.getFlag('root', 'itemWear.box1') || false;
+    let addWearTwo = await item.getFlag('root', 'itemWear.addBox2') || false;
+    let wearTwo = await item.getFlag('root', 'itemWear.box2') || false;
+    let addWearThree = await item.getFlag('root', 'itemWear.addBox3') || false;
+    let wearThree = await item.getFlag('root', 'itemWear.box3') || false;
+    let addWearFour = await item.getFlag('root', 'itemWear.addBox4') || false;
+    let wearFour = await item.getFlag('root', 'itemWear.box4') || false;
+    let addWearFive = await item.getFlag('root', 'itemWear.addBox5') || false;
+    let wearFive = await item.getFlag('root', 'itemWear.box5') || false;
+    let addWearSix = await item.getFlag('root', 'itemWear.addBox6') || false;
+    let wearSix = await item.getFlag('root', 'itemWear.box6') || false;
+    let addWearSeven = await item.getFlag('root', 'itemWear.addBox7') || false;
+    let wearSeven = await item.getFlag('root', 'itemWear.box7') || false;
+    let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
+    let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
+    let wearBoxes = `<label>Wear</label> <i class="far fa-plus-square"></i> <i class="far fa-minus-square"></i>
+    <br><div style="position: relative;"><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}></div>`
+    usesDiv[0].innerHTML = wearBoxes
+    let faPlus = document.querySelector('.fa-plus-square');
+    let faMinus = document.querySelector('.fa-minus-square');
+    
+    faPlus.addEventListener('click', async function(event) {
+      if (addWearTwo == false) {
+        addWearTwo = await item.setFlag('root', 'itemWear.addBox2', true);
+      } else if (addWearThree == false) {
+        addWearThree = await item.setFlag('root', 'itemWear.addBox3', true);
+      } else if (addWearFour == false) {
+        addWearFour = await item.setFlag('root', 'itemWear.addBox4', true);
+      } else if (addWearFive == false) {
+        addWearFive = await item.setFlag('root', 'itemWear.addBox5', true);
+      } else if (addWearSix == false) {
+        addWearSix = await item.setFlag('root', 'itemWear.addBox6', true);
+      } else if (addWearSeven == false) {
+        addWearSeven = await item.setFlag('root', 'itemWear.addBox7', true);
+      } else if (addWearEight == false) {
+        addWearEight = await item.setFlag('root', 'itemWear.addBox8', true);
+      }
+    });
+
+    faMinus.addEventListener('click', async function(event) {
+       if (addWearEight == true) {
+        addWearEight = await item.setFlag('root', 'itemWear.addBox8', false);
+      } else if (addWearSeven == true) {
+        addWearSeven = await item.setFlag('root', 'itemWear.addBox7', false);
+      } else if (addWearSix == true) {
+        addWearSix = await item.setFlag('root', 'itemWear.addBox6', false);
+      } else if (addWearFive == true) {
+        addWearFive = await item.setFlag('root', 'itemWear.addBox5', false);
+      } else if (addWearFour == true) {
+        addWearFour = await item.setFlag('root', 'itemWear.addBox4', false);
+      } else if (addWearThree == true) {
+        addWearThree = await item.setFlag('root', 'itemWear.addBox3', false);
+      } else if (addWearTwo == true) {
+        addWearTwo = await item.setFlag('root', 'itemWear.addBox2', false);
+      }
+    });
+
+  }
+
 });
 
 // Handle dropped items in actor sheet
@@ -420,6 +484,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let leftBehind = await actor.getFlag('root', 'leftBehind') || '';
     let lastMaster = await actor.getFlag('root', 'lastMaster') || '';
     let loveHistory = await actor.getFlag('root', 'loveHistory') || '';
+    let captain = await actor.getFlag('root', 'captain') || '';
     let fallCause = await actor.getFlag('root', 'fallCause') || '';
     let whyExiled = await actor.getFlag('root', 'whyExiled') || '';
     let factionExiled = await actor.getFlag('root', 'factionExiled') || '';
@@ -452,6 +517,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let leftBehindText = game.i18n.localize('Root.Background.LeftBehind');
     let lastMasterText = game.i18n.localize('Root.Background.LastMaster');
     let loveHistoryText = game.i18n.localize('Root.Background.LoveHistory');
+    let captainText = game.i18n.localize('Root.Background.Captain');
     let fallCauseText = game.i18n.localize('Root.Background.FallCause');
     let whyExiledText = game.i18n.localize('Root.Background.WhyExiled');
     let factionExiledText = game.i18n.localize('Root.Background.FactionExiled');
@@ -506,6 +572,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let loveHistoryQuestion = `<h4 style="margin: 8px 0 4px;">${loveHistoryText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.loveHistory" value="${loveHistory}">
     `
+    let captainQuestion = `<h4 style="margin: 8px 0 4px;">${captainText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.captain" value="${captain}">
+    `
     let fallCauseQuestion = `<h4 style="margin: 8px 0 4px;">${fallCauseText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.fallCause" value="${fallCause}">
     `
@@ -545,7 +614,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     } else if (vagabondBackground == 'heretic') {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${fundamentalTenetsQuestion}${whyVagabondQuestion}${leftBehindQuestion}${hereticFactionsQuestions}`
     } else if (vagabondBackground == 'pirate') {
-
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${captainQuestion}${factionsQuestions}`
     } else if (vagabondBackground == 'prince') {
 
     } else if (vagabondBackground == 'raconteur') {
