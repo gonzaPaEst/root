@@ -237,7 +237,6 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   if (item.type == 'equipment') {
     let uses = html.find('input[name="system.uses"]');
     let usesDiv = uses.closest('div.resource');
-    console.log(item)
     let wearOne = await item.getFlag('root', 'itemWear.box1') || false;
     let addWearTwo = await item.getFlag('root', 'itemWear.addBox2') || false;
     let wearTwo = await item.getFlag('root', 'itemWear.box2') || false;
@@ -254,7 +253,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
     let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
     let wearBoxes = `<label>Wear</label> <i class="far fa-plus-square"></i> <i class="far fa-minus-square"></i>
-    <br><div style="position: relative;"><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}></div>`
+    <br><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
     let faPlus = document.querySelector('.fa-plus-square');
     let faMinus = document.querySelector('.fa-minus-square');
@@ -295,7 +294,15 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       }
     });
 
-  }
+    if (item.system.playbook == 'The Pirate' && item.system.tags.includes('stocked')) {
+      let depletionOne = await item.getFlag('root', 'itemDepletion.box1') || false;
+      let depletionTwo = await item.getFlag('root', 'itemDepletion.box2') || false;
+      let depletionBoxes = `<hr><div class="resources"><label>Depletion</label>
+      <br><input type="checkbox" name="flags.root.itemDepletion.box1" data-dtype="Boolean" ${depletionOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemDepletion.box2" data-dtype="Boolean" ${depletionTwo ? 'checked' : ''}>`
+      usesDiv[0].insertAdjacentHTML('beforeend', depletionBoxes)
+    };
+    
+  };
 
 });
 
