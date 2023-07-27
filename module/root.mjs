@@ -418,6 +418,42 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
   let actor = app.actor;
 
+  // Remove checking when clicking on label
+  let labels = document.querySelectorAll('.cell.cell--reputation.cell--attr-reputation.cell--ListMany ul label, .cell.cell--resource.cell--attr-resource.cell--ListMany ul label, .pbta.sheet.npc .cell.cell--attributes-top ul label');
+
+    for (let label of labels) {
+      label.addEventListener('click', function(event) {
+        // Allow the default behavior for inputs
+        if (event.target.tagName === 'INPUT') {
+          return;
+        }
+        // Prevent the default behavior for the label
+        event.preventDefault();
+        event.stopPropagation();
+      });
+    }
+
+  // Make checkbox increments behave like clocks
+  function handleCheckboxIncrements(checkboxArrays) {
+    checkboxArrays.forEach((checkbox, index) => {
+      checkbox.change(function() {
+        const isChecked = $(this).is(':checked');
+        
+        if (isChecked) {
+          // Check all the following checkboxes
+          checkboxArrays.slice(index + 1).forEach((followingCheckbox) => {
+            followingCheckbox.prop('checked', true);
+          });
+        } else {
+          // Uncheck all the preceding checkboxes
+          checkboxArrays.slice(0, index).forEach((precedingCheckbox) => {
+            precedingCheckbox.prop('checked', false);
+          });
+        }
+      });
+    });
+  }
+
   if (actor.type == 'character') {
 
     // Add fa-book and click it to open playbook
@@ -634,20 +670,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     /*      REPUTATION         */
     /* ----------------------- */
     // Handle reputations' bonuses (only one can be selected per faction)
-
-    let labels = document.querySelectorAll('.cell.cell--reputation.cell--attr-reputation.cell--ListMany ul label, .cell.cell--resource.cell--attr-resource.cell--ListMany ul label');
-
-    for (let label of labels) {
-      label.addEventListener('click', function(event) {
-        // Allow the default behavior for inputs
-        if (event.target.tagName === 'INPUT') {
-          return;
-        }
-        // Prevent the default behavior for the label
-        event.preventDefault();
-        event.stopPropagation();
-      });
-    }
     
     function handleReputationBonus(factionsArrays) {
       factionsArrays.forEach(factionArray => {
@@ -715,7 +737,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     
     handleReputationBonus(factionsReputations);
     
-    // Make reputation increments behave like clocks (plus resources: injury, exhaustion, depletion)
+    // Handle reputation increments
     const firstFactionNotoriety = [
       $('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
       $('input[name="system.attrTop.reputation.options.1.values.1.value"]'),
@@ -865,75 +887,19 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       $('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
       $('input[name="system.attrTop.reputation.options.37.values.0.value"]')
     ];
-
-    const injuryResource = [
-      $('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.0.value"]')
-    ];
-
-    const exhaustionResource = [
-      $('input[name="system.attrLeft.resource.options.1.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.0.value"]')
-    ];
-
-    const depletionResource = [
-      $('input[name="system.attrLeft.resource.options.2.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.0.value"]')
-    ];
     
-    function handleReputationIncrements(reputationArrays) {
-      reputationArrays.forEach((checkbox, index) => {
-        checkbox.change(function() {
-          const isChecked = $(this).is(':checked');
-          
-          if (isChecked) {
-            // Check all the following checkboxes
-            reputationArrays.slice(index + 1).forEach((followingCheckbox) => {
-              followingCheckbox.prop('checked', true);
-            });
-          } else {
-            // Uncheck all the preceding checkboxes
-            reputationArrays.slice(0, index).forEach((precedingCheckbox) => {
-              precedingCheckbox.prop('checked', false);
-            });
-          }
-        });
-      });
-    }
-    
-    handleReputationIncrements(firstFactionNotoriety);
-    handleReputationIncrements(firstFactionPrestige);
-    handleReputationIncrements(secondFactionNotoriety);
-    handleReputationIncrements(secondFactionPrestige);
-    handleReputationIncrements(thirdFactionNotoriety);
-    handleReputationIncrements(thirdFactionPrestige);
-    handleReputationIncrements(fourthFactionNotoriety);
-    handleReputationIncrements(fourthFactionPrestige);
-    handleReputationIncrements(fifthFactionNotoriety);
-    handleReputationIncrements(fifthFactionPrestige);
-    handleReputationIncrements(injuryResource);
-    handleReputationIncrements(exhaustionResource);
-    handleReputationIncrements(depletionResource);
+    handleCheckboxIncrements(firstFactionNotoriety);
+    handleCheckboxIncrements(firstFactionPrestige);
+    handleCheckboxIncrements(secondFactionNotoriety);
+    handleCheckboxIncrements(secondFactionPrestige);
+    handleCheckboxIncrements(thirdFactionNotoriety);
+    handleCheckboxIncrements(thirdFactionPrestige);
+    handleCheckboxIncrements(fourthFactionNotoriety);
+    handleCheckboxIncrements(fourthFactionPrestige);
+    handleCheckboxIncrements(fifthFactionNotoriety);
+    handleCheckboxIncrements(fifthFactionPrestige);
 
-    // resources
+    // RESOURCES (injury, exhaustion, depletion)
     let resourceLabels = document.querySelectorAll('.cell.cell--resource .cell__checkboxes label.flexrow');
 
     resourceLabels.forEach((label, index) => {
@@ -1065,6 +1031,44 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       } 
     });
     
+    // Handle resouce increments
+    const injuryResource = [
+      $('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.0.value"]')
+    ];
+
+    const exhaustionResource = [
+      $('input[name="system.attrLeft.resource.options.1.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.0.value"]')
+    ];
+
+    const depletionResource = [
+      $('input[name="system.attrLeft.resource.options.2.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.0.value"]')
+    ];
+
+    handleCheckboxIncrements(injuryResource);
+    handleCheckboxIncrements(exhaustionResource);
+    handleCheckboxIncrements(depletionResource);
+
     // Add Mastery tag to actor sheet if move has Triumph description.
     let masteries = await game.settings.get('root', 'masteries');
     let metaTags = html.find('.item-meta.tags');
@@ -1088,6 +1092,357 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       };
     };
 
+  };
+
+  if (actor.type == 'npc') {
+    let resourcesTitlesNPC = document.querySelectorAll('.cell.cell--attributes-top label.cell__title');
+
+    let faPlusMinus = `<i class="npc far fa-plus-square"></i><i class="npc far fa-minus-square"></i>`
+    for (let resourceTitle of resourcesTitlesNPC) {
+      resourceTitle.insertAdjacentHTML('beforeend', faPlusMinus)
+    }
+
+    // Get the initial value of injury
+    let addNPCInjuryTwo = actor.system.attrTop.injury.options['0'].values['1'].value;
+    let addNPCInjuryThree = actor.system.attrTop.injury.options['0'].values['3'].value;
+    let addNPCInjuryFour = actor.system.attrTop.injury.options['0'].values['5'].value;
+    let addNPCInjuryFive = actor.system.attrTop.injury.options['0'].values['7'].value;
+    let addNPCInjurySix = actor.system.attrTop.injury.options['0'].values['9'].value;
+    let addNPCInjurySeven = actor.system.attrTop.injury.options['0'].values['11'].value;
+    let addNPCInjuryEight = actor.system.attrTop.injury.options['0'].values['13'].value;
+    let addNPCInjuryNine = actor.system.attrTop.injury.options['0'].values['15'].value;
+    let addNPCInjuryTen = actor.system.attrTop.injury.options['0'].values['17'].value;
+    let addNPCInjuryEleven = actor.system.attrTop.injury.options['0'].values['19'].value;
+    let addNPCInjuryTwelve = actor.system.attrTop.injury.options['0'].values['21'].value;
+
+    // Set the event listeners
+    let injuryNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--injury .fa-plus-square');
+    let injuryNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--injury .fa-minus-square');
+
+    injuryNPCFaPlus.addEventListener('click', async function(event) {
+      if (addNPCInjuryTwo == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.1.value": true});
+      } else if (addNPCInjuryThree == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.3.value": true});
+      } else if (addNPCInjuryFour == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.5.value": true});
+      } else if (addNPCInjuryFive == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.7.value": true});
+      } else if (addNPCInjurySix == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.9.value": true});
+      } else if (addNPCInjurySeven == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.11.value": true});
+      } else if (addNPCInjuryEight == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.13.value": true});
+      } else if (addNPCInjuryNine == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.15.value": true});
+      } else if (addNPCInjuryTen == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.17.value": true});
+      } else if (addNPCInjuryEleven == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.19.value": true});
+      } else if (addNPCInjuryTwelve == false) {
+        await actor.update({"system.attrTop.injury.options.0.values.21.value": true});
+      }
+    });
+
+    injuryNPCFaMinus.addEventListener('click', async function(event) {
+      if (addNPCInjuryTwelve == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.21.value": false});
+      } else if (addNPCInjuryEleven == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.19.value": false});
+      } else if (addNPCInjuryTen == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.17.value": false});
+      } else if (addNPCInjuryNine == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.15.value": false});
+      } else if (addNPCInjuryEight == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.13.value": false});
+      } else if (addNPCInjurySeven == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.11.value": false});
+      } else if (addNPCInjurySix == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.9.value": false});
+      } else if (addNPCInjuryFive == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.7.value": false});
+      } else if (addNPCInjuryFour == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.5.value": false});
+      } else if (addNPCInjuryThree == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.3.value": false});
+      } else if (addNPCInjuryTwo == true) {
+        await actor.update({"system.attrTop.injury.options.0.values.1.value": false});
+      }
+    });
+
+    // Get the initial value of the exhaustion and other variables
+    let addNPCExhaustionTwo = actor.system.attrTop.exhaustion.options['0'].values['1'].value;
+    let addNPCExhaustionThree = actor.system.attrTop.exhaustion.options['0'].values['3'].value;
+    let addNPCExhaustionFour = actor.system.attrTop.exhaustion.options['0'].values['5'].value;
+    let addNPCExhaustionFive = actor.system.attrTop.exhaustion.options['0'].values['7'].value;
+    let addNPCExhaustionSix = actor.system.attrTop.exhaustion.options['0'].values['9'].value;
+    let addNPCExhaustionSeven = actor.system.attrTop.exhaustion.options['0'].values['11'].value;
+    let addNPCExhaustionEight = actor.system.attrTop.exhaustion.options['0'].values['13'].value;
+    let addNPCExhaustionNine = actor.system.attrTop.exhaustion.options['0'].values['15'].value;
+    let addNPCExhaustionTen = actor.system.attrTop.exhaustion.options['0'].values['17'].value;
+    let addNPCExhaustionEleven = actor.system.attrTop.exhaustion.options['0'].values['19'].value;
+    let addNPCExhaustionTwelve = actor.system.attrTop.exhaustion.options['0'].values['21'].value;
+
+    // Set the event listeners for Exhaustion
+    let exhaustionNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--exhaustion .fa-plus-square');
+    let exhaustionNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--exhaustion .fa-minus-square');
+
+    exhaustionNPCFaPlus.addEventListener('click', async function(event) {
+      if (addNPCExhaustionTwo == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.1.value": true});
+      } else if (addNPCExhaustionThree == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.3.value": true});
+      } else if (addNPCExhaustionFour == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.5.value": true});
+      } else if (addNPCExhaustionFive == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.7.value": true});
+      } else if (addNPCExhaustionSix == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.9.value": true});
+      } else if (addNPCExhaustionSeven == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.11.value": true});
+      } else if (addNPCExhaustionEight == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.13.value": true});
+      } else if (addNPCExhaustionNine == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.15.value": true});
+      } else if (addNPCExhaustionTen == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.17.value": true});
+      } else if (addNPCExhaustionEleven == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.19.value": true});
+      } else if (addNPCExhaustionTwelve == false) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.21.value": true});
+      }
+    });
+
+    exhaustionNPCFaMinus.addEventListener('click', async function(event) {
+      if (addNPCExhaustionTwelve == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.21.value": false});
+      } else if (addNPCExhaustionEleven == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.19.value": false});
+      } else if (addNPCExhaustionTen == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.17.value": false});
+      } else if (addNPCExhaustionNine == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.15.value": false});
+      } else if (addNPCExhaustionEight == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.13.value": false});
+      } else if (addNPCExhaustionSeven == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.11.value": false});
+      } else if (addNPCExhaustionSix == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.9.value": false});
+      } else if (addNPCExhaustionFive == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.7.value": false});
+      } else if (addNPCExhaustionFour == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.5.value": false});
+      } else if (addNPCExhaustionThree == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.3.value": false});
+      } else if (addNPCExhaustionTwo == true) {
+        await actor.update({"system.attrTop.exhaustion.options.0.values.1.value": false});
+      }
+    });
+
+    // Get the initial value of wear and other variables
+    let addNPCWearTwo = actor.system.attrTop.wear.options['0'].values['1'].value;
+    let addNPCWearThree = actor.system.attrTop.wear.options['0'].values['3'].value;
+    let addNPCWearFour = actor.system.attrTop.wear.options['0'].values['5'].value;
+    let addNPCWearFive = actor.system.attrTop.wear.options['0'].values['7'].value;
+    let addNPCWearSix = actor.system.attrTop.wear.options['0'].values['9'].value;
+    let addNPCWearSeven = actor.system.attrTop.wear.options['0'].values['11'].value;
+    let addNPCWearEight = actor.system.attrTop.wear.options['0'].values['13'].value;
+    let addNPCWearNine = actor.system.attrTop.wear.options['0'].values['15'].value;
+    let addNPCWearTen = actor.system.attrTop.wear.options['0'].values['17'].value;
+    let addNPCWearEleven = actor.system.attrTop.wear.options['0'].values['19'].value;
+    let addNPCWearTwelve = actor.system.attrTop.wear.options['0'].values['21'].value;
+
+    // Set the event listeners for Wear
+    let wearNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--wear .fa-plus-square');
+    let wearNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--wear .fa-minus-square');
+
+    wearNPCFaPlus.addEventListener('click', async function(event) {
+      if (addNPCWearTwo == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.1.value": true});
+      } else if (addNPCWearThree == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.3.value": true});
+      } else if (addNPCWearFour == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.5.value": true});
+      } else if (addNPCWearFive == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.7.value": true});
+      } else if (addNPCWearSix == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.9.value": true});
+      } else if (addNPCWearSeven == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.11.value": true});
+      } else if (addNPCWearEight == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.13.value": true});
+      } else if (addNPCWearNine == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.15.value": true});
+      } else if (addNPCWearTen == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.17.value": true});
+      } else if (addNPCWearEleven == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.19.value": true});
+      } else if (addNPCWearTwelve == false) {
+        await actor.update({"system.attrTop.wear.options.0.values.21.value": true});
+      }
+    });
+
+    wearNPCFaMinus.addEventListener('click', async function(event) {
+      if (addNPCWearTwelve == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.21.value": false});
+      } else if (addNPCWearEleven == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.19.value": false});
+      } else if (addNPCWearTen == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.17.value": false});
+      } else if (addNPCWearNine == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.15.value": false});
+      } else if (addNPCWearEight == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.13.value": false});
+      } else if (addNPCWearSeven == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.11.value": false});
+      } else if (addNPCWearSix == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.9.value": false});
+      } else if (addNPCWearFive == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.7.value": false});
+      } else if (addNPCWearFour == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.5.value": false});
+      } else if (addNPCWearThree == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.3.value": false});
+      } else if (addNPCWearTwo == true) {
+        await actor.update({"system.attrTop.wear.options.0.values.1.value": false});
+      }
+    });
+
+    // Get the initial value of morale and other variables
+    let addNPCMoraleTwo = actor.system.attrTop.morale.options['0'].values['1'].value;
+    let addNPCMoraleThree = actor.system.attrTop.morale.options['0'].values['3'].value;
+    let addNPCMoraleFour = actor.system.attrTop.morale.options['0'].values['5'].value;
+    let addNPCMoraleFive = actor.system.attrTop.morale.options['0'].values['7'].value;
+    let addNPCMoraleSix = actor.system.attrTop.morale.options['0'].values['9'].value;
+    let addNPCMoraleSeven = actor.system.attrTop.morale.options['0'].values['11'].value;
+    let addNPCMoraleEight = actor.system.attrTop.morale.options['0'].values['13'].value;
+    let addNPCMoraleNine = actor.system.attrTop.morale.options['0'].values['15'].value;
+    let addNPCMoraleTen = actor.system.attrTop.morale.options['0'].values['17'].value;
+    let addNPCMoraleEleven = actor.system.attrTop.morale.options['0'].values['19'].value;
+    let addNPCMoraleTwelve = actor.system.attrTop.morale.options['0'].values['21'].value;
+
+    // Set the event listeners for Morale
+    let moraleNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--morale .fa-plus-square');
+    let moraleNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--morale .fa-minus-square');
+
+    moraleNPCFaPlus.addEventListener('click', async function(event) {
+      if (addNPCMoraleTwo == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.1.value": true});
+      } else if (addNPCMoraleThree == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.3.value": true});
+      } else if (addNPCMoraleFour == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.5.value": true});
+      } else if (addNPCMoraleFive == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.7.value": true});
+      } else if (addNPCMoraleSix == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.9.value": true});
+      } else if (addNPCMoraleSeven == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.11.value": true});
+      } else if (addNPCMoraleEight == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.13.value": true});
+      } else if (addNPCMoraleNine == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.15.value": true});
+      } else if (addNPCMoraleTen == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.17.value": true});
+      } else if (addNPCMoraleEleven == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.19.value": true});
+      } else if (addNPCMoraleTwelve == false) {
+        await actor.update({"system.attrTop.morale.options.0.values.21.value": true});
+      }
+    });
+
+    moraleNPCFaMinus.addEventListener('click', async function(event) {
+      if (addNPCMoraleTwelve == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.21.value": false});
+      } else if (addNPCMoraleEleven == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.19.value": false});
+      } else if (addNPCMoraleTen == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.17.value": false});
+      } else if (addNPCMoraleNine == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.15.value": false});
+      } else if (addNPCMoraleEight == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.13.value": false});
+      } else if (addNPCMoraleSeven == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.11.value": false});
+      } else if (addNPCMoraleSix == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.9.value": false});
+      } else if (addNPCMoraleFive == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.7.value": false});
+      } else if (addNPCMoraleFour == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.5.value": false});
+      } else if (addNPCMoraleThree == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.3.value": false});
+      } else if (addNPCMoraleTwo == true) {
+        await actor.update({"system.attrTop.morale.options.0.values.1.value": false});
+      }
+    });
+
+    // Handle NPC resource increments
+    const injuryNPCResource = [
+      $('input[name="system.attrTop.injury.options.0.values.22.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.20.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.18.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.16.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.14.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.12.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.10.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.8.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.6.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.4.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.2.value"]'),
+      $('input[name="system.attrTop.injury.options.0.values.0.value"]')
+    ];    
+
+    const exhaustionNPCResource = [
+      $('input[name="system.attrTop.exhaustion.options.0.values.22.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.20.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.18.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.16.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.14.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.12.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.10.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.8.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.6.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.4.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.2.value"]'),
+      $('input[name="system.attrTop.exhaustion.options.0.values.0.value"]')
+    ];    
+
+    const wearNPCResource = [
+      $('input[name="system.attrTop.wear.options.0.values.22.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.20.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.18.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.16.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.14.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.12.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.10.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.8.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.6.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.4.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.2.value"]'),
+      $('input[name="system.attrTop.wear.options.0.values.0.value"]')
+    ];
+    
+    const moraleNPCResource = [
+      $('input[name="system.attrTop.morale.options.0.values.22.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.20.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.18.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.16.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.14.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.12.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.10.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.8.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.6.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.4.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.2.value"]'),
+      $('input[name="system.attrTop.morale.options.0.values.0.value"]')
+    ];    
+
+    handleCheckboxIncrements(injuryNPCResource);
+    handleCheckboxIncrements(exhaustionNPCResource);
+    handleCheckboxIncrements(wearNPCResource);
+    handleCheckboxIncrements(moraleNPCResource);
   };
 
   });

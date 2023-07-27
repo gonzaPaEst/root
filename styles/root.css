@@ -7,7 +7,8 @@
 }
 
 .pbta.sheet:is(.npc, .class) {
-  min-width: 650px;
+  max-width: 655px;
+  min-width: 630px;
 }
 
 .pbta.sheet section.window-content {
@@ -192,7 +193,7 @@
 }
 
 .pbta.sheet.actor:not(.npc) .cell.cell--attributes-top ul.cell__checkboxes.flexcol :is(input[name="system.attrTop.reputation.options.1.values.3.value"], input[name="system.attrTop.reputation.options.2.values.3.value"], input[name="system.attrTop.reputation.options.3.values.3.value"], input[name="system.attrTop.reputation.options.4.values.0.value"], input[name="system.attrTop.reputation.options.5.values.5.value"], input[name="system.attrTop.reputation.options.6.values.5.value"], input[name="system.attrTop.reputation.options.7.values.5.value"], input[name="system.attrTop.reputation.options.9.values.3.value"], input[name="system.attrTop.reputation.options.10.values.3.value"], input[name="system.attrTop.reputation.options.11.values.3.value"], input[name="system.attrTop.reputation.options.12.values.0.value"], input[name="system.attrTop.reputation.options.13.values.5.value"], input[name="system.attrTop.reputation.options.14.values.5.value"], input[name="system.attrTop.reputation.options.15.values.5.value"], input[name="system.attrTop.reputation.options.17.values.3.value"], input[name="system.attrTop.reputation.options.18.values.3.value"], input[name="system.attrTop.reputation.options.19.values.3.value"], input[name="system.attrTop.reputation.options.20.values.0.value"], input[name="system.attrTop.reputation.options.21.values.5.value"], input[name="system.attrTop.reputation.options.22.values.5.value"], input[name="system.attrTop.reputation.options.23.values.5.value"], input[name="system.attrTop.reputation.options.25.values.3.value"], input[name="system.attrTop.reputation.options.26.values.3.value"], input[name="system.attrTop.reputation.options.27.values.3.value"], input[name="system.attrTop.reputation.options.28.values.0.value"], input[name="system.attrTop.reputation.options.29.values.5.value"], input[name="system.attrTop.reputation.options.30.values.5.value"], input[name="system.attrTop.reputation.options.31.values.5.value"], input[name="system.attrTop.reputation.options.33.values.3.value"], input[name="system.attrTop.reputation.options.34.values.3.value"], input[name="system.attrTop.reputation.options.35.values.3.value"], input[name="system.attrTop.reputation.options.36.values.0.value"], input[name="system.attrTop.reputation.options.37.values.5.value"], input[name="system.attrTop.reputation.options.38.values.5.value"], input[name="system.attrTop.reputation.options.39.values.5.value"]) {
-appearance: none;
+  appearance: none;
   background: none;
   border: none;
   position: absolute;
@@ -234,124 +235,16 @@ appearance: none;
   margin: 3px -0.5px;
 }
 
-/* .pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(2), label:nth-of-type(5), label:nth-of-type(8)) input.attr-list {
-margin: 3px 1px;
-} */
-
 .pbta.sheet.actor:not(.npc) .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany {
-background: #E6DDB8;
+  background: #E6DDB8;
   border: double 3px #B69D3F;
   border-radius: 2px;
   padding-left: 5px;
 }
 
-/* .pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::before {
-background: rgb(255,255,255,0.4);
-  border: 1px solid black;
-  border-radius: 2px;
-  content: "+";
-  line-height: 8px;
-  padding: 1px;
-  position: absolute;
-  transform: translateX(49px);
-  width: 8px;
-}
-
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(4)::before {
-  transform: translateX(81px);
-}
-
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(7)::before {
-  transform: translateX(72px);
-}
-
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::after {
-background: rgb(255,255,255,0.4);
-  border: 1px solid black;
-  border-radius: 2px;
-  content: "-";
-  font-size: 1.5em;
-  line-height: 8px;
-  padding: 1px;
-  position: absolute;
-  transform: translateX(67px);
-  width: 8px;
-}
-
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(4)::after {
-  transform: translateX(99px);
-}
-
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(7)::after {
-  transform: translateX(90px);
-} */
-
 .pbta.sheet.actor:not(.npc) :is(input[name="system.attrLeft.resource.options.0.values.4.value"], input[name="system.attrLeft.resource.options.0.values.5.value"], input[name="system.attrLeft.resource.options.0.values.6.value"], input[name="system.attrLeft.resource.options.0.values.7.value"], input[name="system.attrLeft.resource.options.0.values.8.value"], input[name="system.attrLeft.resource.options.0.values.9.value"], input[name="system.attrLeft.resource.options.0.values.10.value"], input[name="system.attrLeft.resource.options.0.values.11.value"], input[name="system.attrLeft.resource.options.1.values.4.value"], input[name="system.attrLeft.resource.options.1.values.5.value"], input[name="system.attrLeft.resource.options.1.values.6.value"], input[name="system.attrLeft.resource.options.1.values.7.value"], input[name="system.attrLeft.resource.options.1.values.8.value"], input[name="system.attrLeft.resource.options.1.values.9.value"], input[name="system.attrLeft.resource.options.1.values.10.value"], input[name="system.attrLeft.resource.options.1.values.11.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.2.values.8.value"], input[name="system.attrLeft.resource.options.2.values.9.value"], input[name="system.attrLeft.resource.options.2.values.10.value"], input[name="system.attrLeft.resource.options.2.values.11.value"]) {
   display: none;
 }
-
-/* .pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]) {
-transform: translate(83px, -37px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
-transform: translate(73px, -37px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]) {
-z-index: 3;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]) {
-z-index: 2;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
-z-index: 1;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"], input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.8.values.0.value"]):checked {
-  transform: translate(70px, -37px);
-  z-index: 1;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]):checked {
-  transform: translate(105px, -37px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]):checked {
-  transform: translate(95px, -37px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]):checked {
-  z-index: 2;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]):checked {
-  z-index: 3;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]):checked {
-  z-index: 4;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.1.value"], input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.1.value"], input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.1.value"], input[name="system.attrLeft.resource.options.8.values.3.value"], input[name="system.attrLeft.resource.options.8.values.5.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
-  display: none;
-  position: absolute;
-  transform: translate(87.5px, -13px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.8.values.3.value"]) {
-  transform: translate(110px, -13px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.8.values.5.value"]) {
-  transform: translate(133px, -13px);
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
-transform: translate(156px, -13px);
-} */
 
 .pbta.sheet.actor:not(.npc) :is(input[name="system.attrLeft.resource.options.0.values.4.value"]:checked + input[name="system.attrLeft.resource.options.0.values.5.value"], input[name="system.attrLeft.resource.options.0.values.6.value"]:checked + input[name="system.attrLeft.resource.options.0.values.7.value"], input[name="system.attrLeft.resource.options.0.values.8.value"]:checked + input[name="system.attrLeft.resource.options.0.values.9.value"], input[name="system.attrLeft.resource.options.0.values.10.value"]:checked + input[name="system.attrLeft.resource.options.0.values.11.value"], input[name="system.attrLeft.resource.options.1.values.4.value"]:checked + input[name="system.attrLeft.resource.options.1.values.5.value"], input[name="system.attrLeft.resource.options.1.values.6.value"]:checked + input[name="system.attrLeft.resource.options.1.values.7.value"], input[name="system.attrLeft.resource.options.1.values.8.value"]:checked + input[name="system.attrLeft.resource.options.1.values.9.value"], input[name="system.attrLeft.resource.options.1.values.10.value"]:checked + input[name="system.attrLeft.resource.options.1.values.11.value"], input[name="system.attrLeft.resource.options.2.values.4.value"]:checked + input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"]:checked + input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.2.values.8.value"]:checked + input[name="system.attrLeft.resource.options.2.values.9.value"], input[name="system.attrLeft.resource.options.2.values.10.value"]:checked + input[name="system.attrLeft.resource.options.2.values.11.value"]) {
   display: inline;
@@ -440,4 +333,18 @@ span.tag--mastery {
 
 .pbta.sheet.actor .cell.cell--resource .cell__checkboxes label.flexrow:is(:nth-of-type(2), :nth-of-type(3)) {
   margin-top: 5px;
+}
+
+.pbta.sheet.actor.npc :is(input[name="system.attrTop.injury.options.0.values.1.value"], input[name="system.attrTop.injury.options.0.values.2.value"], input[name="system.attrTop.injury.options.0.values.3.value"], input[name="system.attrTop.injury.options.0.values.4.value"], input[name="system.attrTop.injury.options.0.values.5.value"], input[name="system.attrTop.injury.options.0.values.6.value"], input[name="system.attrTop.injury.options.0.values.7.value"], input[name="system.attrTop.injury.options.0.values.8.value"], input[name="system.attrTop.injury.options.0.values.9.value"], input[name="system.attrTop.injury.options.0.values.10.value"], input[name="system.attrTop.injury.options.0.values.11.value"], input[name="system.attrTop.injury.options.0.values.12.value"], input[name="system.attrTop.injury.options.0.values.13.value"], input[name="system.attrTop.injury.options.0.values.14.value"], input[name="system.attrTop.injury.options.0.values.15.value"], input[name="system.attrTop.injury.options.0.values.16.value"], input[name="system.attrTop.injury.options.0.values.17.value"], input[name="system.attrTop.injury.options.0.values.18.value"], input[name="system.attrTop.injury.options.0.values.19.value"], input[name="system.attrTop.injury.options.0.values.20.value"], input[name="system.attrTop.injury.options.0.values.21.value"], input[name="system.attrTop.injury.options.0.values.22.value"], input[name="system.attrTop.exhaustion.options.0.values.1.value"], input[name="system.attrTop.exhaustion.options.0.values.2.value"], input[name="system.attrTop.exhaustion.options.0.values.3.value"], input[name="system.attrTop.exhaustion.options.0.values.4.value"], input[name="system.attrTop.exhaustion.options.0.values.5.value"], input[name="system.attrTop.exhaustion.options.0.values.6.value"], input[name="system.attrTop.exhaustion.options.0.values.7.value"], input[name="system.attrTop.exhaustion.options.0.values.8.value"], input[name="system.attrTop.exhaustion.options.0.values.9.value"], input[name="system.attrTop.exhaustion.options.0.values.10.value"], input[name="system.attrTop.exhaustion.options.0.values.11.value"], input[name="system.attrTop.exhaustion.options.0.values.12.value"], input[name="system.attrTop.exhaustion.options.0.values.13.value"], input[name="system.attrTop.exhaustion.options.0.values.14.value"], input[name="system.attrTop.exhaustion.options.0.values.15.value"], input[name="system.attrTop.exhaustion.options.0.values.16.value"], input[name="system.attrTop.exhaustion.options.0.values.17.value"], input[name="system.attrTop.exhaustion.options.0.values.18.value"], input[name="system.attrTop.exhaustion.options.0.values.19.value"], input[name="system.attrTop.exhaustion.options.0.values.20.value"], input[name="system.attrTop.exhaustion.options.0.values.21.value"], input[name="system.attrTop.exhaustion.options.0.values.22.value"], input[name="system.attrTop.wear.options.0.values.1.value"], input[name="system.attrTop.wear.options.0.values.2.value"], input[name="system.attrTop.wear.options.0.values.3.value"], input[name="system.attrTop.wear.options.0.values.4.value"], input[name="system.attrTop.wear.options.0.values.5.value"], input[name="system.attrTop.wear.options.0.values.6.value"], input[name="system.attrTop.wear.options.0.values.7.value"], input[name="system.attrTop.wear.options.0.values.8.value"], input[name="system.attrTop.wear.options.0.values.9.value"], input[name="system.attrTop.wear.options.0.values.10.value"], input[name="system.attrTop.wear.options.0.values.11.value"], input[name="system.attrTop.wear.options.0.values.12.value"], input[name="system.attrTop.wear.options.0.values.13.value"], input[name="system.attrTop.wear.options.0.values.14.value"], input[name="system.attrTop.wear.options.0.values.15.value"], input[name="system.attrTop.wear.options.0.values.16.value"], input[name="system.attrTop.wear.options.0.values.17.value"], input[name="system.attrTop.wear.options.0.values.18.value"], input[name="system.attrTop.wear.options.0.values.19.value"], input[name="system.attrTop.wear.options.0.values.20.value"], input[name="system.attrTop.wear.options.0.values.21.value"], input[name="system.attrTop.wear.options.0.values.22.value"], input[name="system.attrTop.morale.options.0.values.1.value"], input[name="system.attrTop.morale.options.0.values.2.value"], input[name="system.attrTop.morale.options.0.values.3.value"], input[name="system.attrTop.morale.options.0.values.4.value"], input[name="system.attrTop.morale.options.0.values.5.value"], input[name="system.attrTop.morale.options.0.values.6.value"], input[name="system.attrTop.morale.options.0.values.7.value"], input[name="system.attrTop.morale.options.0.values.8.value"], input[name="system.attrTop.morale.options.0.values.9.value"], input[name="system.attrTop.morale.options.0.values.10.value"], input[name="system.attrTop.morale.options.0.values.11.value"], input[name="system.attrTop.morale.options.0.values.12.value"], input[name="system.attrTop.morale.options.0.values.13.value"], input[name="system.attrTop.morale.options.0.values.14.value"], input[name="system.attrTop.morale.options.0.values.15.value"], input[name="system.attrTop.morale.options.0.values.16.value"], input[name="system.attrTop.morale.options.0.values.17.value"], input[name="system.attrTop.morale.options.0.values.18.value"], input[name="system.attrTop.morale.options.0.values.19.value"], input[name="system.attrTop.morale.options.0.values.20.value"], input[name="system.attrTop.morale.options.0.values.21.value"], input[name="system.attrTop.morale.options.0.values.22.value"]) {
+  display: none;
+}
+
+.pbta.sheet.actor.npc :is(input[name="system.attrTop.injury.options.0.values.1.value"]:checked + input[name="system.attrTop.injury.options.0.values.2.value"], input[name="system.attrTop.injury.options.0.values.3.value"]:checked + input[name="system.attrTop.injury.options.0.values.4.value"], input[name="system.attrTop.injury.options.0.values.5.value"]:checked + input[name="system.attrTop.injury.options.0.values.6.value"], input[name="system.attrTop.injury.options.0.values.7.value"]:checked + input[name="system.attrTop.injury.options.0.values.8.value"], input[name="system.attrTop.injury.options.0.values.9.value"]:checked + input[name="system.attrTop.injury.options.0.values.10.value"], input[name="system.attrTop.injury.options.0.values.11.value"]:checked + input[name="system.attrTop.injury.options.0.values.12.value"], input[name="system.attrTop.injury.options.0.values.13.value"]:checked + input[name="system.attrTop.injury.options.0.values.14.value"], input[name="system.attrTop.injury.options.0.values.15.value"]:checked + input[name="system.attrTop.injury.options.0.values.16.value"], input[name="system.attrTop.injury.options.0.values.17.value"]:checked + input[name="system.attrTop.injury.options.0.values.18.value"], input[name="system.attrTop.injury.options.0.values.19.value"]:checked + input[name="system.attrTop.injury.options.0.values.20.value"], input[name="system.attrTop.injury.options.0.values.21.value"]:checked + input[name="system.attrTop.injury.options.0.values.22.value"], input[name="system.attrTop.exhaustion.options.0.values.1.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.2.value"], input[name="system.attrTop.exhaustion.options.0.values.3.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.4.value"], input[name="system.attrTop.exhaustion.options.0.values.5.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.6.value"], input[name="system.attrTop.exhaustion.options.0.values.7.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.8.value"], input[name="system.attrTop.exhaustion.options.0.values.9.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.10.value"], input[name="system.attrTop.exhaustion.options.0.values.11.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.12.value"], input[name="system.attrTop.exhaustion.options.0.values.13.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.14.value"], input[name="system.attrTop.exhaustion.options.0.values.15.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.16.value"], input[name="system.attrTop.exhaustion.options.0.values.17.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.18.value"], input[name="system.attrTop.exhaustion.options.0.values.19.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.20.value"], input[name="system.attrTop.exhaustion.options.0.values.21.value"]:checked + input[name="system.attrTop.exhaustion.options.0.values.22.value"], input[name="system.attrTop.wear.options.0.values.1.value"]:checked + input[name="system.attrTop.wear.options.0.values.2.value"], input[name="system.attrTop.wear.options.0.values.3.value"]:checked + input[name="system.attrTop.wear.options.0.values.4.value"], input[name="system.attrTop.wear.options.0.values.5.value"]:checked + input[name="system.attrTop.wear.options.0.values.6.value"], input[name="system.attrTop.wear.options.0.values.7.value"]:checked + input[name="system.attrTop.wear.options.0.values.8.value"], input[name="system.attrTop.wear.options.0.values.9.value"]:checked + input[name="system.attrTop.wear.options.0.values.10.value"], input[name="system.attrTop.wear.options.0.values.11.value"]:checked + input[name="system.attrTop.wear.options.0.values.12.value"], input[name="system.attrTop.wear.options.0.values.13.value"]:checked + input[name="system.attrTop.wear.options.0.values.14.value"], input[name="system.attrTop.wear.options.0.values.15.value"]:checked + input[name="system.attrTop.wear.options.0.values.16.value"], input[name="system.attrTop.wear.options.0.values.17.value"]:checked + input[name="system.attrTop.wear.options.0.values.18.value"], input[name="system.attrTop.wear.options.0.values.19.value"]:checked + input[name="system.attrTop.wear.options.0.values.20.value"], input[name="system.attrTop.wear.options.0.values.21.value"]:checked + input[name="system.attrTop.wear.options.0.values.22.value"], input[name="system.attrTop.morale.options.0.values.1.value"]:checked + input[name="system.attrTop.morale.options.0.values.2.value"], input[name="system.attrTop.morale.options.0.values.3.value"]:checked + input[name="system.attrTop.morale.options.0.values.4.value"], input[name="system.attrTop.morale.options.0.values.5.value"]:checked + input[name="system.attrTop.morale.options.0.values.6.value"], input[name="system.attrTop.morale.options.0.values.7.value"]:checked + input[name="system.attrTop.morale.options.0.values.8.value"], input[name="system.attrTop.morale.options.0.values.9.value"]:checked + input[name="system.attrTop.morale.options.0.values.10.value"], input[name="system.attrTop.morale.options.0.values.11.value"]:checked + input[name="system.attrTop.morale.options.0.values.12.value"], input[name="system.attrTop.morale.options.0.values.13.value"]:checked + input[name="system.attrTop.morale.options.0.values.14.value"], input[name="system.attrTop.morale.options.0.values.15.value"]:checked + input[name="system.attrTop.morale.options.0.values.16.value"], input[name="system.attrTop.morale.options.0.values.17.value"]:checked + input[name="system.attrTop.morale.options.0.values.18.value"], input[name="system.attrTop.morale.options.0.values.19.value"]:checked + input[name="system.attrTop.morale.options.0.values.20.value"], input[name="system.attrTop.morale.options.0.values.21.value"]:checked + input[name="system.attrTop.morale.options.0.values.22.value"])
+ {
+  display: inline;
+}
+
+.pbta.sheet.actor.npc i.npc.far {
+  font-size: 0.8em;
+  margin-left: 3px;
 }
