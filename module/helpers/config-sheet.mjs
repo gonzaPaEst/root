@@ -1010,44 +1010,349 @@ export const configSheet = async () => {
             description: null,
             customLabel: false,
             userLabel: false,
-            type: "Resource",
-            value: 0,
-            max: 0
+            type: "ListMany",
+            condition: false,
+            options: {
+              0: {
+                label: "",
+                value: false,
+                values: {
+                  0: {
+                    value: false
+                  },
+                  1: {
+                    value: false
+                  },
+                  2: {
+                    value: false
+                  },
+                  3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
+                    value: false
+                  },
+                  12: {
+                    value: false
+                  },
+                  13: {
+                    value: false
+                  },
+                  14: {
+                    value: false
+                  },
+                  15: {
+                    value: false
+                  },
+                  16: {
+                    value: false
+                  },
+                  17: {
+                    value: false
+                  },
+                  18: {
+                    value: false
+                  },
+                  19: {
+                    value: false
+                  },
+                  20: {
+                    value: false
+                  },
+                  21: {
+                    value: false
+                  },
+                  22: {
+                    value: false
+                  }
+                }
+              },
+            }
           },
           exhaustion: {
             label: game.i18n.localize("Root.Sheet.NPC.Exhaustion"),
             description: null,
             customLabel: false,
             userLabel: false,
-            type: "Resource",
-            value: 0,
-            max: 0
+            type: "ListMany",
+            condition: false,
+            options: {
+              0: {
+                label: "",
+                value: false,
+                values: {
+                  0: {
+                    value: false
+                  },
+                  1: {
+                    value: false
+                  },
+                  2: {
+                    value: false
+                  },
+                  3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
+                    value: false
+                  },
+                  12: {
+                    value: false
+                  },
+                  13: {
+                    value: false
+                  },
+                  14: {
+                    value: false
+                  },
+                  15: {
+                    value: false
+                  },
+                  16: {
+                    value: false
+                  },
+                  17: {
+                    value: false
+                  },
+                  18: {
+                    value: false
+                  },
+                  19: {
+                    value: false
+                  },
+                  20: {
+                    value: false
+                  },
+                  21: {
+                    value: false
+                  },
+                  22: {
+                    value: false
+                  }
+                }
+              }
+            }
           },
           wear: {
             label: game.i18n.localize("Root.Sheet.NPC.Wear"),
             description: null,
             customLabel: false,
             userLabel: false,
-            type: "Resource",
-            value: 0,
-            max: 0
-          }
-        },
-        attrLeft: {
+            type: "ListMany",
+            condition: false,
+            options: {
+              0: {
+                label: "",
+                value: false,
+                values: {
+                  0: {
+                    value: false
+                  },
+                  1: {
+                    value: false
+                  },
+                  2: {
+                    value: false
+                  },
+                  3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
+                    value: false
+                  },
+                  12: {
+                    value: false
+                  },
+                  13: {
+                    value: false
+                  },
+                  14: {
+                    value: false
+                  },
+                  15: {
+                    value: false
+                  },
+                  16: {
+                    value: false
+                  },
+                  17: {
+                    value: false
+                  },
+                  18: {
+                    value: false
+                  },
+                  19: {
+                    value: false
+                  },
+                  20: {
+                    value: false
+                  },
+                  21: {
+                    value: false
+                  },
+                  22: {
+                    value: false
+                  }
+                }
+              }
+            }
+          },
           morale: {
             label: game.i18n.localize("Root.Sheet.NPC.Morale"),
             description: null,
             customLabel: false,
             userLabel: false,
-            type: "Number",
-            value: 0
-          },
-          harm: {
-            label: game.i18n.localize("Root.Sheet.NPC.Harm"),
+            type: "ListMany",
+            condition: false,
+            options: {
+              0: {
+                label: "",
+                value: false,
+                values: {
+                  0: {
+                    value: false
+                  },
+                  1: {
+                    value: false
+                  },
+                  2: {
+                    value: false
+                  },
+                  3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
+                    value: false
+                  },
+                  12: {
+                    value: false
+                  },
+                  13: {
+                    value: false
+                  },
+                  14: {
+                    value: false
+                  },
+                  15: {
+                    value: false
+                  },
+                  16: {
+                    value: false
+                  },
+                  17: {
+                    value: false
+                  },
+                  18: {
+                    value: false
+                  },
+                  19: {
+                    value: false
+                  },
+                  20: {
+                    value: false
+                  },
+                  21: {
+                    value: false
+                  },
+                  22: {
+                    value: false
+                  }
+                }
+              }
+            }
+          }
+        },
+        attrLeft: {
+          inflicts: {
+            label: game.i18n.localize("Root.Sheet.NPC.Inflicts"),
             description: null,
             customLabel: false,
             userLabel: false,
-            type: "Text",
+            type: "LongText",
             value: ""
           },
           drive: {
@@ -1073,7 +1378,7 @@ export const configSheet = async () => {
         }
       }
     }
-  }
+  };
   
   let useAdvDis = await game.settings.get('root', 'advantage');
 
@@ -1089,9 +1394,6 @@ export const configSheet = async () => {
     await game.settings.set('pbta', 'hideForward', true);
     await game.settings.set('pbta', 'hideOngoing', true);
     await game.settings.set('pbta', 'hideRollMode', false);
-  }
+  };
 
-  
-  
-  
-}
+};
