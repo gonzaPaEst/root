@@ -130,7 +130,9 @@
     },
     "PBTA": {
         "Description": "Background",
-        "Biography": "Background and Details"
+        "Biography": "Background and Details",
+        "Quantity": "Value",
+        "Weight": "Load"
     },
     "TYPES.Item.root.traits": "traits"
 }

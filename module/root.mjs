@@ -252,13 +252,13 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let wearSeven = await item.getFlag('root', 'itemWear.box7') || false;
     let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
     let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
-    let wearBoxes = `<label>Wear</label> <i class="far fa-plus-square"></i> <i class="far fa-minus-square"></i>
+    let wearBoxes = `<label>Wear</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
     <br><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
-    let faPlus = document.querySelector('.fa-plus-square');
-    let faMinus = document.querySelector('.fa-minus-square');
+    let itemFaPlus = document.querySelector('.pbta.sheet.item .wear.fa-plus-square');
+    let itemFaMinus = document.querySelector('.pbta.sheet.item .wear.fa-minus-square');
     
-    faPlus.addEventListener('click', async function(event) {
+    itemFaPlus.addEventListener('click', async function(event) {
       if (addWearTwo == false) {
         addWearTwo = await item.setFlag('root', 'itemWear.addBox2', true);
       } else if (addWearThree == false) {
@@ -276,7 +276,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       }
     });
 
-    faMinus.addEventListener('click', async function(event) {
+    itemFaMinus.addEventListener('click', async function(event) {
        if (addWearEight == true) {
         addWearEight = await item.setFlag('root', 'itemWear.addBox8', false);
       } else if (addWearSeven == true) {
@@ -340,8 +340,8 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
     } else if (stat === "injury" || stat === "exhaustion" || stat === "depletion") {
       const parsedVal = parseInt(autoValue);
       const resourceOptions = actor.system.attrLeft.resource.options;
-      const indicesToReview = [0, 2, 4, 6];
-      const optionIndex = stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8';
+      const indicesToReview = [4, 6, 8, 10];
+      const optionIndex = stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2';
 
       let count = 0;
       for (let index of indicesToReview) {
@@ -386,13 +386,13 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
         let count = 0;
         const parsedVal = parseInt(autoValue);
         const resourceOptions = actor.system.attrLeft.resource.options;
-        const indicesToReview = [6, 4, 2, 0];
+        const indicesToReview = [4, 6, 8, 10];
   
         for (let index of indicesToReview) {
-          const checkbox = resourceOptions[stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8'].values[index];
+          const checkbox = resourceOptions[stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'].values[index];
   
           if (checkbox.value === true) {
-            const updateKey = `system.attrLeft.resource.options.${stat === "injury" ? '2' : stat === "exhaustion" ? '5' : '8'}.values.${index}.value`;
+            const updateKey = `system.attrLeft.resource.options.${stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'}.values.${index}.value`;
             await actor.update({ [updateKey]: false });
             count++;
           }
@@ -867,36 +867,36 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     ];
 
     const injuryResource = [
-      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.0.values.0.value"]')
+    ];
+
+    const exhaustionResource = [
+      $('input[name="system.attrLeft.resource.options.1.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.1.values.5.value"]'),
       $('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
       $('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
       $('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
       $('input[name="system.attrLeft.resource.options.1.values.0.value"]')
     ];
 
-    const exhaustionResource = [
-      $('input[name="system.attrLeft.resource.options.5.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.5.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.5.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.5.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.4.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.4.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.4.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.4.values.0.value"]')
-    ];
-
     const depletionResource = [
-      $('input[name="system.attrLeft.resource.options.8.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.8.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.8.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.8.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.7.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.7.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.7.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.7.values.0.value"]')
+      $('input[name="system.attrLeft.resource.options.2.values.11.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.9.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.2.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
+      $('input[name="system.attrLeft.resource.options.2.values.0.value"]')
     ];
     
     function handleReputationIncrements(reputationArrays) {
@@ -932,19 +932,156 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     handleReputationIncrements(injuryResource);
     handleReputationIncrements(exhaustionResource);
     handleReputationIncrements(depletionResource);
+
+    // resources
+    let resourceLabels = document.querySelectorAll('.cell.cell--resource .cell__checkboxes label.flexrow');
+
+    resourceLabels.forEach((label, index) => {
+      let textNode = Array.from(label.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '');
+    
+      if (textNode) {
+        let text = textNode.textContent.trim();
+        label.removeChild(textNode);
+    
+        let textWrapper = document.createElement('div');
+        textWrapper.textContent = text;
+    
+        let plusIcon = document.createElement('i');
+        let minusIcon = document.createElement('i');
+        plusIcon.className = 'far fa-plus-square';
+        minusIcon.className = 'far fa-minus-square';
+    
+        textWrapper.appendChild(document.createTextNode(' ')); // Add a space between text and plus icon
+        textWrapper.appendChild(plusIcon);
+        textWrapper.appendChild(document.createTextNode(' ')); // Add a space between plus and minus icons
+        textWrapper.appendChild(minusIcon);
+    
+        // Add class to the textWrapper based on the text content
+        if (index === 0) {
+          textWrapper.classList.add('injury');
+        } else if (index === 1) {
+          textWrapper.classList.add('exhaustion');
+        } else if (index === 2) {
+          textWrapper.classList.add('depletion');
+        }
+    
+        label.insertBefore(textWrapper, label.firstChild);
+      }
+    });    
+    
+    let addInjuryFive = actor.system.attrLeft.resource.options['0'].values['4'].value
+    let addInjurySix = actor.system.attrLeft.resource.options['0'].values['6'].value
+    let addInjurySeven = actor.system.attrLeft.resource.options['0'].values['8'].value
+    let addInjuryEight = actor.system.attrLeft.resource.options['0'].values['10'].value
+
+    let injuryFaPlus = document.querySelector('.injury .fa-plus-square');
+    let injuryFaMinus = document.querySelector('.injury .fa-minus-square');
+    
+    injuryFaPlus.addEventListener('click', async function(event) {
+      if (addInjuryFive == false) {
+        await actor.update({"system.attrLeft.resource.options.0.values.4.value": true});
+      } else if (addInjurySix == false) {
+        await actor.update({"system.attrLeft.resource.options.0.values.6.value": true});
+      } else if (addInjurySeven == false) {
+        await actor.update({"system.attrLeft.resource.options.0.values.8.value": true});
+      } else if (addInjuryEight == false) {
+        await actor.update({"system.attrLeft.resource.options.0.values.10.value": true});
+      }
+    });
+
+    injuryFaMinus.addEventListener('click', async function(event) {
+      if (addInjuryEight == true) {
+        await actor.update({"system.attrLeft.resource.options.0.values.10.value": false});
+      } else if (addInjurySeven == true) {
+        await actor.update({"system.attrLeft.resource.options.0.values.8.value": false});
+      } else if (addInjurySix == true) {
+        await actor.update({"system.attrLeft.resource.options.0.values.6.value": false});
+      } else if (addInjuryFive == true) {
+        await actor.update({"system.attrLeft.resource.options.0.values.4.value": false});
+      } 
+    });
+
+    let addExhaustionFive = actor.system.attrLeft.resource.options['1'].values['4'].value
+    let addExhaustionSix = actor.system.attrLeft.resource.options['1'].values['6'].value
+    let addExhaustionSeven = actor.system.attrLeft.resource.options['1'].values['8'].value
+    let addExhaustionEight = actor.system.attrLeft.resource.options['1'].values['10'].value
+
+    let exhaustionFaPlus = document.querySelector('.exhaustion .fa-plus-square');
+    let exhaustionFaMinus = document.querySelector('.exhaustion .fa-minus-square');
+    
+    exhaustionFaPlus.addEventListener('click', async function(event) {
+      if (addExhaustionFive == false) {
+        await actor.update({"system.attrLeft.resource.options.1.values.4.value": true});
+      } else if (addExhaustionSix == false) {
+        await actor.update({"system.attrLeft.resource.options.1.values.6.value": true});
+      } else if (addExhaustionSeven == false) {
+        await actor.update({"system.attrLeft.resource.options.1.values.8.value": true});
+      } else if (addExhaustionEight == false) {
+        await actor.update({"system.attrLeft.resource.options.1.values.10.value": true});
+      }
+    });
+
+    exhaustionFaMinus.addEventListener('click', async function(event) {
+      if (addExhaustionEight == true) {
+        await actor.update({"system.attrLeft.resource.options.1.values.10.value": false});
+      } else if (addExhaustionSeven == true) {
+        await actor.update({"system.attrLeft.resource.options.1.values.8.value": false});
+      } else if (addExhaustionSix == true) {
+        await actor.update({"system.attrLeft.resource.options.1.values.6.value": false});
+      } else if (addExhaustionFive == true) {
+        await actor.update({"system.attrLeft.resource.options.1.values.4.value": false});
+      } 
+    });
+
+    let addDepletionFive = actor.system.attrLeft.resource.options['2'].values['4'].value
+    let addDepletionSix = actor.system.attrLeft.resource.options['2'].values['6'].value
+    let addDepletionSeven = actor.system.attrLeft.resource.options['2'].values['8'].value
+    let addDepletionEight = actor.system.attrLeft.resource.options['2'].values['10'].value
+
+    let depletionFaPlus = document.querySelector('.depletion .fa-plus-square');
+    let depletionFaMinus = document.querySelector('.depletion .fa-minus-square');
+    
+    depletionFaPlus.addEventListener('click', async function(event) {
+      if (addDepletionFive == false) {
+        await actor.update({"system.attrLeft.resource.options.2.values.4.value": true});
+      } else if (addDepletionSix == false) {
+        await actor.update({"system.attrLeft.resource.options.2.values.6.value": true});
+      } else if (addDepletionSeven == false) {
+        await actor.update({"system.attrLeft.resource.options.2.values.8.value": true});
+      } else if (addDepletionEight == false) {
+        await actor.update({"system.attrLeft.resource.options.2.values.10.value": true});
+      }
+    });
+
+    depletionFaMinus.addEventListener('click', async function(event) {
+      if (addDepletionEight == true) {
+        await actor.update({"system.attrLeft.resource.options.2.values.10.value": false});
+      } else if (addDepletionSeven == true) {
+        await actor.update({"system.attrLeft.resource.options.2.values.8.value": false});
+      } else if (addDepletionSix == true) {
+        await actor.update({"system.attrLeft.resource.options.2.values.6.value": false});
+      } else if (addDepletionFive == true) {
+        await actor.update({"system.attrLeft.resource.options.2.values.4.value": false});
+      } 
+    });
     
     // Add Mastery tag to actor sheet if move has Triumph description.
     let masteries = await game.settings.get('root', 'masteries');
     let metaTags = html.find('.item-meta.tags');
     let items = metaTags.parent('li.item');
     for (let item of items) {
+      // let usesTag = item.querySelector('.tag.tag--uses');
+      // usesTag.style.display = 'none';
+      // let quantityTag = item.querySelector('.tag.tag--quantiy');
+      // quantityTag.style.display = 'none';
       let critical = item.querySelector('div.result--critical');
       if (critical) {
         if (masteries) {
-          let metaTag = item.querySelector('.item-meta.tags');
-          let mastery = `<span class="tag tag--formula mastery">Mastery</span>`;
-          let stat = metaTag.innerHTML;
-        metaTag.innerHTML = `${mastery}${stat}`;
+          let formulaTag = item.querySelector('.tag.tag--formula');
+          let mastery = `<span class="tag tag--mastery">Mastery</span>`;
+          formulaTag.insertAdjacentHTML('beforebegin', mastery)
+        //   let stat = metaTag.innerHTML;
+        // metaTag.innerHTML = `${mastery}${stat}`;
         } else {
           critical.style.display = 'none';
         };

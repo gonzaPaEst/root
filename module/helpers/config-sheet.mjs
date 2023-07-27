@@ -784,10 +784,47 @@ export const configSheet = async () => {
               0: {
                 label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Injury"),
                 value: false,
-                values: {}
+                values: {
+                  0: {
+                    value: false
+                  },
+                  1: {
+                    value: false
+                  },
+                  2: {
+                    value: false
+                  },
+                  3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
+                    value: false
+                  }
+                }
               },
               1: {
-                label: "",
+                label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Exhaustion"),
                 value: false,
                 values: {
                   0: {
@@ -800,119 +837,37 @@ export const configSheet = async () => {
                     value: false
                   },
                   3: {
+                    value: false
+                  },
+                  4: {
+                    value: false
+                  },
+                  5: {
+                    value: false
+                  },
+                  6: {
+                    value: false
+                  },
+                  7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
                     value: false
                   }
                 }
               },
               2: {
-                label: "",
-                value: false,
-                values: {
-                  0: {
-                    value: false
-                  },
-                  1: {
-                    value: false
-                  },
-                  2: {
-                    value: false
-                  },
-                  3: {
-                    value: false
-                  },
-                  4: {
-                    value: false
-                  },
-                  5: {
-                    value: false
-                  },
-                  6: {
-                    value: false
-                  },
-                  7: {
-                    value: false
-                  }
-                }
-              },
-              3: {
-                label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Exhaustion"),
-                value: false,
-                values: {}
-              },
-              4: {
-                label: "",
-                value: false,
-                values: {
-                  0: {
-                    value: false
-                  },
-                  1: {
-                    value: false
-                  },
-                  2: {
-                    value: false
-                  },
-                  3: {
-                    value: false
-                  }
-                }
-              },
-              5: {
-                label: "",
-                value: false,
-                values: {
-                  0: {
-                    value: false
-                  },
-                  1: {
-                    value: false
-                  },
-                  2: {
-                    value: false
-                  },
-                  3: {
-                    value: false
-                  },
-                  4: {
-                    value: false
-                  },
-                  5: {
-                    value: false
-                  },
-                  6: {
-                    value: false
-                  },
-                  7: {
-                    value: false
-                  }
-                }
-              },
-              6: {
                 label: game.i18n.localize("Root.Sheet.AttrLeft.Resource.Depletion"),
                 value: false,
-                values: {}
-              },
-              7: {
-                label: "",
-                value: false,
-                values: {
-                  0: {
-                    value: false
-                  },
-                  1: {
-                    value: false
-                  },
-                  2: {
-                    value: false
-                  },
-                  3: {
-                    value: false
-                  }
-                }
-              },
-              8: {
-                label: "",
-                value: false,
                 values: {
                   0: {
                     value: false
@@ -936,6 +891,18 @@ export const configSheet = async () => {
                     value: false
                   },
                   7: {
+                    value: false
+                  },
+                  8: {
+                    value: false
+                  },
+                  9: {
+                    value: false
+                  },
+                  10: {
+                    value: false
+                  },
+                  11: {
                     value: false
                   }
                 }

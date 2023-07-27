@@ -227,16 +227,16 @@ appearance: none;
 /* Injury, Exhaustion, Depletion */
 
 .pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany label.cell__title {
-display: none;
+  display: none;
 }
 
 .pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol input.attr-list {
-margin: 3px 2px;
+  margin: 3px -0.5px;
 }
 
-.pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(2), label:nth-of-type(5), label:nth-of-type(8)) input.attr-list {
+/* .pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(2), label:nth-of-type(5), label:nth-of-type(8)) input.attr-list {
 margin: 3px 1px;
-}
+} */
 
 .pbta.sheet .cell.cell--attributes-left .cell.cell--resource.cell--attr-resource.cell--ListMany {
 background: #E6DDB8;
@@ -245,7 +245,7 @@ background: #E6DDB8;
   padding-left: 5px;
 }
 
-.pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::before {
+/* .pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol :is(label:nth-of-type(1), label:nth-of-type(4), label:nth-of-type(7))::before {
 background: rgb(255,255,255,0.4);
   border: 1px solid black;
   border-radius: 2px;
@@ -284,18 +284,13 @@ background: rgb(255,255,255,0.4);
 
 .pbta.sheet .cell.cell--resource.cell--attr-resource.cell--ListMany ul.cell__checkboxes.flexcol label:nth-of-type(7)::after {
   transform: translateX(90px);
+} */
+
+.pbta.sheet.actor :is(input[name="system.attrLeft.resource.options.0.values.4.value"], input[name="system.attrLeft.resource.options.0.values.5.value"], input[name="system.attrLeft.resource.options.0.values.6.value"], input[name="system.attrLeft.resource.options.0.values.7.value"], input[name="system.attrLeft.resource.options.0.values.8.value"], input[name="system.attrLeft.resource.options.0.values.9.value"], input[name="system.attrLeft.resource.options.0.values.10.value"], input[name="system.attrLeft.resource.options.0.values.11.value"], input[name="system.attrLeft.resource.options.1.values.4.value"], input[name="system.attrLeft.resource.options.1.values.5.value"], input[name="system.attrLeft.resource.options.1.values.6.value"], input[name="system.attrLeft.resource.options.1.values.7.value"], input[name="system.attrLeft.resource.options.1.values.8.value"], input[name="system.attrLeft.resource.options.1.values.9.value"], input[name="system.attrLeft.resource.options.1.values.10.value"], input[name="system.attrLeft.resource.options.1.values.11.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.2.values.8.value"], input[name="system.attrLeft.resource.options.2.values.9.value"], input[name="system.attrLeft.resource.options.2.values.10.value"], input[name="system.attrLeft.resource.options.2.values.11.value"]) {
+  display: none;
 }
 
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"], input[name="system.attrLeft.resource.options.2.values.2.value"], input[name="system.attrLeft.resource.options.2.values.4.value"], input[name="system.attrLeft.resource.options.2.values.6.value"], input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"], input[name="system.attrLeft.resource.options.8.values.0.value"], input[name="system.attrLeft.resource.options.8.values.2.value"], input[name="system.attrLeft.resource.options.8.values.4.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]) {
-  appearance: none;
-  background: none;
-  border: none;
-  position: absolute;
-  transform: translate(48px, -37px);
-  z-index: 4;
-}
-
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]) {
+/* .pbta.sheet :is(input[name="system.attrLeft.resource.options.5.values.0.value"], input[name="system.attrLeft.resource.options.5.values.2.value"], input[name="system.attrLeft.resource.options.5.values.4.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]) {
 transform: translate(83px, -37px);
 }
 
@@ -356,10 +351,10 @@ z-index: 1;
 
 .pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.7.value"]) {
 transform: translate(156px, -13px);
-}
+} */
 
-.pbta.sheet :is(input[name="system.attrLeft.resource.options.2.values.0.value"]:checked + input[name="system.attrLeft.resource.options.2.values.1.value"], input[name="system.attrLeft.resource.options.2.values.2.value"]:checked + input[name="system.attrLeft.resource.options.2.values.3.value"], input[name="system.attrLeft.resource.options.2.values.4.value"]:checked + input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"]:checked + input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.5.values.0.value"]:checked + input[name="system.attrLeft.resource.options.5.values.1.value"], input[name="system.attrLeft.resource.options.5.values.2.value"]:checked + input[name="system.attrLeft.resource.options.5.values.3.value"], input[name="system.attrLeft.resource.options.5.values.4.value"]:checked + input[name="system.attrLeft.resource.options.5.values.5.value"], input[name="system.attrLeft.resource.options.5.values.6.value"]:checked + input[name="system.attrLeft.resource.options.5.values.7.value"], input[name="system.attrLeft.resource.options.8.values.0.value"]:checked + input[name="system.attrLeft.resource.options.8.values.1.value"], input[name="system.attrLeft.resource.options.8.values.2.value"]:checked + input[name="system.attrLeft.resource.options.8.values.3.value"], input[name="system.attrLeft.resource.options.8.values.4.value"]:checked + input[name="system.attrLeft.resource.options.8.values.5.value"], input[name="system.attrLeft.resource.options.8.values.6.value"]:checked + input[name="system.attrLeft.resource.options.8.values.7.value"]) {
-display: inline;
+.pbta.sheet :is(input[name="system.attrLeft.resource.options.0.values.4.value"]:checked + input[name="system.attrLeft.resource.options.0.values.5.value"], input[name="system.attrLeft.resource.options.0.values.6.value"]:checked + input[name="system.attrLeft.resource.options.0.values.7.value"], input[name="system.attrLeft.resource.options.0.values.8.value"]:checked + input[name="system.attrLeft.resource.options.0.values.9.value"], input[name="system.attrLeft.resource.options.0.values.10.value"]:checked + input[name="system.attrLeft.resource.options.0.values.11.value"], input[name="system.attrLeft.resource.options.1.values.4.value"]:checked + input[name="system.attrLeft.resource.options.1.values.5.value"], input[name="system.attrLeft.resource.options.1.values.6.value"]:checked + input[name="system.attrLeft.resource.options.1.values.7.value"], input[name="system.attrLeft.resource.options.1.values.8.value"]:checked + input[name="system.attrLeft.resource.options.1.values.9.value"], input[name="system.attrLeft.resource.options.1.values.10.value"]:checked + input[name="system.attrLeft.resource.options.1.values.11.value"], input[name="system.attrLeft.resource.options.2.values.4.value"]:checked + input[name="system.attrLeft.resource.options.2.values.5.value"], input[name="system.attrLeft.resource.options.2.values.6.value"]:checked + input[name="system.attrLeft.resource.options.2.values.7.value"], input[name="system.attrLeft.resource.options.2.values.8.value"]:checked + input[name="system.attrLeft.resource.options.2.values.9.value"], input[name="system.attrLeft.resource.options.2.values.10.value"]:checked + input[name="system.attrLeft.resource.options.2.values.11.value"]) {
+  display: inline;
 }
 
 /* Equipment & Load */
@@ -399,7 +394,7 @@ display: inline;
   cursor: pointer;
 }
 
-span.mastery {
+span.tag--mastery {
   background: #662D2C;
   border: 0.5px solid rgba(255, 255, 255, .05);
   color: #fff;
@@ -434,6 +429,15 @@ span.mastery {
   display: inline;
 }
 
-.pbta.sheet.item :is(.fa-plus-square, .fa-minus-square):hover {
+.pbta.sheet :is(.fa-plus-square, .fa-minus-square):hover {
   cursor: pointer;
+}
+
+.pbta.sheet.actor .cell.cell--resource .cell__checkboxes label.flexrow {
+  display: block;
+  margin-top: 3px;
+}
+
+.pbta.sheet.actor .cell.cell--resource .cell__checkboxes label.flexrow:is(:nth-of-type(2), :nth-of-type(3)) {
+  margin-top: 5px;
 }
