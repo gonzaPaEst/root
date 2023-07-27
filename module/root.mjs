@@ -511,6 +511,37 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let resourcesSection = html.find('div.moves section.sheet-resources');
     resourcesSection.prepend(holdHTML);
 
+    // Calculate load, burdened and max
+    const carryingInput = document.querySelector('input[name="system.attrLeft.carrying.value"]');
+    carryingInput.setAttribute('readonly', 'readonly');
+    let carryingLoad
+    let calculateLoad = () => {
+      let equipment = actor.items;
+      let itemsLoad = equipment.reduce((acc,item) => {
+        if (item.type === "equipment") {
+          return acc + item.system.weight;
+        }
+        return acc;
+      }, 0);  
+      carryingLoad = itemsLoad;
+    };
+    calculateLoad();
+    await actor.update({"system.attrLeft.carrying.value": carryingLoad});
+    const burdenedInput = document.querySelector('input[name="system.attrLeft.burdened.value"]');
+    burdenedInput.setAttribute('readonly', 'readonly');
+    let migthValue = actor.system.stats.might.value;
+    let burdenedLoad = 4 + migthValue;
+    await actor.update({"system.attrLeft.burdened.value": burdenedLoad});
+    const maxInput = document.querySelector('input[name="system.attrLeft.max.value"]');
+    maxInput.setAttribute('readonly', 'readonly');
+    let maxLoad = burdenedLoad * 2;
+    await actor.update({"system.attrLeft.max.value": maxLoad})
+    if (maxInput.value != actor.system.attrLeft.max.value) {
+      setTimeout(() => {
+        actor.sheet.render(true);
+      }, 10);
+    }
+
     /* ----------------------- */
     /*      BACKGROUND         */
     /* ----------------------- */
