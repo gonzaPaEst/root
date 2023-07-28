@@ -348,3 +348,7 @@ span.tag--mastery {
   font-size: 0.8em;
   margin-left: 3px;
 }
+
+.pbta.sheet.actor span.tag:is(.tag--uses, .tag--quantity) {
+  display: none;
+}

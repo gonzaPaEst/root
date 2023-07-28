@@ -1125,18 +1125,12 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let metaTags = html.find('.item-meta.tags');
     let items = metaTags.parent('li.item');
     for (let item of items) {
-      // let usesTag = item.querySelector('.tag.tag--uses');
-      // usesTag.style.display = 'none';
-      // let quantityTag = item.querySelector('.tag.tag--quantiy');
-      // quantityTag.style.display = 'none';
       let critical = item.querySelector('div.result--critical');
       if (critical) {
         if (masteries) {
           let formulaTag = item.querySelector('.tag.tag--formula');
           let mastery = `<span class="tag tag--mastery">Mastery</span>`;
           formulaTag.insertAdjacentHTML('beforebegin', mastery)
-        //   let stat = metaTag.innerHTML;
-        // metaTag.innerHTML = `${mastery}${stat}`;
         } else {
           critical.style.display = 'none';
         };
