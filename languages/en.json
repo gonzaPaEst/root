@@ -3,15 +3,19 @@
         "Settings": {
             "Automate": {
                 "Title": "Automatic Stat Increment",
-                "Hint": "Open an Automation option on move sheets (under Details). It can be used to increment a stat or resource when the move is dropped on an actor sheet."
+                "Hint": "This option opens an Automation section on move sheets (under Details). It can be used to increment a stat or resource when the move is dropped on an actor sheet."
+            },
+            "Load": {
+                "Title": "Load Auto-Calculate",
+                "Hint": "This option updates the PC's load carrying, burdened, and max values automatically."
             },
             "Masteries": {
                 "Title": "Masteries Rules (Triumph!)",
-                "Hint": "Use Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate for mastery, add a Triumph description in move; otherwise, leave the description blank."
+                "Hint": "This option incorporates the Masteries rule (Travelers & Outsiders). IMPORTANT: To evaluate for mastery, add a Triumph description in move; otherwise, leave the description blank."
             },
             "Advantage": {
                 "Title": "Advantage & Disadvantage",
-                "Hint": "Use advantage and disadvantage rolls instead of +1 Forward and +1 Ongoing."
+                "Hint": "This option replaces +1 Forward and +1 Ongoing with advantage and disadvantage rolls."
             }
         },
         "Sheet": {
@@ -62,7 +66,9 @@
                 "Reputation": "Reputation Moves"
             },
             "Items": {
-                "Equipment": "Equipment"
+                "Equipment": "Equipment",
+                "Depletion": "Depletion",
+                "Wear": "Wear"
             },
             "NPC": {
                 "Injury": "Injury",
@@ -132,7 +138,8 @@
         "Description": "Background",
         "Biography": "Background and Details",
         "Quantity": "Value",
-        "Weight": "Load"
+        "Weight": "Load",
+        "Wt": "Load"
     },
     "TYPES.Item.root.traits": "traits"
 }

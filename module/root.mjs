@@ -20,6 +20,18 @@ Hooks.once('init', () => {
       }, 300)
   });
 
+  game.settings.register('root', 'load', {
+    name: game.i18n.localize("Root.Settings.Load.Title"),
+    default: true,
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    hint: game.i18n.localize("Root.Settings.Load.Hint"),
+    onChange: () => setTimeout(() => {
+        location.reload();
+      }, 300)
+  });
+
   game.settings.register('root', 'masteries', {
     name: game.i18n.localize("Root.Settings.Masteries.Title"),
     default: false,
@@ -252,7 +264,10 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let wearSeven = await item.getFlag('root', 'itemWear.box7') || false;
     let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
     let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
-    let wearBoxes = `<label>Wear</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
+    let wearLabel = game.i18n.localize("Root.Sheet.Items.Wear");
+    let depletionLabel = game.i18n.localize("Root.Sheet.Items.Depletion");
+
+    let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
     <br><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
     let itemFaPlus = document.querySelector('.pbta.sheet.item .wear.fa-plus-square');
@@ -297,7 +312,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     if (item.system.playbook == 'The Pirate' && item.system.tags.includes('stocked')) {
       let depletionOne = await item.getFlag('root', 'itemDepletion.box1') || false;
       let depletionTwo = await item.getFlag('root', 'itemDepletion.box2') || false;
-      let depletionBoxes = `<hr><div class="resources"><label>Depletion</label>
+      let depletionBoxes = `<hr><div class="resources"><label>${depletionLabel}</label>
       <br><input type="checkbox" name="flags.root.itemDepletion.box1" data-dtype="Boolean" ${depletionOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemDepletion.box2" data-dtype="Boolean" ${depletionTwo ? 'checked' : ''}>`
       usesDiv[0].insertAdjacentHTML('beforeend', depletionBoxes)
     };
@@ -503,8 +518,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     // Prepend hold flag before forward and ongoing
     let holdValue = actor.getFlag('root', 'hold') || "0";
+    let holdLabel = game.i18n.localize('Root.Sheet.AttrLeft.Hold');
     let holdHTML = `<div class="cell cell--hold">
-    <label for="flags.root.hold" class="cell__title">Hold</label>
+    <label for="flags.root.hold" class="cell__title">${holdLabel}</label>
     <input type="text" name="flags.root.hold" value="${holdValue}" data-dtype="Number">
     </div>
     `
@@ -512,35 +528,39 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     resourcesSection.prepend(holdHTML);
 
     // Calculate load, burdened and max
-    const carryingInput = document.querySelector('input[name="system.attrLeft.carrying.value"]');
-    carryingInput.setAttribute('readonly', 'readonly');
-    let carryingLoad
-    let calculateLoad = () => {
-      let equipment = actor.items;
-      let itemsLoad = equipment.reduce((acc,item) => {
-        if (item.type === "equipment") {
-          return acc + item.system.weight;
-        }
-        return acc;
-      }, 0);  
-      carryingLoad = itemsLoad;
+    let loadCalculate = await game.settings.get('root', 'load');
+    
+    if (loadCalculate) {
+      const carryingInput = document.querySelector('input[name="system.attrLeft.carrying.value"]');
+      carryingInput.setAttribute('readonly', 'readonly');
+      let carryingLoad
+      let calculateLoad = () => {
+        let equipment = actor.items;
+        let itemsLoad = equipment.reduce((acc,item) => {
+          if (item.type === "equipment") {
+            return acc + item.system.weight;
+          }
+          return acc;
+        }, 0);  
+        carryingLoad = itemsLoad;
+      };
+      calculateLoad();
+      await actor.update({"system.attrLeft.carrying.value": carryingLoad});
+      const burdenedInput = document.querySelector('input[name="system.attrLeft.burdened.value"]');
+      burdenedInput.setAttribute('readonly', 'readonly');
+      let migthValue = actor.system.stats.might.value;
+      let burdenedLoad = 4 + migthValue;
+      await actor.update({"system.attrLeft.burdened.value": burdenedLoad});
+      const maxInput = document.querySelector('input[name="system.attrLeft.max.value"]');
+      maxInput.setAttribute('readonly', 'readonly');
+      let maxLoad = burdenedLoad * 2;
+      await actor.update({"system.attrLeft.max.value": maxLoad})
+      if (maxInput.value != actor.system.attrLeft.max.value) {
+        setTimeout(() => {
+          actor.sheet.render(true);
+        }, 10);
+      };
     };
-    calculateLoad();
-    await actor.update({"system.attrLeft.carrying.value": carryingLoad});
-    const burdenedInput = document.querySelector('input[name="system.attrLeft.burdened.value"]');
-    burdenedInput.setAttribute('readonly', 'readonly');
-    let migthValue = actor.system.stats.might.value;
-    let burdenedLoad = 4 + migthValue;
-    await actor.update({"system.attrLeft.burdened.value": burdenedLoad});
-    const maxInput = document.querySelector('input[name="system.attrLeft.max.value"]');
-    maxInput.setAttribute('readonly', 'readonly');
-    let maxLoad = burdenedLoad * 2;
-    await actor.update({"system.attrLeft.max.value": maxLoad})
-    if (maxInput.value != actor.system.attrLeft.max.value) {
-      setTimeout(() => {
-        actor.sheet.render(true);
-      }, 10);
-    }
 
     /* ----------------------- */
     /*      BACKGROUND         */
