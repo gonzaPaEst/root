@@ -6,9 +6,13 @@
   min-width: 770px;
 }
 
-.pbta.sheet:is(.npc, .class) {
+.pbta.sheet.npc {
   max-width: 655px;
   min-width: 630px;
+}
+
+.pbta.sheet.class {
+  min-width: 600px;
 }
 
 .pbta.sheet section.window-content {
@@ -314,11 +318,11 @@ span.tag--mastery {
   margin: 0 -5px 0 5px;
 }
 
-.pbta.sheet.item :is(input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.box8"], input[name="flags.root.itemWear.addBox2"], input[name="flags.root.itemWear.addBox3"], input[name="flags.root.itemWear.addBox4"], input[name="flags.root.itemWear.addBox5"], input[name="flags.root.itemWear.addBox6"], input[name="flags.root.itemWear.addBox7"], input[name="flags.root.itemWear.addBox8"]) {
+.pbta.sheet.item :is(input[name="flags.root.itemWear.box1"], input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.box8"], input[name="flags.root.itemWear.addBox1"], input[name="flags.root.itemWear.addBox2"], input[name="flags.root.itemWear.addBox3"], input[name="flags.root.itemWear.addBox4"], input[name="flags.root.itemWear.addBox5"], input[name="flags.root.itemWear.addBox6"], input[name="flags.root.itemWear.addBox7"], input[name="flags.root.itemWear.addBox8"]) {
   display: none;
 }
 
-.pbta.sheet.item :is(input[name="flags.root.itemWear.addBox2"]:checked + input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.addBox3"]:checked + input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.addBox4"]:checked + input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.addBox5"]:checked + input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.addBox6"]:checked + input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.addBox7"]:checked + input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.addBox8"]:checked + input[name="flags.root.itemWear.box8"]) {
+.pbta.sheet.item :is(input[name="flags.root.itemWear.addBox1"]:checked + input[name="flags.root.itemWear.box1"], input[name="flags.root.itemWear.addBox2"]:checked + input[name="flags.root.itemWear.box2"], input[name="flags.root.itemWear.addBox3"]:checked + input[name="flags.root.itemWear.box3"], input[name="flags.root.itemWear.addBox4"]:checked + input[name="flags.root.itemWear.box4"], input[name="flags.root.itemWear.addBox5"]:checked + input[name="flags.root.itemWear.box5"], input[name="flags.root.itemWear.addBox6"]:checked + input[name="flags.root.itemWear.box6"], input[name="flags.root.itemWear.addBox7"]:checked + input[name="flags.root.itemWear.box7"], input[name="flags.root.itemWear.addBox8"]:checked + input[name="flags.root.itemWear.box8"]) {
   display: inline;
 }
 

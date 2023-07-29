@@ -249,6 +249,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   if (item.type == 'equipment') {
     let uses = html.find('input[name="system.uses"]');
     let usesDiv = uses.closest('div.resource');
+    let addWearOne = await item.getFlag('root', 'itemWear.addBox1') || false;
     let wearOne = await item.getFlag('root', 'itemWear.box1') || false;
     let addWearTwo = await item.getFlag('root', 'itemWear.addBox2') || false;
     let wearTwo = await item.getFlag('root', 'itemWear.box2') || false;
@@ -267,14 +268,17 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let wearLabel = game.i18n.localize("Root.Sheet.Items.Wear");
     let depletionLabel = game.i18n.localize("Root.Sheet.Items.Depletion");
 
+    // !!! check functionality of first checkbox
     let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
-    <br><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
+    <br><input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
     let itemFaPlus = document.querySelector('.pbta.sheet.item .wear.fa-plus-square');
     let itemFaMinus = document.querySelector('.pbta.sheet.item .wear.fa-minus-square');
     
     itemFaPlus.addEventListener('click', async function(event) {
-      if (addWearTwo == false) {
+      if (addWearOne == false) {
+        addWearOne = await item.setFlag('root', 'itemWear.addBox1', true);
+      } else if (addWearTwo == false) {
         addWearTwo = await item.setFlag('root', 'itemWear.addBox2', true);
       } else if (addWearThree == false) {
         addWearThree = await item.setFlag('root', 'itemWear.addBox3', true);
@@ -306,6 +310,8 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
         addWearThree = await item.setFlag('root', 'itemWear.addBox3', false);
       } else if (addWearTwo == true) {
         addWearTwo = await item.setFlag('root', 'itemWear.addBox2', false);
+      } else if (addWearOne == true) {
+        addWearOne = await item.setFlag('root', 'itemWear.addBox1', false);
       }
     });
 
@@ -586,6 +592,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let fundamentalTenets = await actor.getFlag('root', 'fundamentalTenets') || '';
     let factionHate = await actor.getFlag('root', 'factionHate') || '';
     let factionHarbor = await actor.getFlag('root', 'factionHarbor') || '';
+    let parentsVagabond = await actor.getFlag('root', 'parentsVagabond') || '';
+    let parentsHappened = await actor.getFlag('root', 'parentsHappened') || '';
+    let parentsFactionServed = await actor.getFlag('root', 'parentsFactionServed') || '';
+    let parentsFactionOppose = await actor.getFlag('root', 'parentsFactionOppose') || '';
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
@@ -622,6 +632,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let factionHateText = game.i18n.localize('Root.Background.FactionHate');
     let minus1RepText = game.i18n.localize('Root.Background.Minus1Reputation');
     let factionHarborText = game.i18n.localize('Root.Background.FactionHarbor');
+    let parentsVagabondText = game.i18n.localize('Root.Background.ParentsVagabond');
+    let parentsHappenedText = game.i18n.localize('Root.Background.ParentsHappened');
+    let parentsFactionServedText = game.i18n.localize('Root.Background.ParentsFactionServed');
+    let parentsFactionOpposeText = game.i18n.localize('Root.Background.ParentsFactionOppose');
     let factionServedText = game.i18n.localize('Root.Background.FactionServed');
     let markPrestigeText = game.i18n.localize('Root.Background.MarkPrestige');
     let factionEnmityText = game.i18n.localize('Root.Background.FactionEnmity');
@@ -639,7 +653,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <option value="custom"${vagabondBackground === 'custom' ? ' selected' : ''}>${customLabel}</option>
     </select>
     `;
-    // TODO en.json
+
     let detailsHTML = `<h3 style='border: none;'>${speciesHeading}</h3>
     <input style="margin: 0 0 2px; text-align: left; width: 50%;" type="text" name="flags.root.species" value="${species}">
     <hr><h3 style='border: none;'>${detailsHeading}</h3>
@@ -693,6 +707,15 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <h4 style="margin: 8px 0 4px;">${factionEnmityText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionEnmity" value="${factionEnmity}" placeholder="${factionPlaceholder}">${markNotorietyText}</em>
     `
+    let princeBackgroundQuestions = `<h4 style="margin: 8px 0 4px;">${parentsVagabondText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.parentsVagabond" value="${parentsVagabond}">
+    <h4 style="margin: 8px 0 4px;">${parentsHappenedText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.parentsHappened" value="${parentsHappened}">
+    <h4 style="margin: 8px 0 4px;">${parentsFactionServedText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.parentsFactionServed" value="${parentsFactionServed}" placeholder="${factionPlaceholder}">${markPrestigeText}</em>
+    <h4 style="margin: 8px 0 4px;">${parentsFactionOpposeText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.parentsFactionOppose" value="${parentsFactionOppose}" placeholder="${factionPlaceholder}">${markNotorietyText}</em>
+    `
 
     backgroundLabel.insertAdjacentHTML('beforeend', vagabondSelect);
 
@@ -710,7 +733,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     } else if (vagabondBackground == 'pirate') {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${captainQuestion}${factionsQuestions}`
     } else if (vagabondBackground == 'prince') {
-
+      descriptionEditor[0].innerHTML += `${princeBackgroundQuestions}`
     } else if (vagabondBackground == 'raconteur') {
 
     } else if (vagabondBackground == 'ronin') {
