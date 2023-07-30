@@ -268,7 +268,6 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let wearLabel = game.i18n.localize("Root.Sheet.Items.Wear");
     let depletionLabel = game.i18n.localize("Root.Sheet.Items.Depletion");
 
-    // !!! check functionality of first checkbox
     let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
     <br><input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
@@ -596,6 +595,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let parentsHappened = await actor.getFlag('root', 'parentsHappened') || '';
     let parentsFactionServed = await actor.getFlag('root', 'parentsFactionServed') || '';
     let parentsFactionOppose = await actor.getFlag('root', 'parentsFactionOppose') || '';
+    let whomWronged = await actor.getFlag('root', 'whoWronged') || '';
     let factionServed = await actor.getFlag('root', 'factionServed') || '';
     let factionEnmity = await actor.getFlag('root', 'factionEnmity') || '';
     let vagabondBackground = await actor.getFlag('root', 'vagabondBackground') || 'default';
@@ -636,6 +636,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let parentsHappenedText = game.i18n.localize('Root.Background.ParentsHappened');
     let parentsFactionServedText = game.i18n.localize('Root.Background.ParentsFactionServed');
     let parentsFactionOpposeText = game.i18n.localize('Root.Background.ParentsFactionOppose');
+    let whomWrongedText = game.i18n.localize('Root.Background.WhomWronged');
     let factionServedText = game.i18n.localize('Root.Background.FactionServed');
     let markPrestigeText = game.i18n.localize('Root.Background.MarkPrestige');
     let factionEnmityText = game.i18n.localize('Root.Background.FactionEnmity');
@@ -702,6 +703,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <h4 style="margin: 8px 0 4px;">${factionHarborText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionHarbor" value="${factionHarbor}" placeholder="${factionPlaceholder}">${plus1RepText}</em>
     `
+    let whonWrongQuestion = `<h4 style="margin: 8px 0 4px;">${whomWrongedText}</h4>
+    <input style="margin: 0 0 2px; text-align: left; width: 90%;" type="text" name="flags.root.whomWronged" value="${whomWronged}">
+    `
     let factionsQuestions = `<h4 style="margin: 8px 0 4px;">${factionServedText}</h4>
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.factionServed" value="${factionServed}" placeholder="${factionPlaceholder}">${markPrestigeText}</em>
     <h4 style="margin: 8px 0 4px;">${factionEnmityText}</h4>
@@ -735,7 +739,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     } else if (vagabondBackground == 'prince') {
       descriptionEditor[0].innerHTML += `${princeBackgroundQuestions}`
     } else if (vagabondBackground == 'raconteur') {
-
+      descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${whonWrongQuestion}${factionsQuestions}`
     } else if (vagabondBackground == 'ronin') {
       descriptionEditor[0].innerHTML += `${whereIsHomeQuestion}${whyVagabondQuestion}${lastMasterQuestion}${factionsQuestions}`
     }
