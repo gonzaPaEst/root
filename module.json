@@ -382,7 +382,7 @@
       "label": "Pre-Planned NPCs",
       "system": "pbta",
       "path": "packs/npcs",
-      "type": "Item",
+      "type": "Actor",
       "flags": {},
       "ownership": {
         "ASSISTANT": "OWNER"
