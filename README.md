@@ -2,7 +2,7 @@
 
 Unofficial Root RPG custom sheet and compendium module for Foundry VTT, to be used with the [Powered by the Apocalypse](https://gitlab.com/asacolips-projects/foundry-mods/pbta) game system (by Asacolips).
 
-![alt text](https://raw.githubusercontent.com/gonzaPaEst/root/main/styles/img/Root-Sheet.webp "Root RPG sheet")
+![Root RPG sheet](https://raw.githubusercontent.com/gonzaPaEst/root/main/styles/img/Root-Sheet.webp)
 
 ---
 

@@ -247,6 +247,66 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
   // Find if item is move
   if (item.type == 'equipment') {
+
+    // HANDLE TAGS
+    try {
+      // Find tags and sort ranges first
+      const tagsJson = item.system.tags;
+      const tagsData = JSON.parse(tagsJson);
+      const desiredValues = ["intimate", "close", "far"];
+      function customSort(a, b) {
+        const indexA = desiredValues.indexOf(a.value);
+        const indexB = desiredValues.indexOf(b.value);
+        if (indexA !== -1 && indexB !== -1) {
+          return indexA - indexB;
+        }
+        if (indexA !== -1) {
+          return -1;
+        } else if (indexB !== -1) {
+          return 1;
+        }
+        return 0;
+      }
+      const sortedData = tagsData.sort(customSort);
+      const updatedTagsJson = JSON.stringify(sortedData);
+      // Update new tags order
+      await item.update({ [`system.tags`]: updatedTagsJson });
+    } catch (error) {
+      console.log("No tags yet", error)
+    }
+
+    // Render tag when clicked on item sheet
+    let tags = document.querySelectorAll('tags tag')
+
+    for (let tag of tags) {
+      tag.addEventListener("click", openTag);
+      async function openTag(e) {
+        let name = e.target.innerText;
+        // Retrieve tags in game and then in compendium
+        let tagItems = game.items.filter(i => i.type == 'tag');
+        let pack = game.packs.get("root.tags")
+        let items = pack ? await pack.getDocuments() : [];
+        tagItems = tagItems.concat(items.filter(i => i.type == 'tag'));
+        // Remove tag repeats by matching names in new array.
+        let tagNames = [];
+        for (let t of tagItems) {
+          let tagName = t.name;
+          if (tagNames.includes(tagName) !== false) {
+            tagItems = tagItems.filter(item => item.id != t.id);
+          } else {
+            tagNames.push(tagName)
+          }
+        }
+        // Render tag
+        for (let tagItem of tagItems) {
+          if (tagItem.name.toLowerCase() == name) {
+            tagItem.sheet.render(true);
+          };
+        };
+      }
+    };
+
+    // Include item wear
     let uses = html.find('input[name="system.uses"]');
     let usesDiv = uses.closest('div.resource');
     let addWearOne = await item.getFlag('root', 'itemWear.addBox1') || false;
@@ -517,7 +577,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
               playbook.sheet.render(true);
             };
           };
-        // };
       };
     };
 
@@ -1163,6 +1222,37 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         };
       };
     };
+
+     // Render tag when clicked on actor sheet
+     let tags = document.querySelectorAll('div.tags div.tag')
+
+     for (let tag of tags) {
+       tag.addEventListener("click", openTag);
+       async function openTag(e) {
+         let name = e.target.innerText;
+         // Retrieve tags in game and then in compendium
+         let tagItems = game.items.filter(i => i.type == 'tag');
+         let pack = game.packs.get("root.tags")
+         let items = pack ? await pack.getDocuments() : [];
+         tagItems = tagItems.concat(items.filter(i => i.type == 'tag'));
+         // Remove tag repeats by matching names in new array.
+         let tagNames = [];
+         for (let t of tagItems) {
+           let tagName = t.name;
+           if (tagNames.includes(tagName) !== false) {
+             tagItems = tagItems.filter(item => item.id != t.id);
+           } else {
+             tagNames.push(tagName)
+           }
+         }
+         // Render tag
+         for (let tagItem of tagItems) {
+           if (tagItem.name == name) {
+             tagItem.sheet.render(true);
+           };
+         };
+       }
+     };
 
   };
 

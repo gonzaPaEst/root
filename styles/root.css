@@ -326,7 +326,7 @@ span.tag--mastery {
   display: inline;
 }
 
-.pbta.sheet :is(.fa-plus-square, .fa-minus-square):hover {
+.pbta.sheet :is(.fa-plus-square, .fa-minus-square, div.tags div.tag, tags tag):hover {
   cursor: pointer;
 }
 
