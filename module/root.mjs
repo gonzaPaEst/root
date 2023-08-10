@@ -276,11 +276,9 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
 
     // Render tag when clicked on item sheet
-    let tags = document.querySelectorAll('tags tag')
+    let tag = html.find('tags tag')
 
-    for (let tag of tags) {
-      tag.addEventListener("click", openTag);
-      async function openTag(e) {
+      tag.click(async function (e) {
         let name = e.target.innerText;
         // Retrieve tags in game and then in compendium
         let tagItems = game.items.filter(i => i.type == 'tag');
@@ -303,8 +301,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
             tagItem.sheet.render(true);
           };
         };
-      }
-    };
+      });
 
     // Include item wear
     let uses = html.find('input[name="system.uses"]');
@@ -331,10 +328,10 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
     <br><input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
     usesDiv[0].innerHTML = wearBoxes
-    let itemFaPlus = document.querySelector('.pbta.sheet.item .wear.fa-plus-square');
-    let itemFaMinus = document.querySelector('.pbta.sheet.item .wear.fa-minus-square');
+    let itemFaPlus = html.find('.wear.fa-plus-square');
+    let itemFaMinus = html.find('.wear.fa-minus-square');
     
-    itemFaPlus.addEventListener('click', async function(event) {
+    itemFaPlus.click(async function(event) {
       if (addWearOne == false) {
         addWearOne = await item.setFlag('root', 'itemWear.addBox1', true);
       } else if (addWearTwo == false) {
@@ -354,7 +351,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       }
     });
 
-    itemFaMinus.addEventListener('click', async function(event) {
+    itemFaMinus.click(async function(event) {
        if (addWearEight == true) {
         addWearEight = await item.setFlag('root', 'itemWear.addBox8', false);
       } else if (addWearSeven == true) {
@@ -499,19 +496,15 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   let actor = app.actor;
 
   // Remove checking when clicking on label
-  let labels = document.querySelectorAll('.cell.cell--reputation.cell--attr-reputation.cell--ListMany ul label, .cell.cell--resource.cell--attr-resource.cell--ListMany ul label, .pbta.sheet.npc .cell.cell--attributes-top ul label');
+  let labels = html.find('.cell.cell--reputation.cell--attr-reputation.cell--ListMany ul label, .cell.cell--resource.cell--attr-resource.cell--ListMany ul label, .pbta.sheet.npc .cell.cell--attributes-top ul label');
 
-    for (let label of labels) {
-      label.addEventListener('click', function(event) {
-        // Allow the default behavior for inputs
-        if (event.target.tagName === 'INPUT') {
-          return;
-        }
-        // Prevent the default behavior for the label
-        event.preventDefault();
-        event.stopPropagation();
-      });
+  labels.click(function(event) {
+    if ($(event.target).is('input')) {
+      return;
     }
+    event.preventDefault();
+    event.stopPropagation();
+  });
 
   // Make checkbox increments behave like clocks
   function handleCheckboxIncrements(checkboxArrays) {
@@ -532,30 +525,57 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         }
       });
     });
-  }
+  };
+
+  // Render tag when clicked on actor sheet
+  let tag = html.find('div.tags div.tag')
+
+  tag.click(async function (e) {
+    let name = e.target.innerText;
+    // Retrieve tags in game and then in compendium
+    let tagItems = game.items.filter(i => i.type == 'tag');
+    let pack = game.packs.get("root.tags")
+    let items = pack ? await pack.getDocuments() : [];
+    tagItems = tagItems.concat(items.filter(i => i.type == 'tag'));
+    // Remove tag repeats by matching names in new array.
+    let tagNames = [];
+    for (let t of tagItems) {
+      let tagName = t.name;
+      if (tagNames.includes(tagName) !== false) {
+        tagItems = tagItems.filter(item => item.id != t.id);
+      } else {
+        tagNames.push(tagName)
+      }
+    }
+    // Render tag
+    for (let tagItem of tagItems) {
+      if (tagItem.name == name) {
+        tagItem.sheet.render(true);
+      };
+    };
+  });
 
   if (actor.type == 'character') {
 
     // Add fa-book and click it to open playbook
-    let charPlaybook = document.querySelector('.charplaybook');
+    let charPlaybook = html.find('.charplaybook');
     let faBook = '<i class="fa-solid fa-book"></i>';
-    charPlaybook.insertAdjacentHTML('beforebegin', faBook);
-    const faBookIcon = document.querySelector('.sheet-header__fields .fa-book');
-    faBookIcon.style.filter = 'opacity(0.4)';
-    let name = charPlaybook.value;
+    charPlaybook.before(faBook);
+    const faBookIcon = html.find('.sheet-header__fields .fa-book');
+    faBookIcon.css('filter', 'opacity(0.4)');
+    let name = charPlaybook[0].value;
 
     if (name != '') {
-      faBookIcon.style.filter = 'opacity(1)';
-      faBookIcon.addEventListener('mouseover', () => {
-        faBookIcon.style.cursor = 'pointer'; // Change 'pointer' to the desired cursor style
+      faBookIcon.css('filter', 'opacity(1)');
+      faBookIcon.mouseover(() => {
+        faBookIcon.css('cursor', 'pointer'); // Change 'pointer' to the desired cursor style
       });
       
       // Reset the cursor style when the mouse leaves the element
-      faBookIcon.addEventListener('mouseout', () => {
-        faBookIcon.style.cursor = 'default'; // Change 'default' to the default cursor style you want
+      faBookIcon.mouseout(() => {
+        faBookIcon.css('cursor', 'default'); // Change 'default' to the default cursor style you want
       });
-      faBookIcon.addEventListener("click", openPlaybook);
-      async function openPlaybook(e) {
+      faBookIcon.click(async function (e) {
           // Retrieve playbooks in game and then in compendium
           let playbooks = game.items.filter(i => i.type == 'playbook');
           let pack = game.packs.get("root.playbooks")
@@ -577,7 +597,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
               playbook.sheet.render(true);
             };
           };
-      };
+      });
     };
 
     // Prepend hold flag before forward and ongoing
@@ -595,8 +615,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let loadCalculate = await game.settings.get('root', 'load');
     
     if (loadCalculate) {
-      const carryingInput = document.querySelector('input[name="system.attrLeft.carrying.value"]');
-      carryingInput.setAttribute('readonly', 'readonly');
+      const carryingInput = html.find('input[name="system.attrLeft.carrying.value"]');
+      carryingInput.attr('readonly', 'readonly');
       let carryingLoad
       let calculateLoad = () => {
         let equipment = actor.items;
@@ -610,16 +630,16 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       };
       calculateLoad();
       await actor.update({"system.attrLeft.carrying.value": carryingLoad});
-      const burdenedInput = document.querySelector('input[name="system.attrLeft.burdened.value"]');
-      burdenedInput.setAttribute('readonly', 'readonly');
+      const burdenedInput = html.find('input[name="system.attrLeft.burdened.value"]');
+      burdenedInput.attr('readonly', 'readonly');
       let migthValue = actor.system.stats.might.value;
       let burdenedLoad = 4 + migthValue;
       await actor.update({"system.attrLeft.burdened.value": burdenedLoad});
-      const maxInput = document.querySelector('input[name="system.attrLeft.max.value"]');
-      maxInput.setAttribute('readonly', 'readonly');
+      const maxInput = html.find('input[name="system.attrLeft.max.value"]');
+      maxInput.attr('readonly', 'readonly');
       let maxLoad = burdenedLoad * 2;
       await actor.update({"system.attrLeft.max.value": maxLoad})
-      if (maxInput.value != actor.system.attrLeft.max.value) {
+      if (maxInput[0].value != actor.system.attrLeft.max.value) {
         setTimeout(() => {
           actor.sheet.render(true);
         }, 10);
@@ -630,7 +650,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     /*      BACKGROUND         */
     /* ----------------------- */
     // Add background and details
-    let backgroundLabel = document.querySelector('div.tab.description label');
+    let backgroundLabel = html.find('div.tab.description label');
     let descriptionEditor = html.find('div.tab.description div.editor');
     let species = await actor.getFlag('root', 'species') || '';
     let pronouns = await actor.getFlag('root', 'pronouns') || '';
@@ -780,7 +800,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     <input style="margin: 0 0 2px; text-align: left; width: 40%;" type="text" name="flags.root.parentsFactionOppose" value="${parentsFactionOppose}" placeholder="${factionPlaceholder}">${markNotorietyText}</em>
     `
 
-    backgroundLabel.insertAdjacentHTML('beforeend', vagabondSelect);
+    backgroundLabel.append(vagabondSelect);
 
     if (vagabondBackground != 'custom') {
       descriptionEditor[0].innerHTML = `${detailsHTML}`
@@ -826,49 +846,49 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     
     const factionsReputations = [
       [
-        $('input[name="system.attrTop.reputation.options.1.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.2.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.3.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.4.values.0.value"]'),
-        $('input[name="system.attrTop.reputation.options.5.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.6.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.7.values.5.value"]')
+        html.find('input[name="system.attrTop.reputation.options.1.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.2.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.3.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.4.values.0.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.5.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.6.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.7.values.5.value"]')
       ],
       [
-        $('input[name="system.attrTop.reputation.options.9.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.10.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.11.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.12.values.0.value"]'),
-        $('input[name="system.attrTop.reputation.options.13.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.14.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.15.values.5.value"]')
+        html.find('input[name="system.attrTop.reputation.options.9.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.10.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.11.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.12.values.0.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.13.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.14.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.15.values.5.value"]')
       ],
       [
-        $('input[name="system.attrTop.reputation.options.17.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.18.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.19.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.20.values.0.value"]'),
-        $('input[name="system.attrTop.reputation.options.21.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.22.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.23.values.5.value"]')
+        html.find('input[name="system.attrTop.reputation.options.17.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.18.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.19.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.20.values.0.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.21.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.22.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.23.values.5.value"]')
       ],
       [
-        $('input[name="system.attrTop.reputation.options.25.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.26.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.27.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.28.values.0.value"]'),
-        $('input[name="system.attrTop.reputation.options.29.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.30.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.31.values.5.value"]')
+        html.find('input[name="system.attrTop.reputation.options.25.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.26.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.27.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.28.values.0.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.29.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.30.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.31.values.5.value"]')
       ],
       [
-        $('input[name="system.attrTop.reputation.options.33.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.34.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.35.values.3.value"]'),
-        $('input[name="system.attrTop.reputation.options.36.values.0.value"]'),
-        $('input[name="system.attrTop.reputation.options.37.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.38.values.5.value"]'),
-        $('input[name="system.attrTop.reputation.options.39.values.5.value"]')
+        html.find('input[name="system.attrTop.reputation.options.33.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.34.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.35.values.3.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.36.values.0.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.37.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.38.values.5.value"]'),
+        html.find('input[name="system.attrTop.reputation.options.39.values.5.value"]')
       ]
     ];
     
@@ -876,153 +896,153 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     
     // Handle reputation increments
     const firstFactionNotoriety = [
-      $('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.1.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.1.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.2.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.2.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.2.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.3.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.3.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.3.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.1.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.1.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.2.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.2.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.2.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.3.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.3.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.3.values.0.value"]')
     ];
 
     const firstFactionPrestige = [
-      $('input[name="system.attrTop.reputation.options.7.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.7.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.7.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.7.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.7.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.6.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.6.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.6.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.6.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.6.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.5.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.5.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.5.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.5.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.5.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.7.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.7.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.7.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.7.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.7.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.6.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.6.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.6.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.6.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.6.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.5.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.5.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.5.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.5.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.5.values.0.value"]')
     ];
     
     const secondFactionNotoriety = [
-      $('input[name="system.attrTop.reputation.options.9.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.9.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.9.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.10.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.10.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.10.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.11.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.11.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.11.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.9.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.9.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.9.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.10.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.10.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.10.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.11.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.11.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.11.values.0.value"]')
     ];
     
     const secondFactionPrestige = [
-      $('input[name="system.attrTop.reputation.options.15.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.15.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.15.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.15.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.15.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.14.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.14.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.14.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.14.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.14.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.13.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.13.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.13.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.13.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.13.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.15.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.15.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.15.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.15.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.15.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.14.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.14.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.14.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.14.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.14.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.13.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.13.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.13.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.13.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.13.values.0.value"]')
     ];
 
     const thirdFactionNotoriety = [
-      $('input[name="system.attrTop.reputation.options.17.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.17.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.17.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.18.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.18.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.18.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.19.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.19.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.19.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.17.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.17.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.17.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.18.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.18.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.18.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.19.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.19.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.19.values.0.value"]')
     ];
     
     const thirdFactionPrestige = [
-      $('input[name="system.attrTop.reputation.options.23.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.23.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.23.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.23.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.23.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.22.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.22.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.22.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.22.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.22.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.21.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.21.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.21.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.21.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.21.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.23.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.23.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.23.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.23.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.23.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.22.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.22.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.22.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.22.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.22.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.21.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.21.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.21.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.21.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.21.values.0.value"]')
     ];
 
     const fourthFactionNotoriety = [
-      $('input[name="system.attrTop.reputation.options.25.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.25.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.25.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.26.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.26.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.26.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.27.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.27.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.27.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.25.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.25.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.25.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.26.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.26.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.26.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.27.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.27.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.27.values.0.value"]')
     ];
 
     const fourthFactionPrestige = [
-      $('input[name="system.attrTop.reputation.options.31.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.31.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.31.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.31.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.31.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.30.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.30.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.30.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.30.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.30.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.29.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.29.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.29.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.29.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.29.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.31.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.31.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.31.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.31.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.31.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.30.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.30.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.30.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.30.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.30.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.29.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.29.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.29.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.29.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.29.values.0.value"]')
     ];
     
     const fifthFactionNotoriety = [
-      $('input[name="system.attrTop.reputation.options.33.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.33.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.33.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.34.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.34.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.34.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.35.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.35.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.35.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.33.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.33.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.33.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.34.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.34.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.34.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.35.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.35.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.35.values.0.value"]')
     ];
 
     const fifthFactionPrestige = [
-      $('input[name="system.attrTop.reputation.options.39.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.39.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.39.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.39.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.39.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.38.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.38.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.38.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.38.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.38.values.0.value"]'),
-      $('input[name="system.attrTop.reputation.options.37.values.4.value"]'),
-      $('input[name="system.attrTop.reputation.options.37.values.3.value"]'),
-      $('input[name="system.attrTop.reputation.options.37.values.2.value"]'),
-      $('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
-      $('input[name="system.attrTop.reputation.options.37.values.0.value"]')
+      html.find('input[name="system.attrTop.reputation.options.39.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.39.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.39.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.39.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.39.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.38.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.38.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.38.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.38.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.38.values.0.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.37.values.4.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.37.values.3.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.37.values.2.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
+      html.find('input[name="system.attrTop.reputation.options.37.values.0.value"]')
     ];
     
     handleCheckboxIncrements(firstFactionNotoriety);
@@ -1037,50 +1057,49 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     handleCheckboxIncrements(fifthFactionPrestige);
 
     // RESOURCES (injury, exhaustion, depletion)
-    let resourceLabels = document.querySelectorAll('.cell.cell--resource .cell__checkboxes label.flexrow');
+    let resourceLabels = html.find('.cell.cell--resource .cell__checkboxes label.flexrow');
 
-    resourceLabels.forEach((label, index) => {
-      let textNode = Array.from(label.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '');
-    
-      if (textNode) {
-        let text = textNode.textContent.trim();
-        label.removeChild(textNode);
-    
-        let textWrapper = document.createElement('div');
-        textWrapper.textContent = text;
-    
-        let plusIcon = document.createElement('i');
-        let minusIcon = document.createElement('i');
-        plusIcon.className = 'far fa-plus-square';
-        minusIcon.className = 'far fa-minus-square';
-    
-        textWrapper.appendChild(document.createTextNode(' ')); // Add a space between text and plus icon
-        textWrapper.appendChild(plusIcon);
-        textWrapper.appendChild(document.createTextNode(' ')); // Add a space between plus and minus icons
-        textWrapper.appendChild(minusIcon);
-    
-        // Add class to the textWrapper based on the text content
+    resourceLabels.each(function(index) {
+      var label = $(this);
+      var textNode = label.contents().filter(function() {
+        return this.nodeType === Node.TEXT_NODE && $(this).text().trim() !== '';
+      }).first();
+  
+      if (textNode.length > 0) {
+        var text = textNode.text().trim();
+        textNode.remove();
+  
+        var textWrapper = $('<div>').text(text);
+  
+        var plusIcon = $('<i>').addClass('far fa-plus-square');
+        var minusIcon = $('<i>').addClass('far fa-minus-square');
+  
+        textWrapper.append(document.createTextNode(' '));
+        textWrapper.append(plusIcon);
+        textWrapper.append(document.createTextNode(' '));
+        textWrapper.append(minusIcon);
+  
         if (index === 0) {
-          textWrapper.classList.add('injury');
+          textWrapper.addClass('injury');
         } else if (index === 1) {
-          textWrapper.classList.add('exhaustion');
+          textWrapper.addClass('exhaustion');
         } else if (index === 2) {
-          textWrapper.classList.add('depletion');
+          textWrapper.addClass('depletion');
         }
-    
-        label.insertBefore(textWrapper, label.firstChild);
+  
+        label.prepend(textWrapper);
       }
-    });    
+    });  
     
     let addInjuryFive = actor.system.attrLeft.resource.options['0'].values['4'].value
     let addInjurySix = actor.system.attrLeft.resource.options['0'].values['6'].value
     let addInjurySeven = actor.system.attrLeft.resource.options['0'].values['8'].value
     let addInjuryEight = actor.system.attrLeft.resource.options['0'].values['10'].value
 
-    let injuryFaPlus = document.querySelector('.injury .fa-plus-square');
-    let injuryFaMinus = document.querySelector('.injury .fa-minus-square');
+    let injuryFaPlus = html.find('.injury .fa-plus-square');
+    let injuryFaMinus = html.find('.injury .fa-minus-square');
     
-    injuryFaPlus.addEventListener('click', async function(event) {
+    injuryFaPlus.click(async function(event) {
       if (addInjuryFive == false) {
         await actor.update({"system.attrLeft.resource.options.0.values.4.value": true});
       } else if (addInjurySix == false) {
@@ -1092,7 +1111,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    injuryFaMinus.addEventListener('click', async function(event) {
+    injuryFaMinus.click(async function(event) {
       if (addInjuryEight == true) {
         await actor.update({"system.attrLeft.resource.options.0.values.10.value": false});
       } else if (addInjurySeven == true) {
@@ -1109,10 +1128,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addExhaustionSeven = actor.system.attrLeft.resource.options['1'].values['8'].value
     let addExhaustionEight = actor.system.attrLeft.resource.options['1'].values['10'].value
 
-    let exhaustionFaPlus = document.querySelector('.exhaustion .fa-plus-square');
-    let exhaustionFaMinus = document.querySelector('.exhaustion .fa-minus-square');
+    let exhaustionFaPlus = html.find('.exhaustion .fa-plus-square');
+    let exhaustionFaMinus = html.find('.exhaustion .fa-minus-square');
     
-    exhaustionFaPlus.addEventListener('click', async function(event) {
+    exhaustionFaPlus.click(async function(event) {
       if (addExhaustionFive == false) {
         await actor.update({"system.attrLeft.resource.options.1.values.4.value": true});
       } else if (addExhaustionSix == false) {
@@ -1124,7 +1143,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    exhaustionFaMinus.addEventListener('click', async function(event) {
+    exhaustionFaMinus.click(async function(event) {
       if (addExhaustionEight == true) {
         await actor.update({"system.attrLeft.resource.options.1.values.10.value": false});
       } else if (addExhaustionSeven == true) {
@@ -1141,10 +1160,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addDepletionSeven = actor.system.attrLeft.resource.options['2'].values['8'].value
     let addDepletionEight = actor.system.attrLeft.resource.options['2'].values['10'].value
 
-    let depletionFaPlus = document.querySelector('.depletion .fa-plus-square');
-    let depletionFaMinus = document.querySelector('.depletion .fa-minus-square');
+    let depletionFaPlus = html.find('.depletion .fa-plus-square');
+    let depletionFaMinus = html.find('.depletion .fa-minus-square');
     
-    depletionFaPlus.addEventListener('click', async function(event) {
+    depletionFaPlus.click(async function(event) {
       if (addDepletionFive == false) {
         await actor.update({"system.attrLeft.resource.options.2.values.4.value": true});
       } else if (addDepletionSix == false) {
@@ -1156,7 +1175,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    depletionFaMinus.addEventListener('click', async function(event) {
+    depletionFaMinus.click(async function(event) {
       if (addDepletionEight == true) {
         await actor.update({"system.attrLeft.resource.options.2.values.10.value": false});
       } else if (addDepletionSeven == true) {
@@ -1170,36 +1189,36 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     
     // Handle resouce increments
     const injuryResource = [
-      $('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.0.values.0.value"]')
+      html.find('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.9.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.7.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.5.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.3.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.2.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.1.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.0.values.0.value"]')
     ];
 
     const exhaustionResource = [
-      $('input[name="system.attrLeft.resource.options.1.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.1.values.0.value"]')
+      html.find('input[name="system.attrLeft.resource.options.1.values.11.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.9.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.7.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.5.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.3.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.2.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.1.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.1.values.0.value"]')
     ];
 
     const depletionResource = [
-      $('input[name="system.attrLeft.resource.options.2.values.11.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.9.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.2.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
-      $('input[name="system.attrLeft.resource.options.2.values.0.value"]')
+      html.find('input[name="system.attrLeft.resource.options.2.values.11.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.9.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.7.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.5.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.3.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.2.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.1.value"]'),
+      html.find('input[name="system.attrLeft.resource.options.2.values.0.value"]')
     ];
 
     handleCheckboxIncrements(injuryResource);
@@ -1223,46 +1242,15 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       };
     };
 
-     // Render tag when clicked on actor sheet
-     let tags = document.querySelectorAll('div.tags div.tag')
-
-     for (let tag of tags) {
-       tag.addEventListener("click", openTag);
-       async function openTag(e) {
-         let name = e.target.innerText;
-         // Retrieve tags in game and then in compendium
-         let tagItems = game.items.filter(i => i.type == 'tag');
-         let pack = game.packs.get("root.tags")
-         let items = pack ? await pack.getDocuments() : [];
-         tagItems = tagItems.concat(items.filter(i => i.type == 'tag'));
-         // Remove tag repeats by matching names in new array.
-         let tagNames = [];
-         for (let t of tagItems) {
-           let tagName = t.name;
-           if (tagNames.includes(tagName) !== false) {
-             tagItems = tagItems.filter(item => item.id != t.id);
-           } else {
-             tagNames.push(tagName)
-           }
-         }
-         // Render tag
-         for (let tagItem of tagItems) {
-           if (tagItem.name == name) {
-             tagItem.sheet.render(true);
-           };
-         };
-       }
-     };
-
   };
 
   if (actor.type == 'npc') {
-    let resourcesTitlesNPC = document.querySelectorAll('.cell.cell--attributes-top label.cell__title');
+    let resourcesTitlesNPC = html.find('.cell.cell--attributes-top label.cell__title');
 
     let faPlusMinus = `<i class="npc far fa-plus-square"></i><i class="npc far fa-minus-square"></i>`
-    for (let resourceTitle of resourcesTitlesNPC) {
-      resourceTitle.insertAdjacentHTML('beforeend', faPlusMinus)
-    }
+    resourcesTitlesNPC.each(function() {
+      $(this).append(faPlusMinus);
+    });
 
     // Get the initial value of injury
     let addNPCInjuryTwo = actor.system.attrTop.injury.options['0'].values['1'].value;
@@ -1278,10 +1266,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addNPCInjuryTwelve = actor.system.attrTop.injury.options['0'].values['21'].value;
 
     // Set the event listeners
-    let injuryNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--injury .fa-plus-square');
-    let injuryNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--injury .fa-minus-square');
+    let injuryNPCFaPlus = html.find('.cell--injury .fa-plus-square');
+    let injuryNPCFaMinus = html.find('.cell--injury .fa-minus-square');
 
-    injuryNPCFaPlus.addEventListener('click', async function(event) {
+    injuryNPCFaPlus.click(async function(event) {
       if (addNPCInjuryTwo == false) {
         await actor.update({"system.attrTop.injury.options.0.values.1.value": true});
       } else if (addNPCInjuryThree == false) {
@@ -1307,7 +1295,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    injuryNPCFaMinus.addEventListener('click', async function(event) {
+    injuryNPCFaMinus.click(async function(event) {
       if (addNPCInjuryTwelve == true) {
         await actor.update({"system.attrTop.injury.options.0.values.21.value": false});
       } else if (addNPCInjuryEleven == true) {
@@ -1347,10 +1335,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addNPCExhaustionTwelve = actor.system.attrTop.exhaustion.options['0'].values['21'].value;
 
     // Set the event listeners for Exhaustion
-    let exhaustionNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--exhaustion .fa-plus-square');
-    let exhaustionNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--exhaustion .fa-minus-square');
+    let exhaustionNPCFaPlus = html.find('.cell--exhaustion .fa-plus-square');
+    let exhaustionNPCFaMinus = html.find('.cell--exhaustion .fa-minus-square');
 
-    exhaustionNPCFaPlus.addEventListener('click', async function(event) {
+    exhaustionNPCFaPlus.click(async function(event) {
       if (addNPCExhaustionTwo == false) {
         await actor.update({"system.attrTop.exhaustion.options.0.values.1.value": true});
       } else if (addNPCExhaustionThree == false) {
@@ -1376,7 +1364,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    exhaustionNPCFaMinus.addEventListener('click', async function(event) {
+    exhaustionNPCFaMinus.click(async function(event) {
       if (addNPCExhaustionTwelve == true) {
         await actor.update({"system.attrTop.exhaustion.options.0.values.21.value": false});
       } else if (addNPCExhaustionEleven == true) {
@@ -1403,6 +1391,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     });
 
     // Get the initial value of wear and other variables
+    let addNPCWearOne = await actor.getFlag('root', 'npcWear.addBox1') || false;
     let addNPCWearTwo = actor.system.attrTop.wear.options['0'].values['1'].value;
     let addNPCWearThree = actor.system.attrTop.wear.options['0'].values['3'].value;
     let addNPCWearFour = actor.system.attrTop.wear.options['0'].values['5'].value;
@@ -1415,12 +1404,18 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addNPCWearEleven = actor.system.attrTop.wear.options['0'].values['19'].value;
     let addNPCWearTwelve = actor.system.attrTop.wear.options['0'].values['21'].value;
 
+    // Prepend addBox1
+    let npcAddWear1 = `<input type="checkbox" name="flags.root.npcWear.addBox1" data-dtype="Boolean" ${addNPCWearOne ? 'checked' : ''}></input>`
+    let npcWear1 = html.find('input[name="system.attrTop.wear.options.0.values.0.value"]');
+    npcWear1.before(npcAddWear1);
     // Set the event listeners for Wear
-    let wearNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--wear .fa-plus-square');
-    let wearNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--wear .fa-minus-square');
+    let wearNPCFaPlus = html.find('.cell--wear .fa-plus-square');
+    let wearNPCFaMinus = html.find('.cell--wear .fa-minus-square');
 
-    wearNPCFaPlus.addEventListener('click', async function(event) {
-      if (addNPCWearTwo == false) {
+    wearNPCFaPlus.click(async function(event) {
+      if (addNPCWearOne == false) {
+        await actor.update({"flags.root.npcWear.addBox1": true});
+      } else if (addNPCWearTwo == false) {
         await actor.update({"system.attrTop.wear.options.0.values.1.value": true});
       } else if (addNPCWearThree == false) {
         await actor.update({"system.attrTop.wear.options.0.values.3.value": true});
@@ -1445,7 +1440,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    wearNPCFaMinus.addEventListener('click', async function(event) {
+    wearNPCFaMinus.click(async function(event) {
       if (addNPCWearTwelve == true) {
         await actor.update({"system.attrTop.wear.options.0.values.21.value": false});
       } else if (addNPCWearEleven == true) {
@@ -1468,6 +1463,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrTop.wear.options.0.values.3.value": false});
       } else if (addNPCWearTwo == true) {
         await actor.update({"system.attrTop.wear.options.0.values.1.value": false});
+      } else if (addNPCWearOne == true) {
+        await actor.update({"flags.root.npcWear.addBox1": false});
       }
     });
 
@@ -1485,10 +1482,10 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     let addNPCMoraleTwelve = actor.system.attrTop.morale.options['0'].values['21'].value;
 
     // Set the event listeners for Morale
-    let moraleNPCFaPlus = document.querySelector('.pbta.sheet.npc .cell--morale .fa-plus-square');
-    let moraleNPCFaMinus = document.querySelector('.pbta.sheet.npc .cell--morale .fa-minus-square');
+    let moraleNPCFaPlus = html.find('.cell--morale .fa-plus-square');
+    let moraleNPCFaMinus = html.find('.cell--morale .fa-minus-square');
 
-    moraleNPCFaPlus.addEventListener('click', async function(event) {
+    moraleNPCFaPlus.click(async function(event) {
       if (addNPCMoraleTwo == false) {
         await actor.update({"system.attrTop.morale.options.0.values.1.value": true});
       } else if (addNPCMoraleThree == false) {
@@ -1514,7 +1511,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       }
     });
 
-    moraleNPCFaMinus.addEventListener('click', async function(event) {
+    moraleNPCFaMinus.click(async function(event) {
       if (addNPCMoraleTwelve == true) {
         await actor.update({"system.attrTop.morale.options.0.values.21.value": false});
       } else if (addNPCMoraleEleven == true) {
@@ -1542,63 +1539,63 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     // Handle NPC resource increments
     const injuryNPCResource = [
-      $('input[name="system.attrTop.injury.options.0.values.22.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.20.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.18.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.16.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.14.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.12.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.10.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.8.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.6.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.4.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.2.value"]'),
-      $('input[name="system.attrTop.injury.options.0.values.0.value"]')
+      html.find('input[name="system.attrTop.injury.options.0.values.22.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.20.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.18.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.16.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.14.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.12.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.10.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.8.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.6.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.4.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.2.value"]'),
+      html.find('input[name="system.attrTop.injury.options.0.values.0.value"]')
     ];    
 
     const exhaustionNPCResource = [
-      $('input[name="system.attrTop.exhaustion.options.0.values.22.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.20.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.18.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.16.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.14.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.12.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.10.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.8.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.6.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.4.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.2.value"]'),
-      $('input[name="system.attrTop.exhaustion.options.0.values.0.value"]')
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.22.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.20.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.18.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.16.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.14.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.12.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.10.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.8.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.6.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.4.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.2.value"]'),
+      html.find('input[name="system.attrTop.exhaustion.options.0.values.0.value"]')
     ];    
 
     const wearNPCResource = [
-      $('input[name="system.attrTop.wear.options.0.values.22.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.20.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.18.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.16.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.14.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.12.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.10.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.8.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.6.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.4.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.2.value"]'),
-      $('input[name="system.attrTop.wear.options.0.values.0.value"]')
+      html.find('input[name="system.attrTop.wear.options.0.values.22.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.20.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.18.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.16.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.14.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.12.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.10.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.8.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.6.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.4.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.2.value"]'),
+      html.find('input[name="system.attrTop.wear.options.0.values.0.value"]')
     ];
     
     const moraleNPCResource = [
-      $('input[name="system.attrTop.morale.options.0.values.22.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.20.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.18.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.16.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.14.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.12.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.10.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.8.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.6.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.4.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.2.value"]'),
-      $('input[name="system.attrTop.morale.options.0.values.0.value"]')
+      html.find('input[name="system.attrTop.morale.options.0.values.22.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.20.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.18.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.16.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.14.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.12.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.10.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.8.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.6.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.4.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.2.value"]'),
+      html.find('input[name="system.attrTop.morale.options.0.values.0.value"]')
     ];    
 
     handleCheckboxIncrements(injuryNPCResource);
