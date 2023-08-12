@@ -77,7 +77,7 @@ Hooks.once('pbtaSheetConfig', () => {
   // Disable the sheet config form.
   game.settings.set('pbta', 'sheetConfigOverride', true);
   
-  // Replace the game.pbta.sheetConfig with WoDu version.
+  // Replace the game.pbta.sheetConfig with Root version.
   configSheet();
 
 });
@@ -1909,3 +1909,15 @@ Hooks.on('ready', ()=>{
     }
   };
 });
+
+Hooks.on('renderApplication', (app, html, options)=>{
+
+  let settings = app.options.id == "client-settings";
+  if (settings) {
+    let systemSettings = html.find('section[data-tab="system"]')
+    let warningText = game.i18n.localize('Root.Settings.System');;
+    let warning = `<div style="margin-top: 100px;" class="notification error">${warningText}</div>
+    `
+    systemSettings[0].innerHTML = warning;
+  }
+})

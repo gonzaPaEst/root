@@ -16,7 +16,8 @@
             "Advantage": {
                 "Title": "Advantage & Disadvantage",
                 "Hint": "This option replaces +1 Forward and +1 Ongoing with advantage and disadvantage rolls."
-            }
+            },
+            "System": "System settings are being provided by the Root (PbtA) module."
         },
         "Sheet": {
             "Results": {
