@@ -8,7 +8,7 @@
         "name": "gonzaPaEst"
     }
   ],
-  "version": "1.2",
+  "version": "1.3",
   "minimumCoreVersion": "11",
   "compatibleCoreVersion": "11",
   "compatibility": {
@@ -470,6 +470,6 @@
     }
   ],
   "url": "https://github.com/gonzaPaEst/root",
-  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1.2/module.json",
-  "download": "https://github.com/gonzaPaEst/root/releases/download/v1.2/module.zip"
+  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1.3/module.json",
+  "download": "https://github.com/gonzaPaEst/root/releases/download/v1.3/module.zip"
 }
