@@ -558,50 +558,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   });
 
   if (actor.type == 'character') {
-
-    // Add fa-book and click it to open playbook
-    let charPlaybook = html.find('.charplaybook');
-    let faBook = '<i class="fa-solid fa-book"></i>';
-    charPlaybook.before(faBook);
-    const faBookIcon = html.find('.sheet-header__fields .fa-book');
-    faBookIcon.css('filter', 'opacity(0.4)');
-    let name = charPlaybook[0].value;
-
-    if (name != '') {
-      faBookIcon.css('filter', 'opacity(1)');
-      faBookIcon.mouseover(() => {
-        faBookIcon.css('cursor', 'pointer'); // Change 'pointer' to the desired cursor style
-      });
-      
-      // Reset the cursor style when the mouse leaves the element
-      faBookIcon.mouseout(() => {
-        faBookIcon.css('cursor', 'default'); // Change 'default' to the default cursor style you want
-      });
-      faBookIcon.click(async function (e) {
-          // Retrieve playbooks in game and then in compendium
-          let playbooks = game.items.filter(i => i.type == 'playbook');
-          let pack = game.packs.get("root.playbooks")
-          let items = pack ? await pack.getDocuments() : [];
-          playbooks = playbooks.concat(items.filter(i => i.type == 'playbook'));
-          // Remove playbook repeats by matching names in new array.
-          let playbookNames = [];
-          for (let p of playbooks) {
-            let playbookName = p.name;
-            if (playbookNames.includes(playbookName) !== false) {
-              playbooks = playbooks.filter(item => item.id != p.id);
-            } else {
-              playbookNames.push(playbookName)
-            }
-          }
-          // Render current playbook
-          for (let playbook of playbooks) {
-            if (playbook.name == name) {
-              playbook.sheet.render(true);
-            };
-          };
-      });
-    };
-
     // Prepend hold flag before forward and ongoing
     let holdValue = actor.getFlag('root', 'hold') || "0";
     let holdLabel = game.i18n.localize('Root.Sheet.AttrLeft.Hold');
