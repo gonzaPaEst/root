@@ -78,27 +78,20 @@ Hooks.once('pbtaSheetConfig', () => {
 
 // Change starting actor image.
 Hooks.on("preCreateActor", async function (actor) {
-  if (actor.data.img == "icons/svg/mystery-man.svg") {
-    function random_icon(icons) {  
+  if (actor.img == "icons/svg/mystery-man.svg") {
+    function random_icon(icons) {
       return icons[Math.floor(Math.random()*icons.length)];
     }
     const icons = ["badger", "bird", "boar", "fox", "hyena", "lynx", "mole", "monkey", "raccoon"];
     let img = random_icon(icons);
-    actor.data.update({ "img": `modules/root/styles/img/icons/${img}.svg` })
+    actor.updateSource({ "img": `modules/root/styles/img/icons/${img}.svg` })
   }
 });
 
 Hooks.on("preCreateItem", async function (item) {
-  if (item.data.img == "icons/svg/item-bag.svg" && item.data.type != "tag") {
-    if (item.data.type == "equipment") {
-      item.data.update({ "img": `icons/svg/combat.svg` })
-    } else if (item.data.type == "playbook") {
-      item.data.update({ "img": `icons/svg/book.svg` })
-    } else if (item.data.type == "root.traits") {
-      item.data.update({ "img": `icons/svg/pawprint.svg` })
-    } else {
-      item.data.update({ "img": `icons/svg/aura.svg` })
-    } 
+  if (item.img == "icons/svg/item-bag.svg") {
+    if (item.type == "equipment") item.updateSource({ "img": `icons/svg/combat.svg` })
+    if (item.type == "root.traits") item.updateSource({ "img": `icons/svg/pawprint.svg` })
   }
 });
 
