@@ -63,10 +63,10 @@ Hooks.on("init", () => {
 
 // Override sheetConfig with Root sheet (TOML).
 Hooks.once('pbtaSheetConfig', () => {
-  
+
   // Disable the sheet config form.
   game.settings.set('pbta', 'sheetConfigOverride', true);
-  
+
   // Replace the game.pbta.sheetConfig with Root version.
   configSheet();
 
@@ -155,7 +155,7 @@ Hooks.on('createActor', async (actor, options, id) => {
       await actor.updateEmbeddedDocuments("Item", sortedMoves);
     }
   }
-  
+
   // Perform updates, if any.
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
@@ -208,7 +208,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let automateHTML= `
     <div class="resource">
         <label>${automationLabel}</label>
-        <p><i class="fa-solid fa-plus"></i><input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center; width: 30px;"> 
+        <p><i class="fa-solid fa-plus"></i><input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center; width: 30px;">
         <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">
             <option value="none"${automationStat === 'none' ? ' selected' : ''}>---</option>
             <option value="charm"${automationStat === 'charm' ? ' selected' : ''}>${charmLabel}</option>
@@ -332,7 +332,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     usesDiv[0].innerHTML = wearBoxes
     let itemFaPlus = html.find('.wear.fa-plus-square');
     let itemFaMinus = html.find('.wear.fa-minus-square');
-    
+
     itemFaPlus.click(async function(event) {
       if (addWearOne == false) {
         addWearOne = await item.setFlag('root', 'itemWear.addBox1', true);
@@ -380,7 +380,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
       <br><input type="checkbox" name="flags.root.itemDepletion.box1" data-dtype="Boolean" ${depletionOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemDepletion.box2" data-dtype="Boolean" ${depletionTwo ? 'checked' : ''}>`
       usesDiv[0].insertAdjacentHTML('beforeend', depletionBoxes)
     };
-    
+
   };
 
 });
@@ -396,7 +396,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   // Add dropped trait item to correct description in actor sheet
   if (droppedEntity.type === "root.traits") {
     const traitType = droppedEntity.flags.root.traitType;
-  
+
     if (traitType in traits) {
       const currentValue = traits[traitType].value;
       const traitHTML = `${currentValue}${newTrait}`;
@@ -455,7 +455,7 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
       const autoValue = item.getFlag('root', 'automationValue') || "0";
       const stat = item.getFlag('root', 'automationStat') || "none";
       const systemStats = actor.system.stats;
-  
+
       if (stat in systemStats) {
         const currentVal = systemStats[stat].value;
         const newVal = parseInt(currentVal) - parseInt(autoValue);
@@ -466,26 +466,26 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
         const parsedVal = parseInt(autoValue);
         const resourceOptions = actor.system.attrLeft.resource.options;
         const indicesToReview = [4, 6, 8, 10];
-  
+
         for (let index of indicesToReview) {
           const checkbox = resourceOptions[stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'].values[index];
-  
+
           if (checkbox.value === true) {
             const updateKey = `system.attrLeft.resource.options.${stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'}.values.${index}.value`;
             await actor.update({ [updateKey]: false });
             count++;
           }
-  
+
           if (count === parsedVal) {
             break;
           }
         }
       }
-  
+
       setTimeout(() => {
         actor.sheet.render(true);
       }, 200);
-      
+
     } catch (error) {
       console.log("Item not in actor", error)
     }
@@ -513,7 +513,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     checkboxArrays.forEach((checkbox, index) => {
       checkbox.change(function() {
         const isChecked = $(this).is(':checked');
-        
+
         if (isChecked) {
           // Check all the following checkboxes
           checkboxArrays.slice(index + 1).forEach((followingCheckbox) => {
@@ -583,7 +583,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
             return acc + item.system.weight;
           }
           return acc;
-        }, 0);  
+        }, 0);
         carryingLoad = itemsLoad;
       };
       calculateLoad();
@@ -785,7 +785,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     /*      REPUTATION         */
     /* ----------------------- */
     // Handle reputations' bonuses (only one can be selected per faction)
-    
+
     function handleReputationBonus(factionsArrays) {
       factionsArrays.forEach(factionArray => {
         factionArray.forEach((checkbox, index) => {
@@ -801,7 +801,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         });
       });
     }
-    
+
     const factionsReputations = [
       [
         html.find('input[name="system.attrTop.reputation.options.1.values.3.value"]'),
@@ -849,9 +849,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         html.find('input[name="system.attrTop.reputation.options.39.values.5.value"]')
       ]
     ];
-    
+
     handleReputationBonus(factionsReputations);
-    
+
     // Handle reputation increments
     const firstFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
@@ -882,7 +882,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.5.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.5.values.0.value"]')
     ];
-    
+
     const secondFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.9.values.2.value"]'),
       html.find('input[name="system.attrTop.reputation.options.9.values.1.value"]'),
@@ -894,7 +894,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.11.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.11.values.0.value"]')
     ];
-    
+
     const secondFactionPrestige = [
       html.find('input[name="system.attrTop.reputation.options.15.values.4.value"]'),
       html.find('input[name="system.attrTop.reputation.options.15.values.3.value"]'),
@@ -924,7 +924,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.19.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.19.values.0.value"]')
     ];
-    
+
     const thirdFactionPrestige = [
       html.find('input[name="system.attrTop.reputation.options.23.values.4.value"]'),
       html.find('input[name="system.attrTop.reputation.options.23.values.3.value"]'),
@@ -972,7 +972,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.29.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.29.values.0.value"]')
     ];
-    
+
     const fifthFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.33.values.2.value"]'),
       html.find('input[name="system.attrTop.reputation.options.33.values.1.value"]'),
@@ -1002,7 +1002,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.37.values.0.value"]')
     ];
-    
+
     handleCheckboxIncrements(firstFactionNotoriety);
     handleCheckboxIncrements(firstFactionPrestige);
     handleCheckboxIncrements(secondFactionNotoriety);
@@ -1022,21 +1022,21 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       var textNode = label.contents().filter(function() {
         return this.nodeType === Node.TEXT_NODE && $(this).text().trim() !== '';
       }).first();
-  
+
       if (textNode.length > 0) {
         var text = textNode.text().trim();
         textNode.remove();
-  
+
         var textWrapper = $('<div>').text(text);
-  
+
         var plusIcon = $('<i>').addClass('far fa-plus-square');
         var minusIcon = $('<i>').addClass('far fa-minus-square');
-  
+
         textWrapper.append(document.createTextNode(' '));
         textWrapper.append(plusIcon);
         textWrapper.append(document.createTextNode(' '));
         textWrapper.append(minusIcon);
-  
+
         if (index === 0) {
           textWrapper.addClass('injury');
         } else if (index === 1) {
@@ -1044,11 +1044,11 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         } else if (index === 2) {
           textWrapper.addClass('depletion');
         }
-  
+
         label.prepend(textWrapper);
       }
-    });  
-    
+    });
+
     let addInjuryFive = actor.system.attrLeft.resource.options['0'].values['4'].value
     let addInjurySix = actor.system.attrLeft.resource.options['0'].values['6'].value
     let addInjurySeven = actor.system.attrLeft.resource.options['0'].values['8'].value
@@ -1056,7 +1056,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let injuryFaPlus = html.find('.injury .fa-plus-square');
     let injuryFaMinus = html.find('.injury .fa-minus-square');
-    
+
     injuryFaPlus.click(async function(event) {
       if (addInjuryFive == false) {
         await actor.update({"system.attrLeft.resource.options.0.values.4.value": true});
@@ -1078,7 +1078,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.0.values.6.value": false});
       } else if (addInjuryFive == true) {
         await actor.update({"system.attrLeft.resource.options.0.values.4.value": false});
-      } 
+      }
     });
 
     let addExhaustionFive = actor.system.attrLeft.resource.options['1'].values['4'].value
@@ -1088,7 +1088,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let exhaustionFaPlus = html.find('.exhaustion .fa-plus-square');
     let exhaustionFaMinus = html.find('.exhaustion .fa-minus-square');
-    
+
     exhaustionFaPlus.click(async function(event) {
       if (addExhaustionFive == false) {
         await actor.update({"system.attrLeft.resource.options.1.values.4.value": true});
@@ -1110,7 +1110,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.1.values.6.value": false});
       } else if (addExhaustionFive == true) {
         await actor.update({"system.attrLeft.resource.options.1.values.4.value": false});
-      } 
+      }
     });
 
     let addDepletionFive = actor.system.attrLeft.resource.options['2'].values['4'].value
@@ -1120,7 +1120,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let depletionFaPlus = html.find('.depletion .fa-plus-square');
     let depletionFaMinus = html.find('.depletion .fa-minus-square');
-    
+
     depletionFaPlus.click(async function(event) {
       if (addDepletionFive == false) {
         await actor.update({"system.attrLeft.resource.options.2.values.4.value": true});
@@ -1142,9 +1142,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.2.values.6.value": false});
       } else if (addDepletionFive == true) {
         await actor.update({"system.attrLeft.resource.options.2.values.4.value": false});
-      } 
+      }
     });
-    
+
     // Handle resouce increments
     const injuryResource = [
       html.find('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
@@ -1509,7 +1509,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.injury.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.injury.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.injury.options.0.values.0.value"]')
-    ];    
+    ];
 
     const exhaustionNPCResource = [
       html.find('input[name="system.attrTop.exhaustion.options.0.values.22.value"]'),
@@ -1524,7 +1524,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.exhaustion.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.exhaustion.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.exhaustion.options.0.values.0.value"]')
-    ];    
+    ];
 
     const wearNPCResource = [
       html.find('input[name="system.attrTop.wear.options.0.values.22.value"]'),
@@ -1540,7 +1540,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.wear.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.wear.options.0.values.0.value"]')
     ];
-    
+
     const moraleNPCResource = [
       html.find('input[name="system.attrTop.morale.options.0.values.22.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.20.value"]'),
@@ -1554,7 +1554,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.morale.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.0.value"]')
-    ];    
+    ];
 
     handleCheckboxIncrements(injuryNPCResource);
     handleCheckboxIncrements(exhaustionNPCResource);

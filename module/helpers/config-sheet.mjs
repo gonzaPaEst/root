@@ -1382,7 +1382,7 @@ export const configSheet = async () => {
       }
     }
   };
-  
+
   let useAdvDis = await game.settings.get('root', 'advantage');
 
   // Settings for Root

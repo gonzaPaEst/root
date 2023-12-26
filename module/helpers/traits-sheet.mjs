@@ -10,7 +10,7 @@ export class RootTraitsModel extends foundry.abstract.TypeDataModel {
         steps: new fields.ArrayField(new fields.StringField({blank: true}))
       };
     }
-  
+
     prepareDerivedData() {
       this.nSteps = this.steps.length;
     }
@@ -18,7 +18,7 @@ export class RootTraitsModel extends foundry.abstract.TypeDataModel {
 
 // Extend PbtA item sheets and change template path
 export class RootTraitsSheet extends PbtaItemSheet {
-    
+
     get template() {
         return `/modules/root/templates/traits-sheet.hbs`;
     }
