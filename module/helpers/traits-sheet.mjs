@@ -1,4 +1,4 @@
-import { PbtaItemSheet } from "../../../../systems/pbta/module/item/item-sheet.js";
+import PbtaItemSheet from "../../../../systems/pbta/module/applications/item/item-sheet.js";
 
 // Define data model for trait sheet
 export class RootTraitsModel extends foundry.abstract.TypeDataModel {
