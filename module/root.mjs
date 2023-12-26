@@ -172,8 +172,8 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   if (item.type == 'move') {
 
     // Show Triumph description in move sheet if Masteries Rule enabled.
-    let masteries = await game.settings.get('root', 'masteries');
-      let resources = html.find('div[data-tab="description"] div.resource');
+    let masteries = game.settings.get('root', 'masteries');
+      let resources = html.find('div[data-tab="description"] div.move-result');
       let triumph = resources[1];
       let triumphLabel = triumph.querySelector('label');
       let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
@@ -189,11 +189,12 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
 
     // Show automate options
-    let automate = await game.settings.get('root', 'automate');
+    let automate = game.settings.get('root', 'automate');
+    if (automate) {
       let moveGroup = html.find('input[name="system.moveGroup"]');
       let resource = moveGroup.closest('div.resource')
-      let automationValue = await item.getFlag('root', 'automationValue') || 0;
-      let automationStat = await item.getFlag('root', 'automationStat') || 'none';
+      let automationValue = item.getFlag('root', 'automationValue') || 0;
+      let automationStat = item.getFlag('root', 'automationStat') || 'none';
       let charmLabel = game.i18n.localize("Root.Sheet.Stats.Charm");
       let cunningLabel = game.i18n.localize("Root.Sheet.Stats.Cunning");
       let finesseLabel = game.i18n.localize("Root.Sheet.Stats.Finesse");
@@ -222,8 +223,6 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
         </p>
     </div>
 `;
-
-    if (automate) {
       resource.after(automateHTML);
     }
   };
@@ -235,25 +234,27 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     try {
       // Find tags and sort ranges first
       const tagsJson = item.system.tags;
-      const tagsData = JSON.parse(tagsJson);
-      const desiredValues = ["intimate", "close", "far"];
-      function customSort(a, b) {
-        const indexA = desiredValues.indexOf(a.value);
-        const indexB = desiredValues.indexOf(b.value);
-        if (indexA !== -1 && indexB !== -1) {
-          return indexA - indexB;
+      if (tagsJson) {
+        const tagsData = JSON.parse(tagsJson);
+        const desiredValues = ["intimate", "close", "far"];
+        function customSort(a, b) {
+          const indexA = desiredValues.indexOf(a.value);
+          const indexB = desiredValues.indexOf(b.value);
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          if (indexA !== -1) {
+            return -1;
+          } else if (indexB !== -1) {
+            return 1;
+          }
+          return 0;
         }
-        if (indexA !== -1) {
-          return -1;
-        } else if (indexB !== -1) {
-          return 1;
-        }
-        return 0;
+        const sortedData = tagsData.sort(customSort);
+        const updatedTagsJson = JSON.stringify(sortedData);
+        // Update new tags order
+        await item.update({ [`system.tags`]: updatedTagsJson });
       }
-      const sortedData = tagsData.sort(customSort);
-      const updatedTagsJson = JSON.stringify(sortedData);
-      // Update new tags order
-      await item.update({ [`system.tags`]: updatedTagsJson });
     } catch (error) {
       console.log("No tags yet", error)
     }
@@ -288,28 +289,46 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
     // Include item wear
     let uses = html.find('input[name="system.uses"]');
-    let usesDiv = uses.closest('div.resource');
-    let addWearOne = await item.getFlag('root', 'itemWear.addBox1') || false;
-    let wearOne = await item.getFlag('root', 'itemWear.box1') || false;
-    let addWearTwo = await item.getFlag('root', 'itemWear.addBox2') || false;
-    let wearTwo = await item.getFlag('root', 'itemWear.box2') || false;
-    let addWearThree = await item.getFlag('root', 'itemWear.addBox3') || false;
-    let wearThree = await item.getFlag('root', 'itemWear.box3') || false;
-    let addWearFour = await item.getFlag('root', 'itemWear.addBox4') || false;
-    let wearFour = await item.getFlag('root', 'itemWear.box4') || false;
-    let addWearFive = await item.getFlag('root', 'itemWear.addBox5') || false;
-    let wearFive = await item.getFlag('root', 'itemWear.box5') || false;
-    let addWearSix = await item.getFlag('root', 'itemWear.addBox6') || false;
-    let wearSix = await item.getFlag('root', 'itemWear.box6') || false;
-    let addWearSeven = await item.getFlag('root', 'itemWear.addBox7') || false;
-    let wearSeven = await item.getFlag('root', 'itemWear.box7') || false;
-    let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
-    let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
+    let usesDiv = uses.closest('div.form-group');
+    let addWearOne = item.getFlag('root', 'itemWear.addBox1') || false;
+    let wearOne = item.getFlag('root', 'itemWear.box1') || false;
+    let addWearTwo = item.getFlag('root', 'itemWear.addBox2') || false;
+    let wearTwo = item.getFlag('root', 'itemWear.box2') || false;
+    let addWearThree = item.getFlag('root', 'itemWear.addBox3') || false;
+    let wearThree = item.getFlag('root', 'itemWear.box3') || false;
+    let addWearFour = item.getFlag('root', 'itemWear.addBox4') || false;
+    let wearFour = item.getFlag('root', 'itemWear.box4') || false;
+    let addWearFive = item.getFlag('root', 'itemWear.addBox5') || false;
+    let wearFive = item.getFlag('root', 'itemWear.box5') || false;
+    let addWearSix = item.getFlag('root', 'itemWear.addBox6') || false;
+    let wearSix = item.getFlag('root', 'itemWear.box6') || false;
+    let addWearSeven = item.getFlag('root', 'itemWear.addBox7') || false;
+    let wearSeven = item.getFlag('root', 'itemWear.box7') || false;
+    let addWearEight = item.getFlag('root', 'itemWear.addBox8') || false;
+    let wearEight = item.getFlag('root', 'itemWear.box8') || false;
     let wearLabel = game.i18n.localize("Root.Sheet.Items.Wear");
     let depletionLabel = game.i18n.localize("Root.Sheet.Items.Depletion");
 
-    let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
-    <br><input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
+    let wearBoxes = `
+    <label>${wearLabel} <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i></label>
+    <div>
+      <input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>
+    </div>`
     usesDiv[0].innerHTML = wearBoxes
     let itemFaPlus = html.find('.wear.fa-plus-square');
     let itemFaMinus = html.find('.wear.fa-minus-square');
@@ -355,8 +374,8 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     });
 
     if (item.system.playbook == 'The Pirate' && item.system.tags.includes('stocked')) {
-      let depletionOne = await item.getFlag('root', 'itemDepletion.box1') || false;
-      let depletionTwo = await item.getFlag('root', 'itemDepletion.box2') || false;
+      let depletionOne = item.getFlag('root', 'itemDepletion.box1') || false;
+      let depletionTwo = item.getFlag('root', 'itemDepletion.box2') || false;
       let depletionBoxes = `<hr><div class="resources"><label>${depletionLabel}</label>
       <br><input type="checkbox" name="flags.root.itemDepletion.box1" data-dtype="Boolean" ${depletionOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemDepletion.box2" data-dtype="Boolean" ${depletionTwo ? 'checked' : ''}>`
       usesDiv[0].insertAdjacentHTML('beforeend', depletionBoxes)
@@ -387,7 +406,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   }
 
   // Add points/boxes to stats/resources if automatic stat increment = true
-  let automate = await game.settings.get('root', 'automate');
+  let automate = game.settings.get('root', 'automate');
 
   if (automate && droppedEntity.type === 'move') {
     const autoValue = await droppedEntity.getFlag('root', 'automationValue') || "0";
@@ -427,14 +446,14 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
 
 // Remove points/boxes to stats/resources if automatic stat increment = true
 Hooks.on('deleteItem', async (item, options, userId, ...args) => {
-  const automate = await game.settings.get('root', 'automate');
-  const actor = await item.parent;
+  const automate = game.settings.get('root', 'automate');
+  const actor = item.parent;
 
   if (automate && item.type === 'move') {
 
     try {
-      const autoValue = await item.getFlag('root', 'automationValue') || "0";
-      const stat = await item.getFlag('root', 'automationStat') || "none";
+      const autoValue = item.getFlag('root', 'automationValue') || "0";
+      const stat = item.getFlag('root', 'automationStat') || "none";
       const systemStats = actor.system.stats;
   
       if (stat in systemStats) {
@@ -595,8 +614,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     resourcesSection.prepend(holdHTML);
 
     // Calculate load, burdened and max
-    let loadCalculate = await game.settings.get('root', 'load');
-    
+    let loadCalculate = game.settings.get('root', 'load');
+
     if (loadCalculate) {
       const carryingInput = html.find('input[name="system.attrLeft.carrying.value"]');
       carryingInput.attr('readonly', 'readonly');
@@ -1209,7 +1228,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     handleCheckboxIncrements(depletionResource);
 
     // Add Mastery tag to actor sheet if move has Triumph description.
-    let masteries = await game.settings.get('root', 'masteries');
+    let masteries = game.settings.get('root', 'masteries');
     let metaTags = html.find('.item-meta.tags');
     let items = metaTags.parent('li.item');
     for (let item of items) {
