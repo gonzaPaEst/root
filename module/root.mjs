@@ -104,8 +104,8 @@ Hooks.on('createActor', async (actor, options, id) => {
   if (actor.type == 'character') {
 
     // Get the item moves as the priority.
-    let moves = game.items.filter(i => i.type === 'move' && ['basic', 'weapon-basic', 'reputation', 'travel', 'other'].includes(i.system.moveType));
-    const compendium = await RootUtility.loadCompendia(['basic', 'weapon-basic', 'reputation', 'travel', 'other']);
+    let moves = game.items.filter(i => i.type === 'move' && ['weapon-basic', 'other'].includes(i.system.moveType));
+    const compendium = await RootUtility.loadCompendia(['weapon-basic', 'other']);
     let actorMoves = [];
 
     actorMoves = actor.items.filter(i => i.type == 'move');
