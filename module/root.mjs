@@ -13,9 +13,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Automate.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'load', {
@@ -25,9 +23,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Load.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'masteries', {
@@ -37,9 +33,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Masteries.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'advantage', {
@@ -49,9 +43,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Advantage.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
 });
