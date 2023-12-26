@@ -127,7 +127,7 @@ Hooks.on('createActor', async (actor, options, id) => {
     }
 
     // Add template for background.
-    updates['system.details.biography'] = game.i18n.localize('Root.Background.CustomTemplate');
+    updates['system.details.biography.value'] = game.i18n.localize('Root.Background.CustomTemplate');
 
     // Add to the actor.
     const movesToAdd = moves.map(m => duplicate(m));
