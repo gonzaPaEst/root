@@ -1,5 +1,5 @@
 import { configSheet } from "./helpers/config-sheet.mjs";
-import { RootTraitsModel, RootTraitsSheet } from "./helpers/traits-sheet.mjs";
+import { RootTraitsModel } from "./helpers/traits-sheet.mjs";
 import { RootUtility } from "./helpers/utility.mjs";
 
 // Once the game has initialized, set up the Root module.
@@ -55,6 +55,23 @@ Hooks.on("init", () => {
     "root.traits": RootTraitsModel
   });
 
+  // Extend PbtA item sheets and change template path
+  class RootTraitsSheet extends game.pbta.applications.item.PbtaItemSheet {
+    get template() {
+        return `/modules/root/templates/traits-sheet.hbs`;
+    }
+
+    async getData(options = {}) {
+        const context = await super.getData(options);
+        context.description = await TextEditor.enrichHTML(this.object.system.description, {
+            async: true,
+            secrets: this.object.isOwner,
+            relativeTo: this.object
+        });
+        return context;
+    }
+  }
+
   Items.registerSheet("root", RootTraitsSheet, {
     types: ["root.traits"],
     makeDefault: true
@@ -102,7 +119,6 @@ Hooks.on('createActor', async (actor, options, id) => {
   let updates = {};
 
   if (actor.type == 'character') {
-
     // Get the item moves as the priority.
     let moves = game.items.filter(i => i.type === 'move' && ['weapon-basic', 'other'].includes(i.system.moveType));
     const compendium = await RootUtility.loadCompendia(['weapon-basic', 'other']);
