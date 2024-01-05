@@ -8,7 +8,7 @@
         "name": "gonzaPaEst"
     }
   ],
-  "version": "1.4",
+  "version": "2.0",
   "minimumCoreVersion": "11",
   "compatibleCoreVersion": "11",
   "compatibility": {
@@ -23,8 +23,8 @@
             "type": "system",
             "manifest": "https://asacolips-artifacts.s3.amazonaws.com/pbta/master/system.json",
             "compatibility": {
-                "verified": "0.7.5",
-                "maximum": "0.7.5"
+                "verified": "0.8.1",
+                "minimum": "0.8.0"
             }
         }
     ]
@@ -472,6 +472,6 @@
     }
   ],
   "url": "https://github.com/gonzaPaEst/root",
-  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v1.4/module.json",
-  "download": "https://github.com/gonzaPaEst/root/releases/download/v1.4/module.zip"
+  "manifest": "https://raw.githubusercontent.com/gonzaPaEst/root/v2.0/module.json",
+  "download": "https://github.com/gonzaPaEst/root/releases/download/v2.0/module.zip"
 }

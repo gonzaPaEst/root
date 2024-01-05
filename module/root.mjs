@@ -1,3 +1,4 @@
+import { RollPbtA } from "../../../systems/pbta/module/rolls.js";
 import { configSheet } from "./helpers/config-sheet.mjs";
 import { RootTraitsModel } from "./helpers/traits-sheet.mjs";
 import { RootUtility } from "./helpers/utility.mjs";
@@ -1579,3 +1580,111 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   };
 
   });
+
+// Change Class method to override Triumph outcome in Mastery moves.
+
+Hooks.on('preCreateChatMessage', ()=>{
+
+  RollPbtA.prototype.toMessage = async function (messageData = {}, { rollMode, create = true } = {}) {
+
+		// Perform the roll, if it has not yet been rolled
+		if ( !this._evaluated ) {
+			await this.evaluate({async: true});
+		}
+
+		const resultRanges = game.pbta.sheetConfig.rollResults;
+		let resultLabel = null;
+		let resultDetails = null;
+		let resultType = null;
+		let stat = this.options.stat;
+		let statMod;
+
+		// Iterate through each result range until we find a match.
+		for (let [resultKey, resultRange] of Object.entries(resultRanges)) {
+			let { start, end } = resultRange;
+			if ((!start || this.total >= start) && (!end || this.total <= end)) {
+				resultType = resultKey;
+				break;
+			}
+		}
+
+		this.options.resultType = resultType;
+		// Update the templateData.
+		resultLabel = resultRanges[resultType]?.label ?? resultType;
+		if (this.data?.moveResults && this.data?.moveResults[resultType]?.value) {
+			resultDetails = this.data?.moveResults[resultType].value;
+		}
+
+    console.log(resultType, resultLabel, resultDetails)
+
+    //! Triumph override for Mastery moves.
+    let masteries = await game.settings.get('root', 'masteries');
+
+    if (masteries) {
+      try {
+        if (this.data?.moveResults['critical'].value != '' && this.total >= '12') {
+          resultType = 'critical';
+          resultLabel = game.i18n.localize("Root.Sheet.Results.Critical");
+          resultDetails = this.data?.moveResults['critical'].value;
+        }
+      } catch (error) {
+          console.log("Stat roll was used and it has no Triumph description.", error);
+      }
+    }
+
+		// Add the stat label.
+		if (stat && this.data.stats[stat]) {
+			statMod = this.data.stats[stat].value;
+			stat = game.pbta.sheetConfig.actorTypes[this.options.sheetType]?.stats[stat]?.label ?? stat;
+		}
+
+		// Prepare chat data
+		messageData = foundry.utils.mergeObject({
+			user: game.user.id,
+			type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+			content: String(this.total),
+			sound: CONFIG.sounds.dice,
+
+			conditions: this.options.conditions,
+			choices: this.data.choices,
+			details: this.data.description,
+			originalMod: this.options.originalMod,
+			result: resultType,
+			resultDetails,
+			resultLabel,
+			resultRanges,
+			stat,
+			statMod
+		}, messageData);
+		messageData.rolls = [this];
+
+		// These are abominations from the refactoring but I couldn't figure out how to merge everything into a single ChatMessage.create call
+		messageData.rollPbta = await this.render();
+		messageData.content = await renderTemplate("systems/pbta/templates/chat/chat-move.html", messageData);
+
+		// Either create the message or just return the chat data
+		const cls = getDocumentClass("ChatMessage");
+		const msg = new cls(messageData);
+
+		// Either create or return the data
+		if ( create ) {
+			return cls.create(msg.toObject(), { rollMode });
+		} else if ( rollMode ) {
+			msg.applyRollMode(rollMode);
+		}
+		return msg.toObject();
+	}
+
+});
+
+Hooks.on('renderApplication', (app, html, options)=>{
+
+  let settings = app.options.id == "client-settings";
+  if (settings) {
+    let systemSettings = html.find('section[data-tab="system"]')
+    let warningText = game.i18n.localize('Root.Settings.System');;
+    let warning = `<div style="margin-top: 100px;" class="notification error">${warningText}</div>
+    `
+    systemSettings[0].innerHTML = warning;
+  }
+})
