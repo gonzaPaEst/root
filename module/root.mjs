@@ -109,7 +109,7 @@ Hooks.on("preCreateActor", async function (actor) {
 Hooks.on("preCreateItem", async function (item) {
   if (item.img == "icons/svg/item-bag.svg") {
     if (item.type == "equipment") item.updateSource({ "img": `icons/svg/combat.svg` })
-    if (item.type == "root.traits") item.updateSource({ "img": `icons/svg/pawprint.svg` })
+    else if (item.type == "root.traits") item.updateSource({ "img": `icons/svg/pawprint.svg` })
   }
 });
 
