@@ -5,25 +5,25 @@ export const configSheet = async () => {
   game.pbta.sheetConfig = {
     rollFormula: "2d6",
     rollResults: {
-      critical: {
+      failure: {
         start: null,
-        end: null,
-        label: game.i18n.localize("Root.Sheet.Results.Critical")
-      },
-      success: {
-        start: 10,
-        end: null,
-        label: game.i18n.localize("Root.Sheet.Results.Success")
+        end: 6,
+        label: game.i18n.localize("Root.Sheet.Results.Failure")
       },
       partial: {
         start: 7,
         end: 9,
         label: game.i18n.localize("Root.Sheet.Results.Partial")
       },
-      failure: {
+      success: {
+        start: 10,
+        end: null,
+        label: game.i18n.localize("Root.Sheet.Results.Success")
+      },
+      critical: {
         start: null,
-        end: 6,
-        label: game.i18n.localize("Root.Sheet.Results.Failure")
+        end: null,
+        label: game.i18n.localize("Root.Sheet.Results.Critical")
       }
     },
     actorTypes: {
