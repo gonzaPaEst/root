@@ -1660,12 +1660,12 @@ Hooks.on('preCreateChatMessage', ()=>{
 
 Hooks.on('renderApplication', (app, html, options)=>{
 
-  let settings = app.options.id == "client-settings";
-  if (settings) {
-    let systemSettings = html.find('section[data-tab="system"]')
-    let warningText = game.i18n.localize('Root.Settings.System');;
-    let warning = `<div style="margin-top: 100px;" class="notification error">${warningText}</div>
-    `
-    systemSettings[0].innerHTML = warning;
-  }
+  // let settings = app.options.id == "client-settings";
+  // if (settings) {
+  //   let systemSettings = html.find('section[data-tab="system"]')
+  //   let warningText = game.i18n.localize('Root.Settings.System');;
+  //   let warning = `<div style="margin-top: 100px;" class="notification error">${warningText}</div>
+  //   `
+  //   systemSettings[0].innerHTML = warning;
+  // }
 })
