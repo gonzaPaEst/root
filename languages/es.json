@@ -1,0 +1,151 @@
+{
+    "Root": {
+        "Settings": {
+            "Automate": {
+                "Title": "Aumento automático de aptitudes",
+                "Hint": "Esta opción abre una sección de automatización en las hojas de movimiento (en Detalles). Se puede utilizar para incrementar una estadística o recurso cuando el movimiento se añade en la hoja del actor."
+            },
+            "Load": {
+                "Title": "Cálculo automático de la Carga",
+                "Hint": "Esta opción actualiza automáticamente los valores de carga, desgaste y carga máxima del PJ."
+            },
+            "Masteries": {
+                "Title": "Reglas de maestría (¡Triunfo!)",
+                "Hint": "Esta opción añade las reglas de maestrías (Viajeros y Forasteros). IMPORTANTE: Para tener en cuenta la maestría, añade una descripción de triunfo en el movimiento, de lo contrario, deje la descripción en blanco."
+            },
+            "Advantage": {
+                "Title": "Ventaja y Desventaja",
+                "Hint": "Esta opción sustituye el +1 Al siguiente y +1 Continuo por tiradas con ventaja y desventaja."
+            },
+            "System": "La configuración del sistema la proporciona el módulo Root (PbtA)."
+        },
+        "Sheet": {
+            "Results": {
+                "Critical": "¡Triunfo!",
+                "Success": "¡Éxito total!",
+                "Partial": "Éxito parcial",
+                "Failure": "Fallo..."
+            },
+            "Stats": {
+                "Charm": "Carisma",
+                "Cunning": "Astucia",
+                "Finesse": "Finura",
+                "Luck": "Suerte",
+                "Might": "Poderío"
+            },
+            "AttrTop": {
+                "Reputation": {
+                    "Label": "TU REPUTACIÓN",
+                    "Notoriety": "---------------INFAMIA--------------",
+                    "Prestige": "-------------------------PRESTIGIO---------------------------"
+                }
+            },
+            "AttrLeft": {
+                "Resource": {
+                    "Injury": "HERIDAS",
+                    "Exhaustion": "AGOTAMIENTO",
+                    "Depletion": "EXISTENCIAS"
+                },
+                "Hold": "Guardar",
+                "Equipment": {
+                    "Label": "Equipo y Carga",
+                    "Description": "Valor inicial"
+                },
+                "Carrying": "Cargado",
+                "Burdened": "Desgaste (4+Poderío)",
+                "Max": "Máx (2xDesgaste)",
+                "Nature": "Naturaleza",
+                "Drives": "Motivación",
+                "Connections": "Conexiones",
+                "Feats": "Proezas de granuja"
+            },
+            "Moves": {
+                "Basic": "Movimientos básicos",
+                "Playbook": "Movimientos de libreto",
+                "Weapon": "Movimientos con armas",
+                "Travel": "Movimientos de viaje",
+                "Reputation": "Movimientos de reputación"
+            },
+            "Items": {
+                "Equipment": "Equipo",
+                "Depletion": "Existencias",
+                "Wear": "Desgaste"
+            },
+            "NPC": {
+                "Injury": "Heridas",
+                "Exhaustion": "Agotamiento",
+                "Wear": "Desgaste",
+                "Morale": "Moral",
+                "Depletion": "Existencias",
+                "Inflicts": "Causa",
+                "Drive": "Motivación",
+                "Moves": "Movimientos"
+            },
+            "Instructions": {
+                "Triumph": "Añade la descripción de triunfo sólo si el PJ tiene maestría; de lo contrario, déjala en blanco. Esto permite al sistema determinar cuándo utilizar el triunfo.",
+                "StrongHit": "Si el PJ tiene maestría, recuerda cambiar el resultado a 'Con un 10-11' en lugar de 'Con un 10+'."
+            },
+            "Traits": {
+                "Type": "Tipo",
+                "Nature": "Naturaleza",
+                "Drive": "Motivación",
+                "Connection": "Conexión",
+                "Feat": "Proeza de granuja",
+                "Automation": "Automatización"
+            }
+        },
+        "Background": {
+            "Default": "Por defecto",
+            "Ronin": "Ronin",
+            "Chronicler": "Cronista",
+            "Exile": "Exiliado",
+            "Heretic": "Hereje",
+            "Pirate": "Pirata",
+            "Prince": "Príncipe",
+            "Raconteur": "Juglar",
+            "Custom": "Personalizado",
+            "Details": "Detalles",
+            "Species": "Especies",
+            "Pronouns": "pronombres",
+            "Looks": "aspecto",
+            "Oddities": "curiosidades",
+            "Demeanor": "Comportamiento",
+            "Background": "Trasfondo",
+            "Faction": "nombre de la facción",
+            "CustomTemplate": "<h3 style='border: none;'>Especies</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Detalles</h3><ul><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Comportamiento</h3><ul><li>&nbsp;</li></ul><hr><h3 style='border: none;'>Trasfondo</h3><p><strong>Pregunta</strong></p><ul><li>&nbsp;</li></ul><p><strong>Pregunta</strong></p><ul><li>&nbsp;</li></ul><p><strong>Pregunta</strong></p><ul><li>&nbsp;</li></ul><p><strong>Pregunta</strong></p><ul><li>&nbsp;</li></ul><p><strong>Pregunta</strong></p><ul><li>&nbsp;</li></ul>",
+            "WhereIsHome": "¿A qué sitio llamas hogar?",
+            "WhyVagabond": "¿Por qué eres un vagabundo?",
+            "LeftBehind": "¿A quién has dejado atrás?",
+            "LastMaster": "¿Qué le ocurrió a tu último amo?",
+            "LoveHistory": "¿Quién despertó tu amor por la historia?",
+            "Captain": "¿Qué le pasó a tu capitán?",
+            "FallCause": "¿Qué causó tu caída?",
+            "WhyExiled": "¿Por qué fuiste exiliado (y no ejecutado)?",
+            "FactionExiled": "¿Qué facción te exilió?",
+            "Minus2Reputation": "&nbsp;&mdash;&nbsp;<em>comienzas con Reputación -2 con esa facción</em>",
+            "FactionLoyalty": "¿Qué facción busca ahora tu lealtad o pleitesía?",
+            "Plus1Reputation": "&nbsp;&mdash;&nbsp;<em>comienzas con Reputación +1 con esa facción</em>",
+            "FuntamentalTenets": "What are the fundamental tenets of your cause? <em>(Pick 2)</em>",
+            "FactionHate": "Which faction is known to hate those who share your cause?",
+            "Minus1Reputation": "&nbsp;&mdash;&nbsp;<em>comienzas con Reputación -1 con esa facción</em>",
+            "FactionHarbor": "¿Qué facción es conocida por acoger a los que comparten tu causa?",
+            "ParentsVagabond": "¿Por qué tus progenitores te criaron como un vagabundo?",
+            "ParentsHappened": "¿Qué le pasó a tus progenitores?",
+            "ParentsFactionServed": "¿A qué facción sirvieron más tus progenitores?",
+            "ParentsFactionOppose": "W¿A qué facción se opusieron tus progenitores más a menudo?",
+            "WhomWronged": "¿A quién has agraviado y cómo?",
+            "FactionServed": "¿A qué facción has servido más?",
+            "MarkPrestige": "&nbsp;&mdash;&nbsp;<em>marca 2 casillas de prestigio con la facción apropiada</em>",
+            "FactionEnmity": "¿Con qué facción te has ganado una enemistad especial?",
+            "MarkNotoriety": "&nbsp;&mdash;&nbsp;<em>marca 1 casilla de infamia con la facción apropiada</em>"
+        }
+    },
+    "PBTA": {
+        "Description": "Trasfondo",
+        "Biography": "Trasfondo y Detalles",
+        "Quantity": "Valor",
+        "Weight": "Carga",
+        "Wt": "Carga"
+    },
+    "TYPES.Item.root.traits": "rasgos"
+}
