@@ -23,7 +23,7 @@
             "type": "system",
             "manifest": "https://asacolips-artifacts.s3.amazonaws.com/pbta/master/system.json",
             "compatibility": {
-                "verified": "0.8.1",
+                "verified": "0.9.1",
                 "minimum": "0.8.0"
             }
         }
