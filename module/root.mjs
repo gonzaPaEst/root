@@ -1,7 +1,6 @@
 import { configSheet } from "./helpers/config-sheet.mjs";
-import { RollPbtA } from "../../../systems/pbta/module/rolls.js";
+import { RootTraitsModel } from "./helpers/traits-sheet.mjs";
 import { RootUtility } from "./helpers/utility.mjs";
-import { RootTraitsSheet, RootTraitsModel } from "./helpers/traits-sheet.mjs";
 
 // Once the game has initialized, set up the Root module.
 Hooks.once('init', () => {
@@ -14,9 +13,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Automate.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'load', {
@@ -26,9 +23,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Load.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'masteries', {
@@ -38,9 +33,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Masteries.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
   game.settings.register('root', 'advantage', {
@@ -50,9 +43,7 @@ Hooks.once('init', () => {
     scope: 'world',
     config: true,
     hint: game.i18n.localize("Root.Settings.Advantage.Hint"),
-    onChange: () => setTimeout(() => {
-        location.reload();
-      }, 300)
+    requiresReload: true
   });
 
 });
@@ -64,18 +55,126 @@ Hooks.on("init", () => {
     "root.traits": RootTraitsModel
   });
 
+  // Extend PbtA item sheets and change template path
+  class RootTraitsSheet extends game.pbta.applications.item.PbtaItemSheet {
+    get template() {
+        return `/modules/root/templates/traits-sheet.hbs`;
+    }
+
+    async getData(options = {}) {
+        const context = await super.getData(options);
+        context.description = await TextEditor.enrichHTML(this.object.system.description, {
+            async: true,
+            secrets: this.object.isOwner,
+            relativeTo: this.object
+        });
+        return context;
+    }
+  }
+
   Items.registerSheet("root", RootTraitsSheet, {
     types: ["root.traits"],
     makeDefault: true
   });
+
+  // Change Class method to override Triumph outcome in Mastery moves.
+  CONFIG.Dice.RollPbtA.prototype.toMessage = async function (messageData = {}, { rollMode, create = true } = {}) {
+
+		// Perform the roll, if it has not yet been rolled
+		if ( !this._evaluated ) {
+			await this.evaluate({async: true});
+		}
+
+		const resultRanges = game.pbta.sheetConfig.rollResults;
+		let resultLabel = null;
+		let resultDetails = null;
+		let resultType = null;
+		let stat = this.options.stat;
+		let statMod;
+
+		// Iterate through each result range until we find a match.
+		for (let [resultKey, resultRange] of Object.entries(resultRanges)) {
+			let { start, end } = resultRange;
+			if ((!start || this.total >= start) && (!end || this.total <= end)) {
+				resultType = resultKey;
+				break;
+			}
+		}
+
+		this.options.resultType = resultType;
+		// Update the templateData.
+		resultLabel = resultRanges[resultType]?.label ?? resultType;
+		if (this.data?.moveResults && this.data?.moveResults[resultType]?.value) {
+			resultDetails = this.data?.moveResults[resultType].value;
+		}
+
+    console.log(resultType, resultLabel, resultDetails)
+
+    //! Triumph override for Mastery moves.
+    let masteries = await game.settings.get('root', 'masteries');
+
+    if (masteries) {
+      try {
+        if (this.data?.moveResults['critical'].value != '' && this.total >= '12') {
+          resultType = 'critical';
+          resultLabel = game.i18n.localize("Root.Sheet.Results.Critical");
+          resultDetails = this.data?.moveResults['critical'].value;
+        }
+      } catch (error) {
+          console.log("Stat roll was used and it has no Triumph description.", error);
+      }
+    }
+
+		// Add the stat label.
+		if (stat && this.data.stats[stat]) {
+			statMod = this.data.stats[stat].value;
+			stat = game.pbta.sheetConfig.actorTypes[this.options.sheetType]?.stats[stat]?.label ?? stat;
+		}
+
+		// Prepare chat data
+		messageData = foundry.utils.mergeObject({
+			user: game.user.id,
+			type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+			content: String(this.total),
+			sound: CONFIG.sounds.dice,
+
+			conditions: this.options.conditions,
+			choices: this.data.choices,
+			details: this.data.description,
+			originalMod: this.options.originalMod,
+			result: resultType,
+			resultDetails,
+			resultLabel,
+			resultRanges,
+			stat,
+			statMod
+		}, messageData);
+		messageData.rolls = [this];
+
+		// These are abominations from the refactoring but I couldn't figure out how to merge everything into a single ChatMessage.create call
+		messageData.rollPbta = await this.render();
+		messageData.content = await renderTemplate("systems/pbta/templates/chat/chat-move.html", messageData);
+
+		// Either create the message or just return the chat data
+		const cls = getDocumentClass("ChatMessage");
+		const msg = new cls(messageData);
+
+		// Either create or return the data
+		if ( create ) {
+			return cls.create(msg.toObject(), { rollMode });
+		} else if ( rollMode ) {
+			msg.applyRollMode(rollMode);
+		}
+		return msg.toObject();
+	}
 });
 
 // Override sheetConfig with Root sheet (TOML).
 Hooks.once('pbtaSheetConfig', () => {
-  
+
   // Disable the sheet config form.
   game.settings.set('pbta', 'sheetConfigOverride', true);
-  
+
   // Replace the game.pbta.sheetConfig with Root version.
   configSheet();
 
@@ -87,27 +186,20 @@ Hooks.once('pbtaSheetConfig', () => {
 
 // Change starting actor image.
 Hooks.on("preCreateActor", async function (actor) {
-  if (actor.data.img == "icons/svg/mystery-man.svg") {
-    function random_icon(icons) {  
+  if (actor.img == "icons/svg/mystery-man.svg") {
+    function random_icon(icons) {
       return icons[Math.floor(Math.random()*icons.length)];
     }
     const icons = ["badger", "bird", "boar", "fox", "hyena", "lynx", "mole", "monkey", "raccoon"];
     let img = random_icon(icons);
-    actor.data.update({ "img": `modules/root/styles/img/icons/${img}.svg` })
+    actor.updateSource({ "img": `modules/root/styles/img/icons/${img}.svg` })
   }
 });
 
 Hooks.on("preCreateItem", async function (item) {
-  if (item.data.img == "icons/svg/item-bag.svg" && item.data.type != "tag") {
-    if (item.data.type == "equipment") {
-      item.data.update({ "img": `icons/svg/combat.svg` })
-    } else if (item.data.type == "playbook") {
-      item.data.update({ "img": `icons/svg/book.svg` })
-    } else if (item.data.type == "root.traits") {
-      item.data.update({ "img": `icons/svg/pawprint.svg` })
-    } else {
-      item.data.update({ "img": `icons/svg/aura.svg` })
-    } 
+  if (item.img == "icons/svg/item-bag.svg") {
+    if (item.type == "equipment") item.updateSource({ "img": `icons/svg/combat.svg` })
+    else if (item.type == "root.traits") item.updateSource({ "img": `icons/svg/pawprint.svg` })
   }
 });
 
@@ -118,10 +210,9 @@ Hooks.on('createActor', async (actor, options, id) => {
   let updates = {};
 
   if (actor.type == 'character') {
-
     // Get the item moves as the priority.
-    let moves = game.items.filter(i => i.type === 'move' && ['basic', 'weapon-basic', 'reputation', 'travel', 'other'].includes(i.system.moveType));
-    const compendium = await RootUtility.loadCompendia(['basic', 'weapon-basic', 'reputation', 'travel', 'other']);
+    let moves = game.items.filter(i => i.type === 'move' && ['weapon-basic', 'other'].includes(i.system.moveType));
+    const compendium = await RootUtility.loadCompendia(['weapon-basic', 'other']);
     let actorMoves = [];
 
     actorMoves = actor.items.filter(i => i.type == 'move');
@@ -143,7 +234,7 @@ Hooks.on('createActor', async (actor, options, id) => {
     }
 
     // Add template for background.
-    updates['system.details.biography'] = game.i18n.localize('Root.Background.CustomTemplate');
+    updates['system.details.biography.value'] = game.i18n.localize('Root.Background.CustomTemplate');
 
     // Add to the actor.
     const movesToAdd = moves.map(m => duplicate(m));
@@ -171,7 +262,7 @@ Hooks.on('createActor', async (actor, options, id) => {
       await actor.updateEmbeddedDocuments("Item", sortedMoves);
     }
   }
-  
+
   // Perform updates, if any.
   if (updates && Object.keys(updates).length > 0) {
     await actor.update(updates);
@@ -188,8 +279,8 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
   if (item.type == 'move') {
 
     // Show Triumph description in move sheet if Masteries Rule enabled.
-    let masteries = await game.settings.get('root', 'masteries');
-      let resources = html.find('div[data-tab="description"] div.resource');
+    let masteries = game.settings.get('root', 'masteries');
+      let resources = html.find('div[data-tab="description"] div.move-result');
       let triumph = resources[1];
       let triumphLabel = triumph.querySelector('label');
       let triumphInstructions = game.i18n.localize("Root.Sheet.Instructions.Triumph");
@@ -205,11 +296,12 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     }
 
     // Show automate options
-    let automate = await game.settings.get('root', 'automate');
+    let automate = game.settings.get('root', 'automate');
+    if (automate) {
       let moveGroup = html.find('input[name="system.moveGroup"]');
       let resource = moveGroup.closest('div.resource')
-      let automationValue = await item.getFlag('root', 'automationValue') || 0;
-      let automationStat = await item.getFlag('root', 'automationStat') || 'none';
+      let automationValue = item.getFlag('root', 'automationValue') || 0;
+      let automationStat = item.getFlag('root', 'automationStat') || 'none';
       let charmLabel = game.i18n.localize("Root.Sheet.Stats.Charm");
       let cunningLabel = game.i18n.localize("Root.Sheet.Stats.Cunning");
       let finesseLabel = game.i18n.localize("Root.Sheet.Stats.Finesse");
@@ -223,7 +315,7 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     let automateHTML= `
     <div class="resource">
         <label>${automationLabel}</label>
-        <p><i class="fa-solid fa-plus"></i><input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center; width: 30px;"> 
+        <p><i class="fa-solid fa-plus"></i><input type="text" name="flags.root.automationValue" value="${automationValue}" data-dtype="Number" style="text-align: center; width: 30px;">
         <select name="flags.root.automationStat" id="flags.root.automationStat" data-dType="String">
             <option value="none"${automationStat === 'none' ? ' selected' : ''}>---</option>
             <option value="charm"${automationStat === 'charm' ? ' selected' : ''}>${charmLabel}</option>
@@ -238,8 +330,6 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
         </p>
     </div>
 `;
-
-    if (automate) {
       resource.after(automateHTML);
     }
   };
@@ -251,25 +341,27 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     try {
       // Find tags and sort ranges first
       const tagsJson = item.system.tags;
-      const tagsData = JSON.parse(tagsJson);
-      const desiredValues = ["intimate", "close", "far"];
-      function customSort(a, b) {
-        const indexA = desiredValues.indexOf(a.value);
-        const indexB = desiredValues.indexOf(b.value);
-        if (indexA !== -1 && indexB !== -1) {
-          return indexA - indexB;
+      if (tagsJson) {
+        const tagsData = JSON.parse(tagsJson);
+        const desiredValues = ["intimate", "close", "far"];
+        function customSort(a, b) {
+          const indexA = desiredValues.indexOf(a.value);
+          const indexB = desiredValues.indexOf(b.value);
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          if (indexA !== -1) {
+            return -1;
+          } else if (indexB !== -1) {
+            return 1;
+          }
+          return 0;
         }
-        if (indexA !== -1) {
-          return -1;
-        } else if (indexB !== -1) {
-          return 1;
-        }
-        return 0;
+        const sortedData = tagsData.sort(customSort);
+        const updatedTagsJson = JSON.stringify(sortedData);
+        // Update new tags order
+        await item.update({ [`system.tags`]: updatedTagsJson });
       }
-      const sortedData = tagsData.sort(customSort);
-      const updatedTagsJson = JSON.stringify(sortedData);
-      // Update new tags order
-      await item.update({ [`system.tags`]: updatedTagsJson });
     } catch (error) {
       console.log("No tags yet", error)
     }
@@ -304,32 +396,50 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
 
     // Include item wear
     let uses = html.find('input[name="system.uses"]');
-    let usesDiv = uses.closest('div.resource');
-    let addWearOne = await item.getFlag('root', 'itemWear.addBox1') || false;
-    let wearOne = await item.getFlag('root', 'itemWear.box1') || false;
-    let addWearTwo = await item.getFlag('root', 'itemWear.addBox2') || false;
-    let wearTwo = await item.getFlag('root', 'itemWear.box2') || false;
-    let addWearThree = await item.getFlag('root', 'itemWear.addBox3') || false;
-    let wearThree = await item.getFlag('root', 'itemWear.box3') || false;
-    let addWearFour = await item.getFlag('root', 'itemWear.addBox4') || false;
-    let wearFour = await item.getFlag('root', 'itemWear.box4') || false;
-    let addWearFive = await item.getFlag('root', 'itemWear.addBox5') || false;
-    let wearFive = await item.getFlag('root', 'itemWear.box5') || false;
-    let addWearSix = await item.getFlag('root', 'itemWear.addBox6') || false;
-    let wearSix = await item.getFlag('root', 'itemWear.box6') || false;
-    let addWearSeven = await item.getFlag('root', 'itemWear.addBox7') || false;
-    let wearSeven = await item.getFlag('root', 'itemWear.box7') || false;
-    let addWearEight = await item.getFlag('root', 'itemWear.addBox8') || false;
-    let wearEight = await item.getFlag('root', 'itemWear.box8') || false;
+    let usesDiv = uses.closest('div.form-group');
+    let addWearOne = item.getFlag('root', 'itemWear.addBox1') || false;
+    let wearOne = item.getFlag('root', 'itemWear.box1') || false;
+    let addWearTwo = item.getFlag('root', 'itemWear.addBox2') || false;
+    let wearTwo = item.getFlag('root', 'itemWear.box2') || false;
+    let addWearThree = item.getFlag('root', 'itemWear.addBox3') || false;
+    let wearThree = item.getFlag('root', 'itemWear.box3') || false;
+    let addWearFour = item.getFlag('root', 'itemWear.addBox4') || false;
+    let wearFour = item.getFlag('root', 'itemWear.box4') || false;
+    let addWearFive = item.getFlag('root', 'itemWear.addBox5') || false;
+    let wearFive = item.getFlag('root', 'itemWear.box5') || false;
+    let addWearSix = item.getFlag('root', 'itemWear.addBox6') || false;
+    let wearSix = item.getFlag('root', 'itemWear.box6') || false;
+    let addWearSeven = item.getFlag('root', 'itemWear.addBox7') || false;
+    let wearSeven = item.getFlag('root', 'itemWear.box7') || false;
+    let addWearEight = item.getFlag('root', 'itemWear.addBox8') || false;
+    let wearEight = item.getFlag('root', 'itemWear.box8') || false;
     let wearLabel = game.i18n.localize("Root.Sheet.Items.Wear");
     let depletionLabel = game.i18n.localize("Root.Sheet.Items.Depletion");
 
-    let wearBoxes = `<label>${wearLabel}</label> <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i>
-    <br><input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}><input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>`
+    let wearBoxes = `
+    <label>${wearLabel} <i class="wear far fa-plus-square"></i> <i class="wear far fa-minus-square"></i></label>
+    <div>
+      <input type="checkbox" name="flags.root.itemWear.addBox1" data-dtype="Boolean" ${addWearOne ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box1" data-dtype="Boolean" ${wearOne ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox2" data-dtype="Boolean" ${addWearTwo ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box2" data-dtype="Boolean" ${wearTwo ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox3" data-dtype="Boolean" ${addWearThree ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box3" data-dtype="Boolean" ${wearThree ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox4" data-dtype="Boolean" ${addWearFour ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box4" data-dtype="Boolean" ${wearFour ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox5" data-dtype="Boolean" ${addWearFive ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box5" data-dtype="Boolean" ${wearFive ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox6" data-dtype="Boolean" ${addWearSix ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box6" data-dtype="Boolean" ${wearSix ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox7" data-dtype="Boolean" ${addWearSeven ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box7" data-dtype="Boolean" ${wearSeven ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.addBox8" data-dtype="Boolean" ${addWearEight ? 'checked' : ''}>
+      <input type="checkbox" name="flags.root.itemWear.box8" data-dtype="Boolean" ${wearEight ? 'checked' : ''}>
+    </div>`
     usesDiv[0].innerHTML = wearBoxes
     let itemFaPlus = html.find('.wear.fa-plus-square');
     let itemFaMinus = html.find('.wear.fa-minus-square');
-    
+
     itemFaPlus.click(async function(event) {
       if (addWearOne == false) {
         addWearOne = await item.setFlag('root', 'itemWear.addBox1', true);
@@ -371,13 +481,13 @@ Hooks.on("renderItemSheet", async function (app, html, data) {
     });
 
     if (item.system.playbook == 'The Pirate' && item.system.tags.includes('stocked')) {
-      let depletionOne = await item.getFlag('root', 'itemDepletion.box1') || false;
-      let depletionTwo = await item.getFlag('root', 'itemDepletion.box2') || false;
+      let depletionOne = item.getFlag('root', 'itemDepletion.box1') || false;
+      let depletionTwo = item.getFlag('root', 'itemDepletion.box2') || false;
       let depletionBoxes = `<hr><div class="resources"><label>${depletionLabel}</label>
       <br><input type="checkbox" name="flags.root.itemDepletion.box1" data-dtype="Boolean" ${depletionOne ? 'checked' : ''}><input type="checkbox" name="flags.root.itemDepletion.box2" data-dtype="Boolean" ${depletionTwo ? 'checked' : ''}>`
       usesDiv[0].insertAdjacentHTML('beforeend', depletionBoxes)
     };
-    
+
   };
 
 });
@@ -393,7 +503,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   // Add dropped trait item to correct description in actor sheet
   if (droppedEntity.type === "root.traits") {
     const traitType = droppedEntity.flags.root.traitType;
-  
+
     if (traitType in traits) {
       const currentValue = traits[traitType].value;
       const traitHTML = `${currentValue}${newTrait}`;
@@ -403,7 +513,7 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
   }
 
   // Add points/boxes to stats/resources if automatic stat increment = true
-  let automate = await game.settings.get('root', 'automate');
+  let automate = game.settings.get('root', 'automate');
 
   if (automate && droppedEntity.type === 'move') {
     const autoValue = await droppedEntity.getFlag('root', 'automationValue') || "0";
@@ -443,16 +553,16 @@ Hooks.on('dropActorSheetData', async (actor, html, item) => {
 
 // Remove points/boxes to stats/resources if automatic stat increment = true
 Hooks.on('deleteItem', async (item, options, userId, ...args) => {
-  const automate = await game.settings.get('root', 'automate');
-  const actor = await item.parent;
+  const automate = game.settings.get('root', 'automate');
+  const actor = item.parent;
 
   if (automate && item.type === 'move') {
 
     try {
-      const autoValue = await item.getFlag('root', 'automationValue') || "0";
-      const stat = await item.getFlag('root', 'automationStat') || "none";
+      const autoValue = item.getFlag('root', 'automationValue') || "0";
+      const stat = item.getFlag('root', 'automationStat') || "none";
       const systemStats = actor.system.stats;
-  
+
       if (stat in systemStats) {
         const currentVal = systemStats[stat].value;
         const newVal = parseInt(currentVal) - parseInt(autoValue);
@@ -463,26 +573,26 @@ Hooks.on('deleteItem', async (item, options, userId, ...args) => {
         const parsedVal = parseInt(autoValue);
         const resourceOptions = actor.system.attrLeft.resource.options;
         const indicesToReview = [4, 6, 8, 10];
-  
+
         for (let index of indicesToReview) {
           const checkbox = resourceOptions[stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'].values[index];
-  
+
           if (checkbox.value === true) {
             const updateKey = `system.attrLeft.resource.options.${stat === "injury" ? '0' : stat === "exhaustion" ? '1' : '2'}.values.${index}.value`;
             await actor.update({ [updateKey]: false });
             count++;
           }
-  
+
           if (count === parsedVal) {
             break;
           }
         }
       }
-  
+
       setTimeout(() => {
         actor.sheet.render(true);
       }, 200);
-      
+
     } catch (error) {
       console.log("Item not in actor", error)
     }
@@ -510,7 +620,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     checkboxArrays.forEach((checkbox, index) => {
       checkbox.change(function() {
         const isChecked = $(this).is(':checked');
-        
+
         if (isChecked) {
           // Check all the following checkboxes
           checkboxArrays.slice(index + 1).forEach((followingCheckbox) => {
@@ -555,7 +665,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   });
 
   if (actor.type == 'character') {
-
     // Prepend hold flag before forward and ongoing
     let holdValue = actor.getFlag('root', 'hold') || "0";
     let holdLabel = game.i18n.localize('Root.Sheet.AttrLeft.Hold');
@@ -568,8 +677,8 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     resourcesSection.prepend(holdHTML);
 
     // Calculate load, burdened and max
-    let loadCalculate = await game.settings.get('root', 'load');
-    
+    let loadCalculate = game.settings.get('root', 'load');
+
     if (loadCalculate) {
       const carryingInput = html.find('input[name="system.attrLeft.carrying.value"]');
       carryingInput.attr('readonly', 'readonly');
@@ -581,7 +690,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
             return acc + item.system.weight;
           }
           return acc;
-        }, 0);  
+        }, 0);
         carryingLoad = itemsLoad;
       };
       calculateLoad();
@@ -783,7 +892,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     /*      REPUTATION         */
     /* ----------------------- */
     // Handle reputations' bonuses (only one can be selected per faction)
-    
+
     function handleReputationBonus(factionsArrays) {
       factionsArrays.forEach(factionArray => {
         factionArray.forEach((checkbox, index) => {
@@ -799,7 +908,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         });
       });
     }
-    
+
     const factionsReputations = [
       [
         html.find('input[name="system.attrTop.reputation.options.1.values.3.value"]'),
@@ -847,9 +956,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         html.find('input[name="system.attrTop.reputation.options.39.values.5.value"]')
       ]
     ];
-    
+
     handleReputationBonus(factionsReputations);
-    
+
     // Handle reputation increments
     const firstFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.1.values.2.value"]'),
@@ -880,7 +989,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.5.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.5.values.0.value"]')
     ];
-    
+
     const secondFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.9.values.2.value"]'),
       html.find('input[name="system.attrTop.reputation.options.9.values.1.value"]'),
@@ -892,7 +1001,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.11.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.11.values.0.value"]')
     ];
-    
+
     const secondFactionPrestige = [
       html.find('input[name="system.attrTop.reputation.options.15.values.4.value"]'),
       html.find('input[name="system.attrTop.reputation.options.15.values.3.value"]'),
@@ -922,7 +1031,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.19.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.19.values.0.value"]')
     ];
-    
+
     const thirdFactionPrestige = [
       html.find('input[name="system.attrTop.reputation.options.23.values.4.value"]'),
       html.find('input[name="system.attrTop.reputation.options.23.values.3.value"]'),
@@ -970,7 +1079,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.29.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.29.values.0.value"]')
     ];
-    
+
     const fifthFactionNotoriety = [
       html.find('input[name="system.attrTop.reputation.options.33.values.2.value"]'),
       html.find('input[name="system.attrTop.reputation.options.33.values.1.value"]'),
@@ -1000,7 +1109,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.reputation.options.37.values.1.value"]'),
       html.find('input[name="system.attrTop.reputation.options.37.values.0.value"]')
     ];
-    
+
     handleCheckboxIncrements(firstFactionNotoriety);
     handleCheckboxIncrements(firstFactionPrestige);
     handleCheckboxIncrements(secondFactionNotoriety);
@@ -1020,21 +1129,21 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       var textNode = label.contents().filter(function() {
         return this.nodeType === Node.TEXT_NODE && $(this).text().trim() !== '';
       }).first();
-  
+
       if (textNode.length > 0) {
         var text = textNode.text().trim();
         textNode.remove();
-  
+
         var textWrapper = $('<div>').text(text);
-  
+
         var plusIcon = $('<i>').addClass('far fa-plus-square');
         var minusIcon = $('<i>').addClass('far fa-minus-square');
-  
+
         textWrapper.append(document.createTextNode(' '));
         textWrapper.append(plusIcon);
         textWrapper.append(document.createTextNode(' '));
         textWrapper.append(minusIcon);
-  
+
         if (index === 0) {
           textWrapper.addClass('injury');
         } else if (index === 1) {
@@ -1042,11 +1151,11 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         } else if (index === 2) {
           textWrapper.addClass('depletion');
         }
-  
+
         label.prepend(textWrapper);
       }
-    });  
-    
+    });
+
     let addInjuryFive = actor.system.attrLeft.resource.options['0'].values['4'].value
     let addInjurySix = actor.system.attrLeft.resource.options['0'].values['6'].value
     let addInjurySeven = actor.system.attrLeft.resource.options['0'].values['8'].value
@@ -1054,7 +1163,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let injuryFaPlus = html.find('.injury .fa-plus-square');
     let injuryFaMinus = html.find('.injury .fa-minus-square');
-    
+
     injuryFaPlus.click(async function(event) {
       if (addInjuryFive == false) {
         await actor.update({"system.attrLeft.resource.options.0.values.4.value": true});
@@ -1076,7 +1185,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.0.values.6.value": false});
       } else if (addInjuryFive == true) {
         await actor.update({"system.attrLeft.resource.options.0.values.4.value": false});
-      } 
+      }
     });
 
     let addExhaustionFive = actor.system.attrLeft.resource.options['1'].values['4'].value
@@ -1086,7 +1195,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let exhaustionFaPlus = html.find('.exhaustion .fa-plus-square');
     let exhaustionFaMinus = html.find('.exhaustion .fa-minus-square');
-    
+
     exhaustionFaPlus.click(async function(event) {
       if (addExhaustionFive == false) {
         await actor.update({"system.attrLeft.resource.options.1.values.4.value": true});
@@ -1108,7 +1217,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.1.values.6.value": false});
       } else if (addExhaustionFive == true) {
         await actor.update({"system.attrLeft.resource.options.1.values.4.value": false});
-      } 
+      }
     });
 
     let addDepletionFive = actor.system.attrLeft.resource.options['2'].values['4'].value
@@ -1118,7 +1227,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
 
     let depletionFaPlus = html.find('.depletion .fa-plus-square');
     let depletionFaMinus = html.find('.depletion .fa-minus-square');
-    
+
     depletionFaPlus.click(async function(event) {
       if (addDepletionFive == false) {
         await actor.update({"system.attrLeft.resource.options.2.values.4.value": true});
@@ -1140,9 +1249,9 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
         await actor.update({"system.attrLeft.resource.options.2.values.6.value": false});
       } else if (addDepletionFive == true) {
         await actor.update({"system.attrLeft.resource.options.2.values.4.value": false});
-      } 
+      }
     });
-    
+
     // Handle resouce increments
     const injuryResource = [
       html.find('input[name="system.attrLeft.resource.options.0.values.11.value"]'),
@@ -1182,7 +1291,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
     handleCheckboxIncrements(depletionResource);
 
     // Add Mastery tag to actor sheet if move has Triumph description.
-    let masteries = await game.settings.get('root', 'masteries');
+    let masteries = game.settings.get('root', 'masteries');
     let metaTags = html.find('.item-meta.tags');
     let items = metaTags.parent('li.item');
     for (let item of items) {
@@ -1507,7 +1616,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.injury.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.injury.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.injury.options.0.values.0.value"]')
-    ];    
+    ];
 
     const exhaustionNPCResource = [
       html.find('input[name="system.attrTop.exhaustion.options.0.values.22.value"]'),
@@ -1522,7 +1631,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.exhaustion.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.exhaustion.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.exhaustion.options.0.values.0.value"]')
-    ];    
+    ];
 
     const wearNPCResource = [
       html.find('input[name="system.attrTop.wear.options.0.values.22.value"]'),
@@ -1538,7 +1647,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.wear.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.wear.options.0.values.0.value"]')
     ];
-    
+
     const moraleNPCResource = [
       html.find('input[name="system.attrTop.morale.options.0.values.22.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.20.value"]'),
@@ -1552,7 +1661,7 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
       html.find('input[name="system.attrTop.morale.options.0.values.4.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.2.value"]'),
       html.find('input[name="system.attrTop.morale.options.0.values.0.value"]')
-    ];    
+    ];
 
     handleCheckboxIncrements(injuryNPCResource);
     handleCheckboxIncrements(exhaustionNPCResource);
@@ -1561,102 +1670,6 @@ Hooks.on("renderActorSheet", async function (app, html, data) {
   };
 
   });
-
-// Change Class method to override Triumph outcome in Mastery moves.
-
-Hooks.on('preCreateChatMessage', ()=>{
-
-  RollPbtA.prototype.toMessage = async function (messageData = {}, { rollMode, create = true } = {}) {
-
-		// Perform the roll, if it has not yet been rolled
-		if ( !this._evaluated ) {
-			await this.evaluate({async: true});
-		}
-
-		const resultRanges = game.pbta.sheetConfig.rollResults;
-		let resultLabel = null;
-		let resultDetails = null;
-		let resultType = null;
-		let stat = this.options.stat;
-		let statMod;
-
-		// Iterate through each result range until we find a match.
-		for (let [resultKey, resultRange] of Object.entries(resultRanges)) {
-			let { start, end } = resultRange;
-			if ((!start || this.total >= start) && (!end || this.total <= end)) {
-				resultType = resultKey;
-				break;
-			}
-		}
-
-		this.options.resultType = resultType;
-		// Update the templateData.
-		resultLabel = resultRanges[resultType]?.label ?? resultType;
-		if (this.data?.moveResults && this.data?.moveResults[resultType]?.value) {
-			resultDetails = this.data?.moveResults[resultType].value;
-		}
-
-    console.log(resultType, resultLabel, resultDetails)
-
-    //! Triumph override for Mastery moves.
-    let masteries = await game.settings.get('root', 'masteries');
-
-    if (masteries) {
-      try {
-        if (this.data?.moveResults['critical'].value != '' && this.total >= '12') {
-          resultType = 'critical';
-          resultLabel = game.i18n.localize("Root.Sheet.Results.Critical");
-          resultDetails = this.data?.moveResults['critical'].value;
-        }
-      } catch (error) {
-          console.log("Stat roll was used and it has no Triumph description.", error);
-      }
-    }
-
-		// Add the stat label.
-		if (stat && this.data.stats[stat]) {
-			statMod = this.data.stats[stat].value;
-			stat = game.pbta.sheetConfig.actorTypes[this.options.sheetType]?.stats[stat]?.label ?? stat;
-		}
-
-		// Prepare chat data
-		messageData = foundry.utils.mergeObject({
-			user: game.user.id,
-			type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-			content: String(this.total),
-			sound: CONFIG.sounds.dice,
-
-			conditions: this.options.conditions,
-			choices: this.data.choices,
-			details: this.data.description,
-			originalMod: this.options.originalMod,
-			result: resultType,
-			resultDetails,
-			resultLabel,
-			resultRanges,
-			stat,
-			statMod
-		}, messageData);
-		messageData.rolls = [this];
-
-		// These are abominations from the refactoring but I couldn't figure out how to merge everything into a single ChatMessage.create call
-		messageData.rollPbta = await this.render();
-		messageData.content = await renderTemplate("systems/pbta/templates/chat/chat-move.html", messageData);
-
-		// Either create the message or just return the chat data
-		const cls = getDocumentClass("ChatMessage");
-		const msg = new cls(messageData);
-
-		// Either create or return the data
-		if ( create ) {
-			return cls.create(msg.toObject(), { rollMode });
-		} else if ( rollMode ) {
-			msg.applyRollMode(rollMode);
-		}
-		return msg.toObject();
-	}
-
-});
 
 Hooks.on('renderApplication', (app, html, options)=>{
 

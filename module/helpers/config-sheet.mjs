@@ -977,6 +977,7 @@ export const configSheet = async () => {
         moveTypes: {
           basic: {
             label: game.i18n.localize("Root.Sheet.Moves.Basic"),
+            creation:  true,
             moves: []
           },
           playbook: {
@@ -989,10 +990,12 @@ export const configSheet = async () => {
           },
           travel: {
             label: game.i18n.localize("Root.Sheet.Moves.Travel"),
+            creation:  true,
             moves: []
           },
           reputation: {
             label: game.i18n.localize("Root.Sheet.Moves.Reputation"),
+            creation:  true,
             moves: []
           }
         },
@@ -1379,7 +1382,7 @@ export const configSheet = async () => {
       }
     }
   };
-  
+
   let useAdvDis = await game.settings.get('root', 'advantage');
 
   // Settings for Root

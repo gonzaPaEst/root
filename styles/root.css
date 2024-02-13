@@ -300,7 +300,7 @@ span.tag--mastery {
 .pbta.sheet.actor:not(.npc) .sheet-resources .cell--roll-mode {
   border: none;
   display: grid;
-  grid-column: span 2;
+  flex: 2;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
